@@ -36,10 +36,15 @@
 export default {
   name: "HelloWorld",
   // 定义 组件对象的属性，并指定类型,可以通过props向组件传递数据
-  props: {
-    // HelloWorld 组件有一个 msg 属性，值类型是String
-    // 使用该组件时，{{ msg }} 来取该属性的值
-    msg: String,
+  // props: {
+  //   // HelloWorld 组件有一个 msg 属性，值类型是String
+  //   // 使用该组件时，{{ msg }} 来取该属性的值
+  //   msg: String,
+  // },
+  data() {
+    return {
+      msg: "这里是Hello页面",
+    };
   },
 };
 </script>
