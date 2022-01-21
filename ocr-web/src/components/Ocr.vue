@@ -1,24 +1,20 @@
 <template>
   <div class="ScreenShot">
     <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
-      <input
-        type="text"
-        class="pasteInput"
-        autosize
-        placeholder="请粘贴图片到此处"
-        maxlength="0"
-      />
+      <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
     </div>
-    <div v-if="show" class="pasteImgDiv">
-      <i class="el-icon-error close-position" @click="deleteImg" />
-      <el-image
+    <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+      <!-- <i class="el-icon-error close-position" @click="deleteImg" /> -->
+      <!-- <el-image
         class="pasteImg"
         :src="url"
         fit="fill"
         :preview-src-list="srcList"
         :z-index="99999"
       >
-      </el-image>
+      </el-image> -->
+      <img class="pasteImg" v-bind:src="url" />
+      <img v-if="showDelBtn" class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" @click="deleteImg" />
     </div>
   </div>
 </template>
@@ -40,6 +36,7 @@ export default {
   data() {
     return {
       show: false,
+      showDelBtn: false,
       url: null,
       srcList: [],
       file: null,
@@ -90,8 +87,19 @@ export default {
       this.httpRequest(file);
     },
     deleteImg() {
-      this.$emit("imgFile", "");
-      this.$emit("imgBase64", "");
+      this.show = false;
+      this.url = "";
+      this.showDelBtn = false;
+    },
+    showDeleteBtn() {
+      if (!this.show || this.url == "") {
+        return;
+      }
+      this.showDelBtn = true;
+    },
+    hidenDelteBtn() {
+      // todo set to false
+      this.showDelBtn = true;
     },
   },
 };
@@ -107,6 +115,14 @@ export default {
   margin: auto;
   width: 200px;
   height: 200px;
+}
+.pasteImg{
+  width: 200px;
+  height: 200px;
+}
+.deleteBtn{
+  width: 30px;
+  height: 30px;
 }
 .pasteInput {
   background-color: #fbfdff;
