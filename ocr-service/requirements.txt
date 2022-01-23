@@ -1,0 +1,2 @@
+#pipreqs ./ --encoding=utf-8 --force
+sanic==0.4.1

@@ -1,25 +1,25 @@
 <template>
-  <div class="root">
-    <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
-      <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
-    </div>
-    <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
-      <!-- <i class="el-icon-error close-position" @click="deleteImg" /> -->
-      <!-- <el-image
-        class="pasteImg"
-        :src="url"
-        fit="fill"
-        :preview-src-list="srcList"
-        :z-index="99999"
-      >
-      </el-image> -->
-      <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
-      <img v-if="showDelBtn" class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" @click="deleteImg" />
-    </div>
-    <div class="preview" v-if="showPreview" @click="zoomOutImg">
-      <div class="previewImgDiv">
-        <img :src="url" class="previewImg" />
+  <div class="root"  style="dispaly:flex;">
+    <div class="input">
+      <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
+        <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
       </div>
+      <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+        <div class="pasteImgContainer">
+          <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
+        </div>
+        <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
+          <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
+        </div>
+      </div>
+      <div class="preview" v-if="showPreview" @click="zoomOutImg">
+        <div class="previewImgDiv">
+          <img :src="url" class="previewImg" />
+        </div>
+      </div>
+    </div>
+    <div class="output">
+      {{orcResult}}
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@ export default {
       url: null,
       srcList: [],
       file: null,
+      orcResult:"解析结果"
     };
   },
   watch: {
@@ -104,8 +105,7 @@ export default {
       this.showDelBtn = true;
     },
     hidenDelteBtn() {
-      // todo set to false
-      this.showDelBtn = true;
+      this.showDelBtn = false;
     },
     zoomOutImg() {
       this.showPreview = false;
@@ -121,6 +121,17 @@ export default {
   margin-top: 10px;
   width: 100%;
   height: 100%;
+}
+.deleteImgContainer {
+  position: absolute;
+  background: #c7312c;
+  opacity: 0.8;
+  border-end-end-radius: 5px;
+  border-end-start-radius: 5px;
+  bottom: -1px;
+  width: 201px;
+  left: 101px;
+  transform: translateX(-50%);
 }
 .pasteInputDiv {
   box-sizing: border-box;
@@ -140,8 +151,9 @@ export default {
   margin-top: 20px;
 }
 .deleteBtn {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
+  vertical-align: -webkit-baseline-middle;
 }
 .preview {
   /* overflow: auto; */
