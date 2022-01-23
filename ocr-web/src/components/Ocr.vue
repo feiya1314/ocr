@@ -1,5 +1,5 @@
 <template>
-  <div class="ScreenShot">
+  <div class="root">
     <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
       <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
     </div>
@@ -13,8 +13,13 @@
         :z-index="99999"
       >
       </el-image> -->
-      <img class="pasteImg" v-bind:src="url" />
+      <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
       <img v-if="showDelBtn" class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" @click="deleteImg" />
+    </div>
+    <div class="preview" v-if="showPreview" @click="zoomOutImg">
+      <div class="previewImgDiv">
+        <img :src="url" class="previewImg" />
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +42,7 @@ export default {
     return {
       show: false,
       showDelBtn: false,
+      showPreview: false,
       url: null,
       srcList: [],
       file: null,
@@ -101,11 +107,17 @@ export default {
       // todo set to false
       this.showDelBtn = true;
     },
+    zoomOutImg() {
+      this.showPreview = false;
+    },
+    zoomInImg() {
+      this.showPreview = true;
+    },
   },
 };
 </script>
 <style scoped>
-.ScreenShot {
+.root {
   margin-top: 10px;
   width: 100%;
   height: 100%;
@@ -116,13 +128,36 @@ export default {
   width: 200px;
   height: 200px;
 }
-.pasteImg{
+.pasteImg {
   width: 200px;
   height: 200px;
+  cursor: zoom-in;
+  cursor: -webkit-zoom-in;
 }
-.deleteBtn{
+.previewImg {
+  text-align: center;
+  text-align: -webkit-center;
+  margin-top: 20px;
+}
+.deleteBtn {
   width: 30px;
   height: 30px;
+}
+.preview {
+  /* overflow: auto; */
+  /* background-color: rgba(18,18,18,.65); */
+  cursor: zoom-out;
+  cursor: -webkit-zoom-out;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 101;
+  overflow: hidden;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+  background-color: rgba(18, 18, 18, 0.65);
 }
 .pasteInput {
   background-color: #fbfdff;
