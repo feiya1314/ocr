@@ -1,5 +1,5 @@
 <template>
-  <div class="root"  style="dispaly:flex;">
+  <div class="root" style="dispaly:flex;">
     <div class="input">
       <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
         <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
@@ -46,21 +46,21 @@ export default {
       url: null,
       srcList: [],
       file: null,
-      orcResult:"解析结果"
+      orcResult: "解析结果",
     };
   },
-  watch: {
-    url() {
-      if (this.url === "") {
-        this.show = false;
-        this.srcList = [];
-      } else {
-        this.show = true;
-        this.srcList.push(this.url);
-      }
-    },
-  },
   methods: {
+    sendImgRequest() {
+      this.$axios({
+        method: "post",
+        url: "http://127.0.0.1:8000/",
+        data: {
+          img: "上传图片xxx",
+        },
+      }).then((response) => {
+        this.orcResult = response;
+      });
+    },
     handlePaste(event) {
       const items = (event.clipboardData || window.clipboardData).items;
       let file = null;
@@ -89,9 +89,10 @@ export default {
         this.$emit("imgBase64", event.target.result);
       };
       reader.readAsDataURL(file);
-      this.$emit("imgFile", file);
+      // this.$emit("imgFile", file);
       this.file = file;
-      this.httpRequest(file);
+      //this.httpRequest(file);
+      this.sendImgRequest();
     },
     deleteImg() {
       this.show = false;

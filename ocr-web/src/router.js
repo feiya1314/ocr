@@ -1,13 +1,14 @@
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 
-const HellowWord = () => import( /* webpackChunkName: "group-foo" */ './components/HelloWorld.vue');
-const Ocr = () => import( /* webpackChunkName: "group-foo" */ './components/Ocr.vue');
+// const HellowWord = () =>
+//     import ( /* webpackChunkName: "group-foo" */ './components/HelloWorld.vue');
+const Ocr = () =>
+    import ( /* webpackChunkName: "group-foo" */ './components/Ocr.vue');
 
-const routes = [
-    {
+const routes = [{
         path: '/',
-        component: HellowWord,
+        component: Ocr,
         meta: {
             keep: true
         }

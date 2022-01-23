@@ -1,11 +1,12 @@
 from sanic import Sanic
-from sanic.response import text
+from sanic.response import text, html, json
 
-app = Sanic()
+app = Sanic("ocr")
 
 
-@app.route("/")
-async def test(request):
+@app.route("/", methods=["POST",])
+async def ocrIndex(request):
+    print("receive data %s :" %(str(request.json)))
     return text('Hello World!')
 
 
