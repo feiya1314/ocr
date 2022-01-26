@@ -1,7 +1,9 @@
 from sanic import Sanic
 from sanic.response import text, html, json
+from sanic_cors import CORS
 
 app = Sanic("ocr")
+CORS(app)
 
 
 @app.route("/ocr", methods=["POST"])

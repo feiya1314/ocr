@@ -54,6 +54,7 @@ export default {
       this.$axios({
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
+          "Origin":"http://127.0.0.1:8000"
         },
         method: "post",
         url: "http://127.0.0.1:8000/ocr",
