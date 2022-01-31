@@ -47,22 +47,26 @@ export default {
       srcList: [],
       file: null,
       orcResult: "解析结果",
+      fileType: 0,
     };
   },
   methods: {
     sendImgRequest() {
+      var formData = new FormData();
+
+      formData.append("fileType", this.fileType);
+      formData.append("file", this.file, this.file.name);
+
       this.$axios({
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Origin":"http://127.0.0.1:8000"
+          "Content-Type": "multipart/form-data",
+          Origin: "http://127.0.0.1:8000",
         },
         method: "post",
         url: "http://127.0.0.1:8000/ocr",
-        data: {
-          img: "上传图片xxx",
-        },
+        data: formData,
       }).then((response) => {
-        this.orcResult = response;
+        this.orcResult = response.data;
       });
     },
     handlePaste(event) {
@@ -83,8 +87,17 @@ export default {
         this.$message.error("粘贴内容非图片");
         return;
       }
+      let fileSize = file.size;
+      let fileSizeLimit = 2101440;
+
+      if (fileSize > fileSizeLimit) {
+        this.$message.error("图片大小超过 2 M");
+        return;
+      }
       // 此时file就是我们的剪切板中的图片对象
       const reader = new FileReader();
+      reader.readAsDataURL(file);
+
       reader.onload = (event) => {
         this.show = true;
         let fileResult = event.target.result;
@@ -92,7 +105,6 @@ export default {
         this.srcList.push(fileResult);
         this.$emit("imgBase64", event.target.result);
       };
-      reader.readAsDataURL(file);
       // this.$emit("imgFile", file);
       this.file = file;
       //this.httpRequest(file);
