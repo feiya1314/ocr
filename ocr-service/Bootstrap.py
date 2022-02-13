@@ -2,7 +2,7 @@ from sanic import Sanic
 from sanic.response import text, html, json
 from sanic_cors import CORS
 from paddleocr import PaddleOCR, draw_ocr
-import OcrCore
+from ocr import OcrCore
 app = Sanic("ocr")
 CORS(app)
 
