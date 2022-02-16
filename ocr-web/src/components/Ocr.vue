@@ -1,5 +1,8 @@
 <template>
   <div class="root" style="dispaly:flex;">
+    <HeaderBanner>
+
+    </HeaderBanner>
     <div class="input">
       <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
         <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
@@ -24,8 +27,13 @@
   </div>
 </template>
 <script>
+import HeaderBanner from "./HeaderBanner.vue";
 export default {
   name: "ScreenShot",
+  components: {
+    //导入组件，这样在当前组件中，使用导入的组件
+    HeaderBanner
+  },
   props: {
     // url: {
     //   type: String,
@@ -135,7 +143,7 @@ export default {
 </script>
 <style scoped>
 .root {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   width: 100%;
   height: 100%;
 }
