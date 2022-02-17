@@ -1,38 +1,49 @@
 <template>
   <div class="root" style="dispaly:flex;">
     <HeaderBanner>
-
     </HeaderBanner>
-    <div class="input">
-      <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
-        <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
-      </div>
-      <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
-        <div class="pasteImgContainer">
-          <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
+    <main class="row-fluid">
+      <div class="left-content-box">
+        <div class="input">
         </div>
-        <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
-          <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
+        <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
+          <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
+        </div>
+        <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+          <div class="pasteImgContainer">
+            <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
+          </div>
+          <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
+            <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
+          </div>
+        </div>
+        <div class="preview" v-if="showPreview" @click="zoomOutImg">
+          <div class="previewImgDiv">
+            <img :src="url" class="previewImg" />
+          </div>
         </div>
       </div>
-      <div class="preview" v-if="showPreview" @click="zoomOutImg">
-        <div class="previewImgDiv">
-          <img :src="url" class="previewImg" />
+      <div id="dragEle" style="position: absolute; cursor: move;"></div>
+      <div class="right-content-box">
+        <div class="output">
+          {{orcResult}}
         </div>
       </div>
-    </div>
-    <div class="output">
-      {{orcResult}}
-    </div>
+    </main>
+    <FooterBanner>
+
+    </FooterBanner>
   </div>
 </template>
 <script>
 import HeaderBanner from "./HeaderBanner.vue";
+import FooterBanner from "./FooterBanner.vue";
 export default {
   name: "ScreenShot",
   components: {
     //导入组件，这样在当前组件中，使用导入的组件
-    HeaderBanner
+    HeaderBanner,
+    FooterBanner,
   },
   props: {
     // url: {
@@ -146,6 +157,34 @@ export default {
   /* margin-top: 10px; */
   width: 100%;
   height: 100%;
+}
+.row-fluid {
+  position: relative;
+  height: calc(100% - 201px);
+}
+.left-content-box {
+  padding: 0px;
+  float: left;
+  height: 100%;
+  width: 795px;
+}
+.right-content-box {
+  padding: 0px;
+  position: relative;
+  height: 100%;
+  width: 1114px;
+  float: left;
+}
+#dragEle {
+  height: 100%;
+  position: absolute;
+  width: 10px;
+  background: transparent;
+  left: 41.66666667%;
+  margin-left: -5px;
+  z-index: 999;
+  top: 0 !important;
+  cursor: col-resize !important;
 }
 .deleteImgContainer {
   position: absolute;

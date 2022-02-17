@@ -1,19 +1,21 @@
 <template>
-  <div class="main-header-box">
-    <header class="main-header">
-      <div class="header-inner">
-
-        <a href="http://localhost:8080">
-          <img class="logo-img" srcset="@/assets/images/logo.svg" />
-        </a>
+  <div class="main-footer-box">
+    <footer class="main-footer">
+      <div class="footer-inner">
+        <div class="footer-gg-b-link">
+          <a href="http://www.json.cn/privacy.html">隐私保护</a>
+          <a href="http://www.json.cn/right.html">权利保护</a>
+          <a href="http://www.json.cn/contact.html" class="footer-gg-b-email">联系我们</a>
+          <a href="http://www.json.cn/feedback.html" class="footer-gg-b-feedback">问题反馈</a>
+        </div>
       </div>
-    </header>
+    </footer>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HeaderBanner",
+  name: "FooterBanner",
   // 定义 组件对象的属性，并指定类型,可以通过props向组件传递数据
   // props: {
   //   // HelloWorld 组件有一个 msg 属性，值类型是String
@@ -31,14 +33,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <!--  "scoped" 表示该组件只适合当前组件 -->
 <style scoped>
-header {
-  display: block;
+footer {
+  margin-top: 1vh;
+  font-size: calc(2px + 1vh);
 }
 a {
   color: inherit;
   text-decoration: none;
 }
-.main-header {
+.main-footer {
   -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
   box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
   position: relative;
@@ -48,11 +51,8 @@ a {
   background: #fff;
   background-clip: content-box;
 }
-.logo-img {
-  max-width: 100px;
-  padding-top: 4px;
-}
-.header-inner {
+
+.footer-inner {
   width: auto;
   max-width: 1156px;
   min-width: 1000px;
