@@ -3,6 +3,9 @@
     <HeaderBanner>
     </HeaderBanner>
     <main class="row-fluid">
+      <div class="content-container">
+
+      </div>
       <!-- <div class="left-content-box">
         <div class="input">
         </div>
@@ -153,6 +156,17 @@ export default {
 };
 </script>
 <style scoped>
+.content-container {
+  width: 1100px;
+  height: 100%;
+  margin: 10px auto;
+  background: #fff;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
+}
 .root {
   /* margin-top: 10px; */
   width: 100%;
@@ -163,6 +177,7 @@ export default {
   display: block;
   height: calc(100% - 150px);
   margin: 0 auto;
+  background: rgb(247, 247, 247);
 }
 .left-content-box {
   padding: 0px;

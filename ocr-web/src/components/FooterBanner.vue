@@ -77,7 +77,8 @@ export default {
 <!--  "scoped" 表示该组件只适合当前组件 -->
 <style scoped>
 footer {
-  margin-top: 1vh;
+  margin-top: 2px;
+  /* margin-top: 1vh; */
   font-size: calc(2px + 1vh);
   display: block;
 }
