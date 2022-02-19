@@ -4,7 +4,11 @@
     </HeaderBanner>
     <main class="row-fluid">
       <div class="content-container">
+        <div class="left-content-box">
 
+        </div>
+        <!-- <div id="dragEle" style="position: absolute; cursor: move;"></div> -->
+        <div class="right-content-box"></div>
       </div>
       <!-- <div class="left-content-box">
         <div class="input">
@@ -160,12 +164,14 @@ export default {
   width: 1100px;
   height: 100%;
   margin: 10px auto;
-  background: #fff;
+  background: rgb(180, 126, 126);
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
   box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
+  /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
 }
 .root {
   /* margin-top: 10px; */
@@ -183,18 +189,24 @@ export default {
   padding: 0px;
   height: 100%;
   position: relative;
+  background: #ffffff;
   z-index: 10;
-  width: 795px;
+  width: 50%;
   float: left;
+  /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
+  border-right-style:solid;
+  border-right-width:2px;
+  border-color: #e8e9e4;
 }
 .right-content-box {
   padding: 0px;
   position: relative;
   height: 100%;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
-  width: 58.33333333%;
+  width: 50%;
   float: left;
+  background: #ffffff;
 }
 #dragEle {
   height: 100%;
@@ -206,6 +218,7 @@ export default {
   z-index: 999;
   top: 0 !important;
   cursor: col-resize !important;
+  background: #c0ccda;
 }
 .deleteImgContainer {
   position: absolute;

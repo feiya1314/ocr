@@ -54,7 +54,7 @@ a {
 }
 .header-inner {
   width: auto;
-  max-width: 1156px;
+  max-width: 1500px;
   min-width: 1000px;
   padding-left: 16px;
   padding-right: 30px;
@@ -63,7 +63,7 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 1000px;
+  width: 1500px;
   height: 52px;
   padding: 0 16px;
   margin: 0 auto;
