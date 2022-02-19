@@ -3,7 +3,7 @@
     <HeaderBanner>
     </HeaderBanner>
     <main class="row-fluid">
-      <div class="left-content-box">
+      <!-- <div class="left-content-box">
         <div class="input">
         </div>
         <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
@@ -28,7 +28,7 @@
         <div class="output">
           {{orcResult}}
         </div>
-      </div>
+      </div> -->
     </main>
     <FooterBanner>
 
@@ -160,19 +160,25 @@ export default {
 }
 .row-fluid {
   position: relative;
-  height: calc(100% - 201px);
+  display: block;
+  height: calc(100% - 150px);
+  margin: 0 auto;
 }
 .left-content-box {
   padding: 0px;
-  float: left;
   height: 100%;
+  position: relative;
+  z-index: 10;
   width: 795px;
+  float: left;
 }
 .right-content-box {
   padding: 0px;
   position: relative;
   height: 100%;
-  width: 1114px;
+  display: flex;
+  flex-direction: column;
+  width: 58.33333333%;
   float: left;
 }
 #dragEle {
