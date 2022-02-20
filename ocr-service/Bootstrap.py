@@ -5,7 +5,7 @@ from paddleocr import PaddleOCR, draw_ocr
 from ocr import OcrCore
 app = Sanic("ocr")
 CORS(app)
-
+# java 可以用Tesseract库
 
 @app.route("/ocr", methods=["POST"])
 async def ocrImage(request):

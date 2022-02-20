@@ -10,12 +10,33 @@
               <button class="upload-btn">上传图片</button>
             </div>
           </div>
+          <div class="input">
+          </div>
+          <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
+            <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
+          </div>
+          <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+            <div class="pasteImgContainer">
+              <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
+            </div>
+            <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
+              <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
+            </div>
+          </div>
+          <div class="preview" v-if="showPreview" @click="zoomOutImg">
+            <div class="previewImgDiv">
+              <img :src="url" class="previewImg" />
+            </div>
+          </div>
         </div>
         <!-- <div id="dragEle" style="position: absolute; cursor: move;"></div> -->
         <div class="right-content-box">
           <div class="top-banner-container">
             识别结果
           </div>
+          <div class="output">
+              {{orcResult}}
+            </div>
         </div>
       </div>
       <!-- <div class="left-content-box">
@@ -94,7 +115,7 @@ export default {
       this.$axios({
         headers: {
           "Content-Type": "multipart/form-data",
-          Origin: "http://127.0.0.1:8000",
+          // Origin: "http://127.0.0.1:8000",
         },
         method: "post",
         url: "http://127.0.0.1:8000/ocr",
