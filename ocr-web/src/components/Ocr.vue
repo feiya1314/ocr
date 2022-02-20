@@ -5,10 +5,18 @@
     <main class="row-fluid">
       <div class="content-container">
         <div class="left-content-box">
-
+          <div class="top-banner-container">
+            <div class="upload-btn-div">
+              <button class="upload-btn">上传图片</button>
+            </div>
+          </div>
         </div>
         <!-- <div id="dragEle" style="position: absolute; cursor: move;"></div> -->
-        <div class="right-content-box"></div>
+        <div class="right-content-box">
+          <div class="top-banner-container">
+            识别结果
+          </div>
+        </div>
       </div>
       <!-- <div class="left-content-box">
         <div class="input">
@@ -160,6 +168,24 @@ export default {
 };
 </script>
 <style scoped>
+.upload-btn-div {
+  width: 100%;
+  height: 100%;
+  padding-top: 7px;
+  padding-left: 10px;
+  display: flex;
+}
+.upload-btn {
+  width: 80px;
+  height: 36px;
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 3px;
+  -webkit-box-shadow: 2px 2px 3px rgb(93 94 94 / 10%);
+  box-shadow: 2px 2px 3px rgb(93 94 94 / 10%);
+}
 .content-container {
   width: 1100px;
   height: 100%;
@@ -172,6 +198,13 @@ export default {
   -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
   box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
   /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
+}
+.top-banner-container {
+  width: 100%;
+  height: 50px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-color: #e8e9e4;
 }
 .root {
   /* margin-top: 10px; */
@@ -194,8 +227,8 @@ export default {
   width: 50%;
   float: left;
   /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
-  border-right-style:solid;
-  border-right-width:2px;
+  border-right-style: solid;
+  border-right-width: 2px;
   border-color: #e8e9e4;
 }
 .right-content-box {
