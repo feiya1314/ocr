@@ -10,22 +10,25 @@
               <button class="upload-btn">上传图片</button>
             </div>
           </div>
-          <div class="input">
-          </div>
-          <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
-            <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
-          </div>
-          <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
-            <div class="pasteImgContainer">
-              <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
+          <div class="input-box">
+
+            <div class="input">
             </div>
-            <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
-              <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
+            <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
+              <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
             </div>
-          </div>
-          <div class="preview" v-if="showPreview" @click="zoomOutImg">
-            <div class="previewImgDiv">
-              <img :src="url" class="previewImg" />
+            <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+              <div class="pasteImgContainer">
+                <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
+              </div>
+              <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
+                <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
+              </div>
+            </div>
+            <div class="preview" v-if="showPreview" @click="zoomOutImg">
+              <div class="previewImgDiv">
+                <img :src="url" class="previewImg" />
+              </div>
             </div>
           </div>
         </div>
@@ -35,8 +38,8 @@
             识别结果
           </div>
           <div class="output">
-              {{orcResult}}
-            </div>
+            {{orcResult}}
+          </div>
         </div>
       </div>
       <!-- <div class="left-content-box">
@@ -209,15 +212,16 @@ export default {
 }
 .content-container {
   width: 1100px;
-  height: 100%;
-  margin: 10px auto;
+  height: 300px;
+  margin: 40px auto 20px auto;
   background: rgb(180, 126, 126);
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
-  box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
+  -webkit-box-shadow: 0 2px 5px rgb(0 0 0 / 35%);
+  box-shadow: 0 2px 5px rgb(0 0 0 / 35%);
+  border-radius: 5px;
   /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
 }
 .top-banner-container {
@@ -248,9 +252,15 @@ export default {
   width: 50%;
   float: left;
   /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
+  border-radius: 5px 0 0 5px;
+}
+.input-box {
+  position: relative;
+  display: block;
   border-right-style: solid;
   border-right-width: 2px;
   border-color: #e8e9e4;
+  height: calc(100% - 52px);
 }
 .right-content-box {
   padding: 0px;
@@ -261,6 +271,7 @@ export default {
   width: 50%;
   float: left;
   background: #ffffff;
+  border-radius: 0 5px 5px 0;
 }
 #dragEle {
   height: 100%;
@@ -301,6 +312,12 @@ export default {
   text-align: center;
   text-align: -webkit-center;
   margin-top: 20px;
+}
+.previewImgDiv {
+  justify-content: center;
+  align-items: center;
+  display: -webkit-flex;
+  height: 100%;
 }
 .deleteBtn {
   width: 25px;
