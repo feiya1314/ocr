@@ -299,15 +299,10 @@ export default {
 .pasteInputDiv {
   box-sizing: border-box;
   margin: auto;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
 }
-.pasteImg {
-  width: 200px;
-  height: 200px;
-  cursor: zoom-in;
-  cursor: -webkit-zoom-in;
-}
+
 .previewImg {
   text-align: center;
   text-align: -webkit-center;
@@ -341,32 +336,38 @@ export default {
   background-color: rgba(18, 18, 18, 0.65);
 }
 .pasteInput {
-  background-color: #fbfdff;
-  border: 1px dashed #c0ccda;
-  border-radius: 6px;
-  height: 200px;
+  border: 0px dashed #ffffff;
+  height: 97%;
   text-align: center;
   line-height: 156px;
   vertical-align: top;
-  width: 200px;
+  width: 98%;
   font-size: 19px;
 }
 .pasteInput:hover {
   cursor: pointer;
   border: 1px dashed #409eff;
 }
+.pasteImgContainer {
+  width: 100%;
+  height: 100%;
+}
 .pasteImgDiv {
   position: relative;
   margin: auto;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
 }
 .pasteImg {
   position: relative;
-  width: 200px;
-  height: 200px;
-  border: 1px solid #c0ccda;
-  border-radius: 5px;
+  width: auto;
+  height: auto;
+  max-width: 99%;
+  max-height: 99%;
+  cursor: zoom-in;
+  cursor: -webkit-zoom-in;
+  /* border: 1px solid #c0ccda;
+  border-radius: 5px; */
 }
 .close-position {
   position: absolute;
