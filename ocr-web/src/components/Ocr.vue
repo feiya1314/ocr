@@ -228,8 +228,8 @@ export default {
   width: 100%;
   height: 50px;
   border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-color: #e8e9e4;
+  border-bottom-width: 1px;
+  border-color: #dddddd;
 }
 .root {
   /* margin-top: 10px; */
@@ -239,7 +239,7 @@ export default {
 .row-fluid {
   position: relative;
   display: block;
-  height: calc(100% - 150px);
+  height: calc(100% - 190px);
   margin: 0 auto;
   background: rgb(247, 247, 247);
 }
@@ -258,8 +258,8 @@ export default {
   position: relative;
   display: block;
   border-right-style: solid;
-  border-right-width: 2px;
-  border-color: #e8e9e4;
+  border-right-width: 1px;
+  border-color: #dddddd;
   height: calc(100% - 52px);
 }
 .right-content-box {
