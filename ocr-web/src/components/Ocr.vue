@@ -11,19 +11,24 @@
             </div>
           </div>
           <div class="input-box">
-
             <div class="input">
             </div>
             <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
               <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
             </div>
             <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+              <div @click="deleteImg">
+                <!-- 向组件 CircleButton 的 btnImgName 参数传值 btnImgPath 是传一个静态的值，就是一个字符串，不会从属性中 delBtnImg 找对应的值
+                 :btnImgPath 或者 v-bind:btnImgPath 是动态赋值-->
+                <CircleButton class="del-preview-btn" :btnImgPath="delBtnImg" />
+                <!-- <CircleButton class="del-preview-btn" :btnImgName="del.svg"/> -->
+              </div>
               <div class="pasteImgContainer">
                 <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
               </div>
-              <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
+              <!-- <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
                 <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
-              </div>
+              </div> -->
             </div>
             <div class="preview" v-if="showPreview" @click="zoomOutImg">
               <div class="previewImgDiv">
@@ -42,32 +47,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="left-content-box">
-        <div class="input">
-        </div>
-        <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
-          <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
-        </div>
-        <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
-          <div class="pasteImgContainer">
-            <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
-          </div>
-          <div v-if="showDelBtn" class="deleteImgContainer" @click="deleteImg">
-            <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
-          </div>
-        </div>
-        <div class="preview" v-if="showPreview" @click="zoomOutImg">
-          <div class="previewImgDiv">
-            <img :src="url" class="previewImg" />
-          </div>
-        </div>
-      </div>
-      <div id="dragEle" style="position: absolute; cursor: move;"></div>
-      <div class="right-content-box">
-        <div class="output">
-          {{orcResult}}
-        </div>
-      </div> -->
     </main>
     <FooterBanner>
 
@@ -77,18 +56,22 @@
 <script>
 import HeaderBanner from "./HeaderBanner.vue";
 import FooterBanner from "./FooterBanner.vue";
+import CircleButton from "./CircleButton.vue";
+
 export default {
   name: "ScreenShot",
   components: {
     //导入组件，这样在当前组件中，使用导入的组件
     HeaderBanner,
     FooterBanner,
+    CircleButton,
   },
   props: {
     // url: {
     //   type: String,
     //   default: "",
     // },
+
     httpRequest: {
       type: Function,
       default: function () {
@@ -98,6 +81,7 @@ export default {
   },
   data() {
     return {
+      delBtnImg: require("@/assets/images/del.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
@@ -209,6 +193,12 @@ export default {
   border-radius: 3px;
   -webkit-box-shadow: 2px 2px 3px rgb(93 94 94 / 10%);
   box-shadow: 2px 2px 3px rgb(93 94 94 / 10%);
+}
+.del-preview-btn {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  right: 0;
 }
 .content-container {
   width: 1100px;

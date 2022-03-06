@@ -4,9 +4,7 @@
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
+      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
     <!-- <h3>Installed CLI Plugins</h3>
     <ul>
@@ -35,7 +33,7 @@
 <script>
 export default {
   name: "HelloWorld",
-  // 定义 组件对象的属性，并指定类型,可以通过props向组件传递数据
+  // 定义 组件对象的属性，并指定类型,可以通过props向组件传递数据 用于从父组件接收数据的数组或对象
   // props: {
   //   // HelloWorld 组件有一个 msg 属性，值类型是String
   //   // 使用该组件时，{{ msg }} 来取该属性的值

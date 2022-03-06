@@ -8,15 +8,15 @@ from PIL import Image
 ocr = PaddleOCR(use_angle_cls=True, lang="ch")
 
 
-def parseImage(imagePath: str) -> str:
+def parseImage(imagePath: str, lang: str = 'ch') -> str:
     parseResult = ocr.ocr(imagePath, cls=True)
     result = []
-    
+    print('language = %s' % (lang))
     for line in parseResult:
         text = line[1][0]
         result.append(text)
         result.append('\n')
-        
+
     return ''.join(result)
 
 
