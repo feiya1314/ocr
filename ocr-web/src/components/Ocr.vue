@@ -13,7 +13,7 @@
               <CircleButton class="upload-img common-btn" :btnImgPath="uploadImg" titleStr="上传图片" />
             </div>
             <div class="translate" @click="startOcr">
-              <CircleButton class="right-arrow common-btn" :btnImgPath="rightArrowImg" titleStr="开始识别" />
+              <CircleButton class="right-arrow common-btn" :btnImgPath="ocrImg" titleStr="开始识别" />
             </div>
           </div>
           <div class="input-box">
@@ -47,7 +47,9 @@
         <div class="right-content-box">
           <div class="top-banner-container">
             <div class="result-title">
-              <span>识别结果</span>
+              <span>
+                <p>识别结果</p>
+              </span>
             </div>
           </div>
           <div class="output">
@@ -92,6 +94,7 @@ export default {
       delBtnImg: require("@/assets/images/del.svg"),
       rightArrowImg: require("@/assets/images/rightArrow.svg"),
       uploadImg: require("@/assets/images/upload.svg"),
+      ocrImg: require("@/assets/images/ocr.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
@@ -192,6 +195,11 @@ export default {
   padding-left: 10px;
   display: flex;
 }
+.result-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+}
 .upload-btn {
   width: 80px;
   height: 36px;
@@ -271,7 +279,7 @@ export default {
   padding: 0px;
   position: relative;
   height: 100%;
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   width: 50%;
   float: left;
