@@ -9,8 +9,11 @@
             <!-- <div class="upload-btn-div">
               <button class="upload-btn">上传图片</button>
             </div> -->
+            <div class="upload" @click="uploadImg">
+              <CircleButton class="upload-img common-btn" :btnImgPath="uploadImg" titleStr="上传图片" />
+            </div>
             <div class="translate" @click="startOcr">
-              <CircleButton class="right-arrow del-preview-btn" :btnImgPath="rightArrowImg" titleStr="开始识别" />
+              <CircleButton class="right-arrow common-btn" :btnImgPath="rightArrowImg" titleStr="开始识别" />
             </div>
           </div>
           <div class="input-box">
@@ -23,7 +26,7 @@
               <div @click="deleteImg">
                 <!-- 向组件 CircleButton 的 btnImgName 参数传值 btnImgPath 是传一个静态的值，就是一个字符串，不会从属性中 delBtnImg 找对应的值
                  :btnImgPath 或者 v-bind:btnImgPath 是动态赋值-->
-                <CircleButton class="del-preview-btn" :btnImgPath="delBtnImg" titleStr="清除图片" />
+                <CircleButton class="common-btn" :btnImgPath="delBtnImg" titleStr="清除图片" />
                 <!-- <CircleButton class="del-preview-btn" :btnImgName="del.svg"/> -->
               </div>
               <div class="pasteImgContainer">
@@ -43,7 +46,9 @@
 
         <div class="right-content-box">
           <div class="top-banner-container">
-            识别结果
+            <div class="result-title">
+              <span>识别结果</span>
+            </div>
           </div>
           <div class="output">
             {{orcResult}}
@@ -86,6 +91,7 @@ export default {
     return {
       delBtnImg: require("@/assets/images/del.svg"),
       rightArrowImg: require("@/assets/images/rightArrow.svg"),
+      uploadImg: require("@/assets/images/upload.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
@@ -116,9 +122,9 @@ export default {
       });
     },
     startOcr() {
-      if(this.file == null || this.url==""){
+      if (this.file == null || this.url == "") {
         alert("请粘贴或者上传图片");
-        return
+        return;
       }
       this.sendImgRequest();
     },
@@ -197,7 +203,7 @@ export default {
   -webkit-box-shadow: 2px 2px 3px rgb(93 94 94 / 10%);
   box-shadow: 2px 2px 3px rgb(93 94 94 / 10%);
 }
-.del-preview-btn {
+.common-btn {
   position: absolute;
   z-index: 100;
   top: 0;
@@ -206,10 +212,13 @@ export default {
 .right-arrow {
   right: -24px;
 }
+.upload-img {
+  left: 5px;
+}
 .content-container {
   width: 1100px;
   height: 300px;
-  margin: 40px auto 20px auto;
+  margin: 80px auto 20px auto;
   background: rgb(180, 126, 126);
   position: relative;
   display: -webkit-box;
@@ -235,7 +244,7 @@ export default {
 .row-fluid {
   position: relative;
   display: block;
-  height: calc(100% - 190px);
+  height: calc(100% - 230px);
   margin: 0 auto;
   background: rgb(247, 247, 247);
 }
