@@ -146,6 +146,7 @@ a {
   text-align: center;
   width: 100%;
   margin: 0 auto;
+  display: none;
 }
 .footer-nav-list .title {
   display: inline-block;
@@ -182,6 +183,7 @@ a {
 }
 .footer-gav-list {
   flex: 1;
+  display: none;
   padding: 20px;
 }
 .footer-gav-link {
