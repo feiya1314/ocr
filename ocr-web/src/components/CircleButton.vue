@@ -7,9 +7,9 @@
       <!-- <svg t="1646568210137" class="circle-btn" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6313">
       <path d="M617.92 516.096l272 272-101.824 101.824-272-272-272 272-101.856-101.824 272-272-275.008-275.04L241.056 139.2l275.04 275.04 275.04-275.04 101.824 101.824-275.04 275.04z" p-id="6314"></path>
     </svg> -->
-      <div class="circle-btn-bg">
+      <div class="circle-btn-bg" :title="titleStr">
         <!--  -->
-        <img class="circle-btn" :srcset="innerbtnImgPath" />
+        <img class="circle-btn" :srcset="innerbtnImgPath"/>
       </div>
     </div>
 
@@ -27,6 +27,7 @@ export default {
     // HelloWorld 组件有一个 msg 属性，值类型是String
     // 使用该组件时，{{ msg }} 来取该属性的值
     btnImgPath: String,
+    titleStr: String,
   },
   data() {
     return {

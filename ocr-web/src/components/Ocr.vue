@@ -6,8 +6,11 @@
       <div class="content-container">
         <div class="left-content-box">
           <div class="top-banner-container">
-            <div class="upload-btn-div">
+            <!-- <div class="upload-btn-div">
               <button class="upload-btn">上传图片</button>
+            </div> -->
+            <div class="translate" @click="startOcr">
+              <CircleButton class="right-arrow del-preview-btn" :btnImgPath="rightArrowImg" titleStr="开始识别" />
             </div>
           </div>
           <div class="input-box">
@@ -16,11 +19,11 @@
             <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
               <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
             </div>
-            <div v-if="show" class="pasteImgDiv" @mouseenter="showDeleteBtn" @mouseleave="hidenDelteBtn">
+            <div v-if="show" class="pasteImgDiv">
               <div @click="deleteImg">
                 <!-- 向组件 CircleButton 的 btnImgName 参数传值 btnImgPath 是传一个静态的值，就是一个字符串，不会从属性中 delBtnImg 找对应的值
                  :btnImgPath 或者 v-bind:btnImgPath 是动态赋值-->
-                <CircleButton class="del-preview-btn" :btnImgPath="delBtnImg" />
+                <CircleButton class="del-preview-btn" :btnImgPath="delBtnImg" titleStr="清除图片" />
                 <!-- <CircleButton class="del-preview-btn" :btnImgName="del.svg"/> -->
               </div>
               <div class="pasteImgContainer">
@@ -37,7 +40,7 @@
             </div>
           </div>
         </div>
-        <!-- <div id="dragEle" style="position: absolute; cursor: move;"></div> -->
+
         <div class="right-content-box">
           <div class="top-banner-container">
             识别结果
@@ -82,13 +85,14 @@ export default {
   data() {
     return {
       delBtnImg: require("@/assets/images/del.svg"),
+      rightArrowImg: require("@/assets/images/rightArrow.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
       url: null,
       srcList: [],
       file: null,
-      orcResult: "解析结果",
+      orcResult: "",
       fileType: 0,
     };
   },
@@ -110,6 +114,13 @@ export default {
       }).then((response) => {
         this.orcResult = response.data;
       });
+    },
+    startOcr() {
+      if(this.file == null || this.url==""){
+        alert("请粘贴或者上传图片");
+        return
+      }
+      this.sendImgRequest();
     },
     handlePaste(event) {
       const items = (event.clipboardData || window.clipboardData).items;
@@ -150,21 +161,13 @@ export default {
       // this.$emit("imgFile", file);
       this.file = file;
       //this.httpRequest(file);
-      this.sendImgRequest();
     },
     deleteImg() {
       this.show = false;
       this.url = "";
+      this.file = null;
       this.showDelBtn = false;
-    },
-    showDeleteBtn() {
-      if (!this.show || this.url == "") {
-        return;
-      }
-      this.showDelBtn = true;
-    },
-    hidenDelteBtn() {
-      this.showDelBtn = false;
+      this.orcResult = "";
     },
     zoomOutImg() {
       this.showPreview = false;
@@ -199,6 +202,9 @@ export default {
   z-index: 100;
   top: 0;
   right: 0;
+}
+.right-arrow {
+  right: -24px;
 }
 .content-container {
   width: 1100px;
