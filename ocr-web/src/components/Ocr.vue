@@ -52,8 +52,13 @@
               </span>
             </div>
           </div>
-          <div class="output">
-            {{orcResult}}
+          <div class="output-box">
+            <div class="output-content">
+              {{orcResult}}
+            </div>
+            <div v-if="showCopyBtn" class="output-content" @click="deleteImg">
+              <CircleButton class="copy-btn common-botton-btn" :btnImgPath="copyImg" titleStr="复制内容" />
+            </div>
           </div>
         </div>
       </div>
@@ -95,9 +100,11 @@ export default {
       rightArrowImg: require("@/assets/images/rightArrow.svg"),
       uploadImg: require("@/assets/images/upload.svg"),
       ocrImg: require("@/assets/images/ocr.svg"),
+      copyImg: require("@/assets/images/copy.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
+      showCopyBtn: false,
       url: null,
       srcList: [],
       file: null,
@@ -122,11 +129,18 @@ export default {
         data: formData,
       }).then((response) => {
         this.orcResult = response.data;
+        if (this.orcResult != null && this.orcResult != "") {
+          this.showCopyBtn = true;
+        }
       });
     },
     startOcr() {
       if (this.file == null || this.url == "") {
         alert("请粘贴或者上传图片");
+        return;
+      }
+      if (this.orcResult != null && this.orcResult != "") {
+        console.log("当前图片已识别");
         return;
       }
       this.sendImgRequest();
@@ -176,6 +190,7 @@ export default {
       this.url = "";
       this.file = null;
       this.showDelBtn = false;
+      this.showCopyBtn = false;
       this.orcResult = "";
     },
     zoomOutImg() {
@@ -216,6 +231,12 @@ export default {
   z-index: 100;
   top: 0;
   right: 0;
+}
+.common-botton-btn {
+  position: absolute;
+  z-index: 100;
+  bottom: 0;
+  right: 10px;
 }
 .right-arrow {
   right: -24px;

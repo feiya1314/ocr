@@ -1,16 +1,18 @@
 import Vue from 'vue';
-import ElementUI from 'element-ui'
+// import ElementUI from 'element-ui'
 import App from './App.vue';
 import axios from 'axios';
 
 // 引入路由
 // import VueRouter from 'vue-router';
 import router from './router';
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
 
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
-Vue.use(ElementUI)
+Vue.use(VueClipboard)
     // 创建Vue对象时，传入的对象是选项对象，具体选项有 data、props、el、render等，参考https://cn.vuejs.org/v2/api/#name 选项部分
 new Vue({
         // Vue实例挂载的元素节点,是Vue实例的作用范围
