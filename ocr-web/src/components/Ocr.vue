@@ -53,10 +53,10 @@
             </div>
           </div>
           <div class="output-box">
-            <div class="output-content">
+            <div id="ocr-result-text" class="output-content">
               {{orcResult}}
             </div>
-            <div v-if="showCopyBtn" class="output-content" @click="deleteImg">
+            <div v-if="showCopyBtn" id="copy-text" class="output-content" v-clipboard:error="copyError" v-clipboard:copy="orcResult" v-clipboard:success="copyResult">
               <CircleButton class="copy-btn common-botton-btn" :btnImgPath="copyImg" titleStr="复制内容" />
             </div>
           </div>
@@ -198,6 +198,14 @@ export default {
     },
     zoomInImg() {
       this.showPreview = true;
+    },
+    copyResult: (e) => {
+      console.log(e.action);
+      alert("复制成功");
+    },
+    copyError: (e) => {
+      console.log(e.action);
+      alert("复制失败");
     },
   },
 };

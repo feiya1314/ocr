@@ -6,7 +6,6 @@ import axios from 'axios';
 // 引入路由
 // import VueRouter from 'vue-router';
 import router from './router';
-import Vue from 'vue'
 import VueClipboard from 'vue-clipboard2'
 
 
