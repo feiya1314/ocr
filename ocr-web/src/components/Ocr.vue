@@ -19,6 +19,10 @@
             <div class="translate" @click="startOcr">
               <CircleButton class="right-arrow common-btn" :btnImgPath="ocrImg" titleStr="开始识别" />
             </div>
+            <div class="ocr-lang-div" style="left:60px"><span class="ocr-lang">识别语言</span></div>
+            <div class="ocr-lang-div" style="left:140px"><span class="ocr-lang">中文</span></div>
+            <div class="ocr-lang-div" style="left:190px"><span class="ocr-lang">英语</span></div>
+            <div class="ocr-lang-div" style="left:240px"><span class="ocr-lang">日语</span></div>
           </div>
           <div class="input-box">
             <div class="input">
@@ -266,6 +270,14 @@ export default {
   padding-left: 10px;
   display: flex;
 }
+.ocr-lang{
+  padding-top: 12px;
+}
+.ocr-lang-div{
+  height: 48px;
+    position: absolute;
+    line-height: 48px;
+}
 .result-title {
   font-size: 16px;
   font-weight: bold;
@@ -298,6 +310,7 @@ export default {
   right: -24px;
 }
 .upload-img {
+  width: 48px;
   left: 5px;
 }
 .content-container {
