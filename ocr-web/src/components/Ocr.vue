@@ -19,8 +19,8 @@
           <div class="input-box">
             <div class="input">
             </div>
-            <div v-show="!show" class="pasteInputDiv" @paste="handlePaste">
-              <input type="text" class="pasteInput" autosize placeholder="请粘贴图片到此处" maxlength="0" />
+            <div v-show="!show" id="pasteInputDivId" class="pasteInputDiv" @paste="handlePaste">
+              <input type="text" class="pasteInput" autosize placeholder="请粘贴或者拖拽图片到此处" maxlength="0" />
             </div>
             <div v-if="show" class="pasteImgDiv">
               <div @click="deleteImg">
@@ -105,6 +105,7 @@ export default {
       showDelBtn: false,
       showPreview: false,
       showCopyBtn: false,
+      fileSizeLimit: 2101440,
       url: null,
       srcList: [],
       file: null,
@@ -145,28 +146,14 @@ export default {
       }
       this.sendImgRequest();
     },
-    handlePaste(event) {
-      const items = (event.clipboardData || window.clipboardData).items;
-      let file = null;
-      if (!items || items.length === 0) {
-        this.$message.error("当前浏览器不支持本地");
-        return;
-      }
-      // 搜索剪切板items
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf("image") !== -1) {
-          file = items[i].getAsFile();
-          break;
-        }
-      }
+    setFile(file) {
       if (!file) {
         this.$message.error("粘贴内容非图片");
         return;
       }
       let fileSize = file.size;
-      let fileSizeLimit = 2101440;
 
-      if (fileSize > fileSizeLimit) {
+      if (fileSize > this.fileSizeLimit) {
         this.$message.error("图片大小超过 2 M");
         return;
       }
@@ -183,7 +170,22 @@ export default {
       };
       // this.$emit("imgFile", file);
       this.file = file;
-      //this.httpRequest(file);
+    },
+    handlePaste(event) {
+      const items = (event.clipboardData || window.clipboardData).items;
+      let file = null;
+      if (!items || items.length === 0) {
+        this.$message.error("当前浏览器不支持本地");
+        return;
+      }
+      // 搜索剪切板items
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+          file = items[i].getAsFile();
+          break;
+        }
+      }
+      this.setFile(file);
     },
     deleteImg() {
       this.show = false;
@@ -207,6 +209,37 @@ export default {
       console.log(e.action);
       alert("复制失败");
     },
+    onDrag: function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      console.log("进入");
+      //this.$refs.dropbox.style = "border:0.25rem dashed #007bff;";
+    },
+    onDragLeave: function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      console.log("离开");
+     // this.$refs.dropbox.style = "border:0.25rem dashed #ddd;";
+    },
+    onDrop: function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      console.log("松手");
+
+      let dt = e.dataTransfer;
+      this.setFile(dt.files[0]);
+      // 多个文件时
+      // for (var i = 0; i !== dt.files.length; i++) {
+      //   this.uploadFile(dt.files[i], url);
+      // }
+    },
+  },
+  mounted: function () {
+    let dropbox = document.getElementById("pasteInputDivId");
+    dropbox.addEventListener("dragenter", this.onDrag, false);
+    dropbox.addEventListener("dragover", this.onDrag, false);
+    dropbox.addEventListener("dragleave", this.onDragLeave, false);
+    dropbox.addEventListener("drop", this.onDrop, false);
   },
 };
 </script>
@@ -253,7 +286,7 @@ export default {
   left: 5px;
 }
 .content-container {
-  width: 1100px;
+  width: 1280px;
   height: 300px;
   margin: 80px auto 20px auto;
   background: rgb(180, 126, 126);
@@ -355,6 +388,7 @@ export default {
   align-items: center;
   display: -webkit-flex;
   height: 100%;
+  overflow-y: auto;
 }
 .deleteBtn {
   width: 25px;
