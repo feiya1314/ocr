@@ -9,8 +9,12 @@
             <!-- <div class="upload-btn-div">
               <button class="upload-btn">上传图片</button>
             </div> -->
-            <div class="upload" @click="uploadImg">
+            <!-- 点击 div 触发 input选择文件，使用div触发，代替input，input隐藏掉，只作为选择文件-->
+            <div class="upload" @click="onPickFile">
               <CircleButton class="upload-img common-btn" :btnImgPath="uploadImg" titleStr="上传图片" />
+              <!-- ref ： 将该 input 注册到 当前 vue 组件的 $ref 对象上，实例名为 fileInput ，其他组件如果使用到的化，可以直接通过 $ref 获取
+              本例中，是使用div的点击事件传递到 input 上，用div模拟input选择文件-->
+              <input type="file" ref="fileInput" accept="image/*" @change="getUploadFile" style="display: none" />
             </div>
             <div class="translate" @click="startOcr">
               <CircleButton class="right-arrow common-btn" :btnImgPath="ocrImg" titleStr="开始识别" />
@@ -171,6 +175,17 @@ export default {
       // this.$emit("imgFile", file);
       this.file = file;
     },
+    // 获取 fileInput 的节点，然后触发click方法
+    onPickFile() {
+      this.$refs.fileInput.click();
+    },
+    // 弹出文件选择框
+    getUploadFile(event) {
+      let files = event.target.files;
+      let filename = files[0].name;
+      console.log("upload file name ", filename);
+      this.setFile(files[0]);
+    },
     handlePaste(event) {
       const items = (event.clipboardData || window.clipboardData).items;
       let file = null;
@@ -219,7 +234,7 @@ export default {
       e.stopPropagation();
       e.preventDefault();
       console.log("离开");
-     // this.$refs.dropbox.style = "border:0.25rem dashed #ddd;";
+      // this.$refs.dropbox.style = "border:0.25rem dashed #ddd;";
     },
     onDrop: function (e) {
       e.stopPropagation();
