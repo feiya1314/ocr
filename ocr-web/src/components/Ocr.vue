@@ -23,6 +23,9 @@
             <div class="ocr-lang-div" style="left:140px"><span class="ocr-lang">中文</span></div>
             <div class="ocr-lang-div" style="left:190px"><span class="ocr-lang">英语</span></div>
             <div class="ocr-lang-div" style="left:240px"><span class="ocr-lang">日语</span></div>
+            <div class="more-lang" @click='moreLang(1212)'>
+              <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="left: 290px;width: 48px;" titleStr="更多语言" />
+            </div>
           </div>
           <div class="input-box">
             <div class="input">
@@ -109,6 +112,8 @@ export default {
       uploadImg: require("@/assets/images/upload.svg"),
       ocrImg: require("@/assets/images/ocr.svg"),
       copyImg: require("@/assets/images/copy.svg"),
+      downArrowImg: require("@/assets/images/downArrow.svg"),
+      upArrowImg: require("@/assets/images/upArrow.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
@@ -153,6 +158,12 @@ export default {
         return;
       }
       this.sendImgRequest();
+    },
+    switchLang(curLang) {
+      console.log(curLang);
+    },
+    moreLang(morelang){
+      console.log("more lange"+morelang)
     },
     setFile(file) {
       if (!file) {
@@ -270,13 +281,13 @@ export default {
   padding-left: 10px;
   display: flex;
 }
-.ocr-lang{
+.ocr-lang {
   padding-top: 12px;
 }
-.ocr-lang-div{
+.ocr-lang-div {
   height: 48px;
-    position: absolute;
-    line-height: 48px;
+  position: absolute;
+  line-height: 48px;
 }
 .result-title {
   font-size: 16px;
