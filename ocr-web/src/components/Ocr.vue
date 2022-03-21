@@ -20,9 +20,9 @@
               <CircleButton class="right-arrow common-btn" :btnImgPath="ocrImg" titleStr="开始识别" />
             </div>
             <div class="ocr-lang-div" style="left:60px"><span class="ocr-lang">识别语言</span></div>
-            <div class="ocr-lang-div" style="left:140px"><span class="ocr-lang">中文</span></div>
-            <div class="ocr-lang-div" style="left:190px"><span class="ocr-lang">英语</span></div>
-            <div class="ocr-lang-div" style="left:240px"><span class="ocr-lang">日语</span></div>
+            <div class="ocr-lang-div" style="left:130px"><span class="ocr-lang">中文</span></div>
+            <div class="ocr-lang-div" style="left:180px"><span class="ocr-lang">英语</span></div>
+            <div class="ocr-lang-div" style="left:230px"><span class="ocr-lang">日语</span></div>
             <div class="more-lang" @click='moreLang(1212)'>
               <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="left: 290px;width: 48px;" titleStr="更多语言" />
             </div>
@@ -162,8 +162,8 @@ export default {
     switchLang(curLang) {
       console.log(curLang);
     },
-    moreLang(morelang){
-      console.log("more lange"+morelang)
+    moreLang(morelang) {
+      console.log("more lange" + morelang);
     },
     setFile(file) {
       if (!file) {
@@ -288,6 +288,7 @@ export default {
   height: 48px;
   position: absolute;
   line-height: 48px;
+  min-width: 50px;
 }
 .result-title {
   font-size: 16px;
@@ -344,6 +345,7 @@ export default {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-color: #dddddd;
+  font-size: 14px;
 }
 .root {
   /* margin-top: 10px; */
