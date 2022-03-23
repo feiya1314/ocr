@@ -19,12 +19,26 @@
             <div class="translate" @click="startOcr">
               <CircleButton class="right-arrow common-btn" :btnImgPath="ocrImg" titleStr="开始识别" />
             </div>
-            <div class="ocr-lang-div" style="left:60px"><span class="ocr-lang">识别语言</span></div>
-            <div class="ocr-lang-div" style="left:130px"><span class="ocr-lang">中文</span></div>
-            <div class="ocr-lang-div" style="left:180px"><span class="ocr-lang">英语</span></div>
-            <div class="ocr-lang-div" style="left:230px"><span class="ocr-lang">日语</span></div>
-            <div class="more-lang" @click='moreLang(1212)'>
-              <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="left: 290px;width: 48px;" titleStr="更多语言" />
+            <div class="ocr-lang-div-desc" style="left:60px"><span class="ocr-lang-desc">识别语言</span></div>
+            <div class="ocr-lang-div-container">
+
+              <div class="ocr-lang-div">
+                <!-- <span class="ocr-lang">中文</span> -->
+                <WordButton class="ocr-lang" wordDisplay="中文" style="min-width: 50px;" />
+              </div>
+              <div class="ocr-lang-div">
+                <!-- <span class="ocr-lang">中文</span> -->
+                <WordButton class="ocr-lang" wordDisplay="英语" style="min-width: 50px;" />
+              </div>
+              <div class="ocr-lang-div">
+                <!-- <span class="ocr-lang">中文</span> -->
+                <WordButton class="ocr-lang" wordDisplay="日语" style="min-width: 50px;" />
+              </div>
+              <!-- <div class="ocr-lang-div"><span class="ocr-lang">英语</span></div>
+              <div class="ocr-lang-div"><span class="ocr-lang">日语</span></div> -->
+              <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
+                <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
+              </div>
             </div>
           </div>
           <div class="input-box">
@@ -83,6 +97,7 @@
 import HeaderBanner from "./HeaderBanner.vue";
 import FooterBanner from "./FooterBanner.vue";
 import CircleButton from "./CircleButton.vue";
+import WordButton from "./WordButton.vue";
 
 export default {
   name: "ScreenShot",
@@ -91,6 +106,7 @@ export default {
     HeaderBanner,
     FooterBanner,
     CircleButton,
+    WordButton,
   },
   props: {
     // url: {
@@ -282,13 +298,31 @@ export default {
   display: flex;
 }
 .ocr-lang {
-  padding-top: 12px;
+  /* padding-top: 12px; */
+  font-size: 14px;
+  top: 0;
+  position: absolute;
 }
-.ocr-lang-div {
+.ocr-lang-div-desc {
   height: 48px;
   position: absolute;
   line-height: 48px;
   min-width: 50px;
+}
+.ocr-lang-div-container {
+  left: 130px;
+  position: absolute;
+  height: 48px;
+}
+.ocr-lang-div {
+  display: inline-block;
+  min-width: 50px;
+  /* height: 100%; */
+  text-align: center;
+  height: 50px;
+}
+.ocr-lang-div:hover {
+  background-color: #f5f5f5;
 }
 .result-title {
   font-size: 16px;
