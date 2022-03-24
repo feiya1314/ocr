@@ -52,7 +52,8 @@ export default {
 <style scoped>
 .circle-btn-container {
   height: 48px;
-  width: 48px;
+  cursor: pointer;
+  /* width: 48px; */
 }
 
 .circle-btn-bg {

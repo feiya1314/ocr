@@ -20,24 +20,25 @@
               <CircleButton class="right-arrow common-btn" :btnImgPath="ocrImg" titleStr="开始识别" />
             </div>
             <div class="ocr-lang-div-desc" style="left:60px"><span class="ocr-lang-desc">识别语言</span></div>
-            <div class="ocr-lang-div-container">
-
-              <div class="ocr-lang-div">
-                <!-- <span class="ocr-lang">中文</span> -->
-                <WordButton class="ocr-lang" wordDisplay="中文" style="min-width: 50px;" />
-              </div>
-              <div class="ocr-lang-div">
-                <!-- <span class="ocr-lang">中文</span> -->
-                <WordButton class="ocr-lang" wordDisplay="英语" style="min-width: 50px;" />
-              </div>
-              <div class="ocr-lang-div">
-                <!-- <span class="ocr-lang">中文</span> -->
-                <WordButton class="ocr-lang" wordDisplay="日语" style="min-width: 50px;" />
-              </div>
-              <!-- <div class="ocr-lang-div"><span class="ocr-lang">英语</span></div>
+            <div class="ocr-lang-div-location">
+              <div class="ocr-lang-div-container">
+                <div class="ocr-lang-div ocr-lang-hover">
+                  <!-- <span class="ocr-lang">中文</span> -->
+                  <WordButton class="ocr-lang" wordDisplay="中文大大飒飒的" style="min-width: 50px;" />
+                </div>
+                <div class="ocr-lang-div ocr-lang-hover">
+                  <!-- <span class="ocr-lang">中文</span> -->
+                  <WordButton class="ocr-lang" wordDisplay="英语" style="min-width: 50px;" />
+                </div>
+                <div class="ocr-lang-div ocr-lang-hover">
+                  <!-- <span class="ocr-lang">中文</span> -->
+                  <WordButton class="ocr-lang" wordDisplay="日语" style="min-width: 50px;" />
+                </div>
+                <!-- <div class="ocr-lang-div"><span class="ocr-lang">英语</span></div>
               <div class="ocr-lang-div"><span class="ocr-lang">日语</span></div> -->
-              <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
-                <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
+                <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
+                  <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
+                </div>
               </div>
             </div>
           </div>
@@ -301,7 +302,6 @@ export default {
   /* padding-top: 12px; */
   font-size: 14px;
   top: 0;
-  position: absolute;
 }
 .ocr-lang-div-desc {
   height: 48px;
@@ -310,6 +310,9 @@ export default {
   min-width: 50px;
 }
 .ocr-lang-div-container {
+  display: inline-flex;
+}
+.ocr-lang-div-location {
   left: 130px;
   position: absolute;
   height: 48px;
@@ -321,7 +324,7 @@ export default {
   text-align: center;
   height: 50px;
 }
-.ocr-lang-div:hover {
+.ocr-lang-hover:hover {
   background-color: #f5f5f5;
 }
 .result-title {
