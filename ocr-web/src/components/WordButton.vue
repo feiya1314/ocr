@@ -28,10 +28,12 @@ export default {
     // HelloWorld 组件有一个 msg 属性，值类型是String
     // 使用该组件时，{{ msg }} 来取该属性的值
     wordDisplay: String,
+    value:String,
   },
   data() {
     return {
       innerWordDisplay: this.wordDisplay, // 把传过来的值赋值给新的变量
+      innerValue: this.value,
     };
   },
   //   watch: {

@@ -23,19 +23,14 @@
             <div class="ocr-lang-div-location">
               <div class="ocr-lang-div-container">
                 <div class="ocr-lang-div ocr-lang-hover">
-                  <!-- <span class="ocr-lang">中文</span> -->
-                  <WordButton class="ocr-lang" wordDisplay="中文大大飒飒的" style="min-width: 50px;" />
+                  <WordButton class="ocr-lang" :wordDisplay="titleLangQueue[0]['display']" style="min-width: 50px;" />
                 </div>
                 <div class="ocr-lang-div ocr-lang-hover">
-                  <!-- <span class="ocr-lang">中文</span> -->
-                  <WordButton class="ocr-lang" wordDisplay="英语" style="min-width: 50px;" />
+                  <WordButton class="ocr-lang" :wordDisplay="titleLangQueue[1]['display']" style="min-width: 50px;" />
                 </div>
                 <div class="ocr-lang-div ocr-lang-hover">
-                  <!-- <span class="ocr-lang">中文</span> -->
-                  <WordButton class="ocr-lang" wordDisplay="日语" style="min-width: 50px;" />
+                  <WordButton class="ocr-lang" :wordDisplay="titleLangQueue[2]['display']" style="min-width: 50px;" />
                 </div>
-                <!-- <div class="ocr-lang-div"><span class="ocr-lang">英语</span></div>
-              <div class="ocr-lang-div"><span class="ocr-lang">日语</span></div> -->
                 <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
                   <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
                 </div>
@@ -136,6 +131,7 @@ export default {
       showPreview: false,
       showCopyBtn: false,
       fileSizeLimit: 2101440,
+      titleLangQueue: [{display:"中文",code:"CN"},{display:"英文",code:"EN"},{display:"日语",code:"JP"}],
       url: null,
       srcList: [],
       file: null,
