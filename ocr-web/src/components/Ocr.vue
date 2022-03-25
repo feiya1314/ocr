@@ -22,14 +22,8 @@
             <div class="ocr-lang-div-desc" style="left:60px"><span class="ocr-lang-desc">识别语言</span></div>
             <div class="ocr-lang-div-location">
               <div class="ocr-lang-div-container">
-                <div class="ocr-lang-div ocr-lang-hover">
-                  <WordButton class="ocr-lang" :wordDisplay="titleLangQueue[0]['display']" style="min-width: 50px;" />
-                </div>
-                <div class="ocr-lang-div ocr-lang-hover">
-                  <WordButton class="ocr-lang" :wordDisplay="titleLangQueue[1]['display']" style="min-width: 50px;" />
-                </div>
-                <div class="ocr-lang-div ocr-lang-hover">
-                  <WordButton class="ocr-lang" :wordDisplay="titleLangQueue[2]['display']" style="min-width: 50px;" />
+                <div class="ocr-lang-div ocr-lang-hover" v-for="(titleLang, langIndex) in titleLangQueue" :key="langIndex" @click="switchLang(langIndex)">
+                  <WordButton :class="{'ocr-lang':titleLang.select}" :wordDisplay="titleLang.display" style="min-width: 50px;" />
                 </div>
                 <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
                   <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
@@ -131,9 +125,15 @@ export default {
       showPreview: false,
       showCopyBtn: false,
       fileSizeLimit: 2101440,
-      titleLangQueue: [{display:"中文",code:"CN"},{display:"英文",code:"EN"},{display:"日语",code:"JP"}],
+      titleLangQueue: [
+        { display: "中文", code: "CN", select: true },
+        { display: "英文", code: "EN", select: false },
+        { display: "日语", code: "JP", select: false },
+      ],
       url: null,
       srcList: [],
+      // 标记当前选中的语言
+      selectLangIndex: 0,
       file: null,
       orcResult: "",
       fileType: 0,
@@ -172,8 +172,11 @@ export default {
       }
       this.sendImgRequest();
     },
-    switchLang(curLang) {
-      console.log(curLang);
+    switchLang(nextLang) {
+      this.titleLangQueue[this.selectLangIndex].select = false;
+      this.titleLangQueue[nextLang].select = true;
+      this.selectLangIndex = nextLang;
+      console.log("curl lang " + this.titleLangQueue[nextLang].code);
     },
     moreLang(morelang) {
       console.log("more lange" + morelang);
@@ -295,9 +298,8 @@ export default {
   display: flex;
 }
 .ocr-lang {
-  /* padding-top: 12px; */
-  font-size: 14px;
-  top: 0;
+  color: #3c70eb;
+  border-bottom: 2px solid #3c70eb;
 }
 .ocr-lang-div-desc {
   height: 48px;
