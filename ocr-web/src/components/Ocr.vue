@@ -25,7 +25,7 @@
                 <div class="ocr-lang-div ocr-lang-hover" v-for="(titleLang, langIndex) in titleLangQueue" :key="langIndex" @click="switchLang(langIndex)">
                   <WordButton :class="{'ocr-lang':titleLang.select}" :wordDisplay="titleLang.display" style="min-width: 50px;" />
                 </div>
-                <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
+                <div class="ocr-lang-div more-lang" @click='moreLang(1212)' style="display:none">
                   <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
                 </div>
               </div>
@@ -145,6 +145,7 @@ export default {
 
       formData.append("fileType", this.fileType);
       formData.append("file", this.file, this.file.name);
+      formData.append("ocrLang", this.titleLangQueue[this.selectLangIndex].code);
 
       this.$axios({
         headers: {

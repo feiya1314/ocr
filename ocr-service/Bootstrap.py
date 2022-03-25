@@ -7,6 +7,7 @@ app = Sanic("ocr")
 CORS(app)
 # java 可以用Tesseract库
 
+
 @app.route("/ocr", methods=["POST"])
 async def ocrImage(request):
     print("receive data")
@@ -14,11 +15,14 @@ async def ocrImage(request):
     formData = request.form
     fileData = request.files.get('file')
     fileName = fileData.name
+    ocrLang = formData.get('ocrLang')
     fileType = fileData.type
 
+    if ocrLang is None:
+        ocrLang = 'ch'
     saveImg(fileData)
 
-    result = OcrCore.parseImage(fileName)
+    result = OcrCore.parseImage(fileName, lang=ocrLang)
     return text(result)
 
 
@@ -27,11 +31,6 @@ def saveImg(file):
     with open(imgPath, 'wb')as f:  # 打开图片，存储
         f.write(file.body)
 
-
-@app.route("/gettest", methods=["GET"])
-async def ocrIndex(request):
-    print("receive data %s :" % (str(request)))
-    return text('Hello World!')
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000)
