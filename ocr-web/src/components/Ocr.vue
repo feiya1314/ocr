@@ -22,10 +22,20 @@
             <div class="ocr-lang-div-desc" style="left:60px"><span class="ocr-lang-desc">识别语言</span></div>
             <div class="ocr-lang-div-location">
               <div class="ocr-lang-div-container">
-                <div class="ocr-lang-div ocr-lang-hover" v-for="(titleLang, langIndex) in titleLangQueue" :key="langIndex" @click="switchLang(langIndex)">
+                <!-- <div class="ocr-lang-div ocr-lang-hover" v-for="(titleLang, langIndex) in titleLangQueue" :key="langIndex" @click="switchLang(langIndex)">
                   <WordButton :class="{'ocr-lang':titleLang.select}" :wordDisplay="titleLang.display" style="min-width: 50px;" />
+                </div> -->
+
+                <div class="ocr-lang-div ocr-lang-hover" @click="switchLang(1)">
+                  <WordButton :class="{'ocr-lang':titleLang1.select}" :wordDisplay="titleLang1.display" style="min-width: 50px;" />
                 </div>
-                <div class="ocr-lang-div more-lang" @click='moreLang(1212)' style="display:none">
+                <div class="ocr-lang-div ocr-lang-hover" @click="switchLang(2)">
+                  <WordButton :class="{'ocr-lang':titleLang2.select}" :wordDisplay="titleLang2.display" style="min-width: 50px;" />
+                </div>
+                <div class="ocr-lang-div ocr-lang-hover" @click="switchLang(3)">
+                  <WordButton :class="{'ocr-lang':titleLang3.select}" :wordDisplay="titleLang3.display" style="min-width: 50px;" />
+                </div>
+                <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
                   <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
                 </div>
               </div>
@@ -54,6 +64,19 @@
             <div class="preview" v-if="showPreview" @click="zoomOutImg">
               <div class="previewImgDiv">
                 <img :src="url" class="previewImg" />
+              </div>
+            </div>
+          </div>
+          <div class="more-lang-div">
+            <div class="more-lang-item-container">
+              <div class="more-lang-item-div" v-for="(titleLang, langIndex) in allTitleLang" :key="langIndex">
+                <!-- <WordButton :class="{'ocr-lang':titleLang.select}" :wordDisplay="titleLang.display" style="min-width: 50px;" /> -->
+                <div class="more-lang-item-box" @click="switchMoreLang(langIndex)">
+                  <div class="more-lang-item-wapper">
+                    <img class="selected-lang-img" srcset="@/assets/images/selected.svg" />
+                    <div class="more-lang-item"> {{titleLang.display}}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -125,15 +148,88 @@ export default {
       showPreview: false,
       showCopyBtn: false,
       fileSizeLimit: 2101440,
-      titleLangQueue: [
-        { display: "中文", code: "CN", select: true },
-        { display: "英文", code: "EN", select: false },
-        { display: "日语", code: "JP", select: false },
+      titleLang1: { display: "中文", code: "cn", select: true },
+      titleLang2: { display: "英文", code: "en", select: false },
+      titleLang3: { display: "日语", code: "japan", select: false },
+      // titleLangQueue: [
+      //   { display: "中文", code: "cn", select: true },
+      //   { display: "英文", code: "en", select: false },
+      //   { display: "日语", code: "japan", select: false },
+      // ],
+      allTitleLang: [
+        { display: "中文", code: "ch", select: false },
+        { display: "英文", code: "en", select: false },
+        { display: "日语", code: "japan", select: false },
+        { display: "法语", code: "fr", select: false },
+        { display: "德语", code: "german", select: false },
+        { display: "韩文", code: "korean", select: false },
+        { display: "中文繁体", code: "chinese_cht", select: false },
+        { display: "意大利文", code: "it", select: false },
+        { display: "西班牙文", code: "es", select: false },
+        { display: "葡萄牙文", code: "pt", select: false },
+        { display: "俄罗斯文", code: "ru", select: false },
+        { display: "阿拉伯文", code: "ar", select: false },
+        { display: "印地文", code: "hi", select: false },
+        { display: "维吾尔", code: "ug", select: false },
+        { display: "波斯文", code: "fa", select: false },
+        { display: "乌尔都文", code: "ur", select: false },
+        { display: "塞尔维亚文（latin)", code: "rs_latin", select: false },
+        { display: "欧西坦文", code: "oc", select: false },
+        { display: "马拉地文", code: "mr", select: false },
+        { display: "尼泊尔文", code: "ne", select: false },
+        {
+          display: "塞尔维亚文（cyrillic)",
+          code: "rs_cyrillic",
+          select: false,
+        },
+        { display: "毛利文", code: "mi", select: false },
+        { display: "马来文", code: "ms", select: false },
+        { display: "马耳他文", code: "mt", select: false },
+        { display: "荷兰文", code: "nl", select: false },
+        { display: "挪威文", code: "no", select: false },
+        { display: "波兰文", code: "pl", select: false },
+        { display: "罗马尼亚文", code: "ro", select: false },
+        { display: "斯洛伐克文", code: "sk", select: false },
+        { display: "斯洛文尼亚文", code: "sl", select: false },
+        { display: "阿尔巴尼亚文", code: "sq", select: false },
+        { display: "瑞典文", code: "sv", select: false },
+        { display: "西瓦希里文", code: "sw", select: false },
+        { display: "塔加洛文", code: "tl", select: false },
+        { display: "土耳其文", code: "tr", select: false },
+        { display: "乌兹别克文", code: "uz", select: false },
+        { display: "越南文", code: "vi", select: false },
+        { display: "蒙古文", code: "mn", select: false },
+        { display: "爱沙尼亚文", code: "et", select: false },
+        { display: "爱尔兰文", code: "ga", select: false },
+        { display: "克罗地亚文", code: "hr", select: false },
+        { display: "匈牙利文", code: "hu", select: false },
+        { display: "印尼文", code: "id", select: false },
+        { display: "冰岛文", code: "is", select: false },
+        { display: "库尔德文", code: "ku", select: false },
+        { display: "立陶宛文", code: "lt", select: false },
+        { display: "拉脱维亚文", code: "lv", select: false },
+        { display: "达尔瓦文", code: "dar", select: false },
+        { display: "因古什文", code: "inh", select: false },
+        { display: "拉克文", code: "lbe", select: false },
+        { display: "莱兹甘文", code: "lez", select: false },
+        { display: "塔巴萨兰文", code: "tab", select: false },
+        { display: "比尔哈文", code: "bh", select: false },
+        { display: "迈蒂利文", code: "mai", select: false },
+        { display: "昂加文", code: "ang", select: false },
+        { display: "博杰普爾文", code: "bho", select: false },
+        { display: "摩揭陀文", code: "mah", select: false },
+        { display: "那格浦尔文", code: "sck", select: false },
+        { display: "尼瓦尔文", code: "new", select: false },
+        { display: "保加利亚文", code: "gom", select: false },
+        { display: "沙特阿拉伯文", code: "sa", select: false },
+        { display: "阿瓦尔文", code: "ava", select: false },
+        { display: "阿瓦尔文", code: "ava", select: false },
+        { display: "阿迪赫文", code: "ady", select: false },
       ],
       url: null,
       srcList: [],
       // 标记当前选中的语言
-      selectLangIndex: 0,
+      curSelectedLang: 1,
       file: null,
       orcResult: "",
       fileType: 0,
@@ -145,7 +241,7 @@ export default {
 
       formData.append("fileType", this.fileType);
       formData.append("file", this.file, this.file.name);
-      formData.append("ocrLang", this.titleLangQueue[this.selectLangIndex].code);
+      formData.append("ocrLang", this.curSelectedLang.code);
 
       this.$axios({
         headers: {
@@ -173,11 +269,74 @@ export default {
       }
       this.sendImgRequest();
     },
+    getCurLangByIndex(index) {
+      if (index == 1) {
+        return this.titleLang1;
+      }
+      if (index == 2) {
+        return this.titleLang2;
+      }
+      if (index == 3) {
+        return this.titleLang3;
+      }
+    },
     switchLang(nextLang) {
-      this.titleLangQueue[this.selectLangIndex].select = false;
-      this.titleLangQueue[nextLang].select = true;
-      this.selectLangIndex = nextLang;
-      console.log("curl lang " + this.titleLangQueue[nextLang].code);
+      if (nextLang == this.curSelectedLang) {
+        return;
+      }
+      let clickLang = this.getCurLangByIndex(nextLang);
+      let curLang = this.getCurLangByIndex(this.curSelectedLang);
+
+      curLang.select = false;
+      clickLang.select = true;
+      this.curSelectedLang = nextLang;
+      console.log("curl lang " + clickLang.code);
+    },
+    switchMoreLang(nextLang) {
+      console.log(nextLang);
+      let selectedLang = this.allTitleLang[nextLang];
+      let curLang = this.getCurLangByIndex(this.curSelectedLang);
+
+      // 如果选择就是当前选中的语言，直接跳过
+      if (selectedLang.code == curLang.code) {
+        return;
+      }
+      // 如果选择的是直接展示的三个语言的一个，则切换到这个语言
+      if (this.titleLang1.code == selectedLang.code) {
+        curLang.select = false;
+        this.titleLang1.select = true;
+        this.curSelectedLang = 1;
+        return;
+      }
+
+      if (this.titleLang2.code == selectedLang.code) {
+        curLang.select = false;
+        this.titleLang2.select = true;
+        this.curSelectedLang = 2;
+        return;
+      }
+
+      if (this.titleLang3.code == selectedLang.code) {
+        curLang.select = false;
+        this.titleLang3.select = true;
+        this.curSelectedLang = 3;
+        return;
+      }
+
+      // 如果选择的不是直接展示的三个语言的一个，则把当前的这个放到首位
+      curLang.select = false;
+      this.titleLangShiftRight(this.titleLang2, this.titleLang3);
+      this.titleLangShiftRight(this.titleLang1, this.titleLang2);
+      this.titleLangShiftRight(selectedLang, this.titleLang1);
+
+      this.titleLang1.select = true;
+
+      this.curSelectedLang = 1;
+    },
+    titleLangShiftRight(ahead, behind) {
+      behind.select = false;
+      behind.code = ahead.code;
+      behind.display = ahead.display;
     },
     moreLang(morelang) {
       console.log("more lange" + morelang);
@@ -311,6 +470,38 @@ export default {
 .ocr-lang-div-container {
   display: inline-flex;
 }
+.more-lang-item-wapper {
+  height: 30px;
+  padding-right: 15px;
+  display: flex;
+}
+.selected-lang-img {
+  width: 15px;
+  line-height: 30px;
+}
+.more-lang-item-box {
+  margin-right: 50px;
+}
+.more-lang-item-box:hover {
+  background-color: #f5f5f5;
+}
+.more-lang-item-container {
+  padding-top: 10px;
+  padding-left: 45px;
+}
+.more-lang-item {
+  height: 30px;
+  padding-left: 10px;
+  line-height: 30px;
+  cursor: pointer;
+}
+.more-lang-item-div {
+  width: 20%;
+  height: 35px;
+  display: inline-block;
+  float: left;
+  text-align: left;
+}
 .ocr-lang-div-location {
   left: 130px;
   position: absolute;
@@ -370,11 +561,23 @@ export default {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-shadow: 0 2px 5px rgb(0 0 0 / 35%);
-  box-shadow: 0 2px 5px rgb(0 0 0 / 35%);
+  -webkit-box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
   border-radius: 5px;
   /* box-shadow: 0 1px 3px rgb(18 18 18 / 10%); */
 }
+.more-lang-div {
+  width: 1280px;
+  min-height: 300px;
+  max-height: 600px;
+  background: white;
+  font-size: 14px;
+  position: absolute;
+  top: calc(100% - 249px);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
+  border-radius: 0 0 5px 5px;
+}
+
 .top-banner-container {
   width: 100%;
   height: 50px;

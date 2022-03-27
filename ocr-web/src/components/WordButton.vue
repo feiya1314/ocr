@@ -25,10 +25,8 @@ export default {
   name: "WordButton",
   // 定义 组件对象的属性，并指定类型,可以通过props向组件传递数据 用于从父组件接收数据的数组或对象
   props: {
-    // HelloWorld 组件有一个 msg 属性，值类型是String
-    // 使用该组件时，{{ msg }} 来取该属性的值
     wordDisplay: String,
-    value:String,
+    value: String,
   },
   data() {
     return {
@@ -36,11 +34,12 @@ export default {
       innerValue: this.value,
     };
   },
-  //   watch: {
-  //     myName(newVal) {
-  //       this.name = newVal; //对父组件传过来的值进行监听，如果改变也对子组件内部的值进行改变
-  //     },
-  //   },
+  watch: {
+    // 监听 wordDisplay 字段，父组件值变动后，会触发该
+    wordDisplay(newVal) {
+      this.innerWordDisplay = newVal; //对父组件传过来的值进行监听，如果改变也对子组件内部的值进行改变
+    },
+  },
   //   methods: {
   //     changeName() {
   //       this.name = "Lily"; // 这里修改的只是自己内部的值，就不会报错了
@@ -60,5 +59,8 @@ export default {
 
 .circle-btn-bg {
   line-height: 48px;
+}
+.circle-btn {
+  padding: 0 10px 0 10px;
 }
 </style>
