@@ -17,26 +17,29 @@ async def ocrImage(request):
     print("receive data")
 
     formData = request.form
-    fileData = request.files.get('file')
-    fileName = fileData.name
+    #fileData = request.files.get('file')
+    #fileName = fileData.name
     ocrLang = formData.get('ocrLang')
     base64Img = formData.get('base64Img')
-    print(base64Img)
+    #print(base64Img)
 
-    fileType = fileData.type
+    #fileType = fileData.type
     base64Img = base64Img.split(',')[1]
     image = base64.b64decode(base64Img)
     image = io.BytesIO(image)
+    # 使用三通道的RGB模式
     image = Image.open(image)
+    if image.mode == 'RGBA':
+        image = image.convert('RGB')
 
     imageArray = np.array(image)
- 
+    print(imageArray.shape)
     if ocrLang is None:
         ocrLang = 'ch'
-    saveImg(fileData)
+    #saveImg(fileData)
 
-    result = OcrCore.parseImageWithPath(fileName, lang=ocrLang)
-    #result = OcrCore.parseImage(imageArray, lang=ocrLang)
+    #result = OcrCore.parseImageWithPath(fileName, lang=ocrLang)
+    result = OcrCore.parseImage(imageArray, lang=ocrLang)
     return text(result)
 
 

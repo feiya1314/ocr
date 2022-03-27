@@ -245,8 +245,8 @@ export default {
     sendImgRequest() {
       var formData = new FormData();
 
-      formData.append("fileType", this.fileType);
-      formData.append("file", this.file, this.file.name);
+      // formData.append("fileType", this.fileType);
+      // formData.append("file", this.file, this.file.name);
       formData.append("base64Img", this.url);
       let curLang = this.getCurLangByIndex(this.curSelectedLang);
       formData.append("ocrLang", curLang.code);

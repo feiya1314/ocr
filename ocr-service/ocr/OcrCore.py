@@ -38,12 +38,18 @@ def parseImage(imageArray: np.ndarray, lang: str = 'ch') -> str:
     parseResult = ocr.ocr(imageArray, cls=True)
     result = []
     print('language = %s' % (lang))
+    
+    print('ocr origin result : %s' % (str(parseResult)))
+    
     for line in parseResult:
         text = line[1][0]
         result.append(text)
         result.append('\n')
 
-    return ''.join(result)
+    resultStr = ''.join(result)
+    print('ocr result : %s' % (resultStr))
+    
+    return resultStr
 
 
 if __name__ == '__main__':
