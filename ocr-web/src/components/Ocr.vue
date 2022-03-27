@@ -71,9 +71,11 @@
             <div class="more-lang-item-container">
               <div class="more-lang-item-div" v-for="(titleLang, langIndex) in allTitleLang" :key="langIndex">
                 <!-- <WordButton :class="{'ocr-lang':titleLang.select}" :wordDisplay="titleLang.display" style="min-width: 50px;" /> -->
-                <div class="more-lang-item-box" @click="switchMoreLang(langIndex)">
+                <div :class="{'more-lang-item-box':titleLang.select, 'more-lang-item-box-hover':true}" style="margin-right: 50px;" @click="switchMoreLang(langIndex)">
                   <div class="more-lang-item-wapper">
-                    <img class="selected-lang-img" srcset="@/assets/images/selected.svg" />
+                    <div style="width: 15px;height: 30px; display: flex;">
+                      <img v-show="titleLang.select" class="selected-lang-img" srcset="@/assets/images/selected.svg" />
+                    </div>
                     <div class="more-lang-item"> {{titleLang.display}}</div>
                   </div>
                 </div>
@@ -236,6 +238,7 @@ export default {
       orcResult: "",
       fileType: 0,
       showMoreLang: false,
+      moreLangItemSelect: null,
     };
   },
   methods: {
@@ -295,11 +298,20 @@ export default {
       this.curSelectedLang = nextLang;
       console.log("curl lang " + clickLang.code);
     },
+    switchMoreLangItem(index) {
+      let selectedLang = this.allTitleLang[index];
+      let curLang = this.allTitleLang[this.moreLangItemSelect];
+      if (curLang != null) {
+        curLang.select = false;
+      }
+      selectedLang.select = true;
+      this.moreLangItemSelect = index;
+    },
     switchMoreLang(nextLang) {
       console.log(nextLang);
       let selectedLang = this.allTitleLang[nextLang];
       let curLang = this.getCurLangByIndex(this.curSelectedLang);
-
+      this.switchMoreLangItem(nextLang);
       // 如果选择就是当前选中的语言，直接跳过
       if (selectedLang.code == curLang.code) {
         return;
@@ -490,8 +502,10 @@ export default {
 }
 .more-lang-item-box {
   margin-right: 50px;
+  color: #3058be;
+  background: #E9F0FE;
 }
-.more-lang-item-box:hover {
+.more-lang-item-box-hover:hover {
   background-color: #f5f5f5;
 }
 .more-lang-item-container {
