@@ -247,7 +247,8 @@ export default {
 
       formData.append("fileType", this.fileType);
       formData.append("file", this.file, this.file.name);
-      formData.append("ocrLang", this.curSelectedLang.code);
+      let curLang = this.getCurLangByIndex(this.curSelectedLang);
+      formData.append("ocrLang", curLang.code);
 
       this.$axios({
         headers: {
@@ -503,7 +504,7 @@ export default {
 .more-lang-item-box {
   margin-right: 50px;
   color: #3058be;
-  background: #E9F0FE;
+  background: #e9f0fe;
 }
 .more-lang-item-box-hover:hover {
   background-color: #f5f5f5;
