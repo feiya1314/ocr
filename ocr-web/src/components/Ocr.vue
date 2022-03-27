@@ -35,8 +35,8 @@
                 <div class="ocr-lang-div ocr-lang-hover" @click="switchLang(3)">
                   <WordButton :class="{'ocr-lang':titleLang3.select}" :wordDisplay="titleLang3.display" style="min-width: 50px;" />
                 </div>
-                <div class="ocr-lang-div more-lang" @click='moreLang(1212)'>
-                  <CircleButton class="common-btn" :btnImgPath="downArrowImg" style="width: 48px;" titleStr="更多语言" />
+                <div class="ocr-lang-div more-lang" @click='moreLang()'>
+                  <CircleButton class="common-btn" :btnImgPath="switchMoreLangImg" style="width: 48px;" titleStr="更多语言" />
                 </div>
               </div>
             </div>
@@ -67,7 +67,7 @@
               </div>
             </div>
           </div>
-          <div class="more-lang-div">
+          <div v-show="showMoreLang" class="more-lang-div">
             <div class="more-lang-item-container">
               <div class="more-lang-item-div" v-for="(titleLang, langIndex) in allTitleLang" :key="langIndex">
                 <!-- <WordButton :class="{'ocr-lang':titleLang.select}" :wordDisplay="titleLang.display" style="min-width: 50px;" /> -->
@@ -143,6 +143,8 @@ export default {
       copyImg: require("@/assets/images/copy.svg"),
       downArrowImg: require("@/assets/images/downArrow.svg"),
       upArrowImg: require("@/assets/images/upArrow.svg"),
+      // switchMoreLangImg: require("@/assets/images/downArrow.svg"),
+      switchMoreLangImg: require("@/assets/images/downArrow.svg"),
       show: false,
       showDelBtn: false,
       showPreview: false,
@@ -233,6 +235,7 @@ export default {
       file: null,
       orcResult: "",
       fileType: 0,
+      showMoreLang: false,
     };
   },
   methods: {
@@ -338,8 +341,14 @@ export default {
       behind.code = ahead.code;
       behind.display = ahead.display;
     },
-    moreLang(morelang) {
-      console.log("more lange" + morelang);
+    moreLang() {
+      if (this.switchMoreLangImg == this.downArrowImg) {
+        this.showMoreLang = true;
+        this.switchMoreLangImg = this.upArrowImg;
+        return;
+      }
+      this.showMoreLang = false;
+      this.switchMoreLangImg = this.downArrowImg;
     },
     setFile(file) {
       if (!file) {

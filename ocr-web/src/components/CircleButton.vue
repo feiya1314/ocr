@@ -9,7 +9,7 @@
     </svg> -->
       <div class="circle-btn-bg" :title="titleStr">
         <!--  -->
-        <img class="circle-btn" :srcset="innerbtnImgPath"/>
+        <img class="circle-btn" :srcset="innerbtnImgPath" />
       </div>
     </div>
 
@@ -34,11 +34,11 @@ export default {
       innerbtnImgPath: this.btnImgPath, // 把传过来的值赋值给新的变量
     };
   },
-  //   watch: {
-  //     myName(newVal) {
-  //       this.name = newVal; //对父组件传过来的值进行监听，如果改变也对子组件内部的值进行改变
-  //     },
-  //   },
+  watch: {
+    btnImgPath(newVal) {
+      this.innerbtnImgPath = newVal; //对父组件传过来的值进行监听，如果改变也对子组件内部的值进行改变
+    },
+  },
   //   methods: {
   //     changeName() {
   //       this.name = "Lily"; // 这里修改的只是自己内部的值，就不会报错了
