@@ -3,6 +3,10 @@ from sanic.response import text, html, json
 from sanic_cors import CORS
 from paddleocr import PaddleOCR, draw_ocr
 from ocr import OcrCore
+from PIL import Image
+import io
+import numpy as np
+import base64
 app = Sanic("ocr")
 CORS(app)
 # java 可以用Tesseract库
@@ -16,13 +20,23 @@ async def ocrImage(request):
     fileData = request.files.get('file')
     fileName = fileData.name
     ocrLang = formData.get('ocrLang')
-    fileType = fileData.type
+    base64Img = formData.get('base64Img')
+    print(base64Img)
 
+    fileType = fileData.type
+    base64Img = base64Img.split(',')[1]
+    image = base64.b64decode(base64Img)
+    image = io.BytesIO(image)
+    image = Image.open(image)
+
+    imageArray = np.array(image)
+ 
     if ocrLang is None:
         ocrLang = 'ch'
     saveImg(fileData)
 
-    result = OcrCore.parseImage(fileName, lang=ocrLang)
+    result = OcrCore.parseImageWithPath(fileName, lang=ocrLang)
+    #result = OcrCore.parseImage(imageArray, lang=ocrLang)
     return text(result)
 
 
