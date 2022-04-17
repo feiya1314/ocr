@@ -27,4 +27,13 @@ module.exports = {
             })
         ]
     } : {},
+    devServer: {
+        // host: "47.110.91.127"
+        proxy: {
+            '/ocr': {
+                // ocr这个请求代理到http://127.0.0.1:8000/ocr
+                target: 'http://127.0.0.1:8000/'
+            }
+        }
+    }
 }

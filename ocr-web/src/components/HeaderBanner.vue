@@ -3,7 +3,7 @@
     <header class="main-header">
       <div class="header-inner">
 
-        <a href="http://localhost:8080">
+        <a href="./">
           <img class="logo-img" srcset="@/assets/images/logo.svg" />
         </a>
       </div>

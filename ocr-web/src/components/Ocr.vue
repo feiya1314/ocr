@@ -257,7 +257,7 @@ export default {
           // Origin: "http://127.0.0.1:8000",
         },
         method: "post",
-        url: "http://127.0.0.1:8000/ocr",
+        url: "./ocr",
         data: formData,
       }).then((response) => {
         this.orcResult = response.data;
