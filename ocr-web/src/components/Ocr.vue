@@ -314,6 +314,7 @@ export default {
       let selectedLang = this.allTitleLang[nextLang];
       let curLang = this.getCurLangByIndex(this.curSelectedLang);
       this.switchMoreLangItem(nextLang);
+      this.moreLang();
       // 如果选择就是当前选中的语言，直接跳过
       if (selectedLang.code == curLang.code) {
         return;
