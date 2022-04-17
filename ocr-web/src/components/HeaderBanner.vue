@@ -4,7 +4,7 @@
       <div class="header-inner">
 
         <a href="./">
-          <img class="logo-img" srcset="@/assets/images/logo.svg" />
+          <img class="logo-img" srcset="@/assets/images/logo.png" />
         </a>
       </div>
     </header>
