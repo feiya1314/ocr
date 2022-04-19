@@ -45,7 +45,7 @@
             <div class="input">
             </div>
             <div v-show="!show" id="pasteInputDivId" class="pasteInputDiv" @paste="handlePaste">
-              <input type="text" class="pasteInput" autosize placeholder="请粘贴或者拖拽图片到此处" maxlength="0" />
+              <input type="text" class="pasteInput" autosize placeholder="请粘贴或者拖拽图片到此处" maxlength="0" readonly="readonly"/>
             </div>
             <div v-if="show" class="pasteImgDiv">
               <div @click="deleteImg">
