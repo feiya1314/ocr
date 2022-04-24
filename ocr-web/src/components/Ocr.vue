@@ -45,7 +45,7 @@
             <div class="input">
             </div>
             <div v-show="!show" id="pasteInputDivId" class="pasteInputDiv" @paste="handlePaste">
-              <input type="text" class="pasteInput" autosize placeholder="请粘贴或者拖拽图片到此处" maxlength="0" readonly="readonly"/>
+              <input type="text" class="pasteInput" autosize placeholder="请粘贴或者拖拽图片到此处" maxlength="0" readonly="readonly" />
             </div>
             <div v-if="show" class="pasteImgDiv">
               <div @click="deleteImg">
@@ -61,12 +61,8 @@
                 <img class="deleteBtn" srcset="@/assets/images/deleteBtn.svg" />
               </div> -->
             </div>
-            <div class="preview" v-if="showPreview" @click="zoomOutImg">
-              <div class="previewImgDiv">
-                <img :src="url" class="previewImg" />
-              </div>
-            </div>
           </div>
+          
           <div v-show="showMoreLang" class="more-lang-div">
             <div class="more-lang-item-container">
               <div class="more-lang-item-div" v-for="(titleLang, langIndex) in allTitleLang" :key="langIndex">
@@ -83,7 +79,11 @@
             </div>
           </div>
         </div>
-
+        <div class="preview" v-if="showPreview" @click="zoomOutImg">
+              <div class="previewImgDiv">
+                <img :src="url" class="previewImg" />
+              </div>
+            </div>
         <div class="right-content-box">
           <div class="top-banner-container">
             <div class="result-title">
@@ -577,6 +577,11 @@ export default {
 .upload-img {
   width: 48px;
   left: 5px;
+}
+.output-content {
+  white-space: pre-line;
+  display: inline-block;
+  text-align: left;
 }
 .content-container {
   width: 1280px;

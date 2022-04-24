@@ -13,6 +13,12 @@ pip3 install --upgrade pip
 ImportError: libGL.so.1: cannot open shared object file: No such file or directory
 yum install mesa-libGL
 
+ImportError: libSM.so.6: cannot open shared object file: No such file or directory
+
+yum install libSM.so.6
+
+yum update -y && yum install -y libXext libSM libXrender
+
 #yum install epel-release
 #
 #rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
@@ -24,3 +30,36 @@ yum install mesa-libGL
 
 证书：
 https://zhuanlan.zhihu.com/p/21286171
+
+
+#hub安装
+    在Linux环境下，安装示例如下：（按需要安装，一般安装system）
+    # 安装检测服务模块：  
+    hub install deploy/hubserving/ocr_det/
+
+    # 或，安装分类服务模块：  
+    hub install deploy/hubserving/ocr_cls/
+
+    # 或，安装识别服务模块：  
+    hub install deploy/hubserving/ocr_rec/
+
+    # 或，安装检测+识别串联服务模块：  
+    hub install deploy/hubserving/ocr_system/
+
+
+如果需要修改服务逻辑，你一般需要操作以下步骤（以修改ocr_system为例）：
+
+1、 停止服务
+hub serving stop --port/-p XXXX
+
+2、 到相应的module.py和params.py等文件中根据实际需求修改代码。
+例如，如果需要替换部署服务所用模型，则需要到params.py中修改模型路径参数det_model_dir和rec_model_dir，如果需要关闭文本方向分类器，则将参数use_angle_cls置为False，当然，同时可能还需要修改其他相关参数，请根据实际情况修改调试。 强烈建议修改后先直接运行module.py调试，能正确运行预测后再启动服务测试。
+
+3、 卸载旧服务包
+hub uninstall ocr_system
+
+4、 安装修改后的新服务包
+hub install deploy/hubserving/ocr_system/
+
+5、重新启动服务
+hub serving start -m ocr_system

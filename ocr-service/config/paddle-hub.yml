@@ -1,0 +1,2 @@
+ocrServerModel: chinese_ocr_db_crnn_server
+ocrMobileModel: chinese_ocr_db_crnn_mobile

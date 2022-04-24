@@ -1,0 +1,14 @@
+# vi /etc/systemd/system/ocr.service
+[Unit]
+Description=Description for sample script goes here
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/ocr/ocr_service_start.sh
+TimeoutStartSec=0
+User=ocr
+Group=ocr
+
+[Install]
+WantedBy=default.target
