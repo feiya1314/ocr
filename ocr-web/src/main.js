@@ -1,5 +1,6 @@
 import Vue from 'vue';
-// import ElementUI from 'element-ui'
+
+import { Message } from 'element-ui';
 import App from './App.vue';
 import axios from 'axios';
 
@@ -11,8 +12,11 @@ import VueClipboard from 'vue-clipboard2'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
+Vue.prototype.$message = Message // 这里如果使用 Vue.use(Message)，加载的时候会自动弹出一个提示框 或者使用Vue.component(Message.name,Message) 也可以
+
 Vue.use(VueClipboard)
-    // 创建Vue对象时，传入的对象是选项对象，具体选项有 data、props、el、render等，参考https://cn.vuejs.org/v2/api/#name 选项部分
+
+// 创建Vue对象时，传入的对象是选项对象，具体选项有 data、props、el、render等，参考https://cn.vuejs.org/v2/api/#name 选项部分
 new Vue({
         // Vue实例挂载的元素节点,是Vue实例的作用范围
         // el:'#app',

@@ -268,7 +268,11 @@ export default {
     },
     startOcr() {
       if (this.file == null || this.url == "") {
-        alert("请粘贴或者上传图片");
+        var options = {
+          message:"请粘贴或者上传图片"
+        }
+        this.$message.warning(options);
+        //alert("请粘贴或者上传图片");
         return;
       }
       if (this.orcResult != null && this.orcResult != "") {
