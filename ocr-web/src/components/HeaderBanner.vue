@@ -2,8 +2,7 @@
   <div class="main-header-box">
     <header class="main-header">
       <div class="header-inner">
-
-        <a href="./">
+        <a :href="homeUrl">
           <img class="logo-img" srcset="@/assets/images/logo.png" />
         </a>
       </div>
@@ -22,7 +21,7 @@ export default {
   // },
   data() {
     return {
-      msg: "这里是Hello页面",
+      homeUrl: this.$envConf.homeUrl,
     };
   },
 };

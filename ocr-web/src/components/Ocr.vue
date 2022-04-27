@@ -254,10 +254,9 @@ export default {
       this.$axios({
         headers: {
           "Content-Type": "multipart/form-data",
-          // Origin: "http://127.0.0.1:8000",
         },
         method: "post",
-        url: "./ocr",
+        url: this.$envConf.ocrUrl,
         data: formData,
       }).then((response) => {
         this.orcResult = response.data;
@@ -267,6 +266,7 @@ export default {
       });
     },
     startOcr() {
+      console.log("base url : " +  this.$envConf.ocrUrl)
       if (this.file == null || this.url == "") {
         var options = {
           message:"请粘贴或者上传图片"
@@ -277,6 +277,7 @@ export default {
       }
       if (this.orcResult != null && this.orcResult != "") {
         console.log("当前图片已识别");
+        this.$message.warning({message:"当前图片已识别"});
         return;
       }
       this.sendImgRequest();
@@ -438,6 +439,7 @@ export default {
     copyResult: (e) => {
       console.log(e.action);
       alert("复制成功");
+      this.$message.error("已复制到粘贴板");
     },
     copyError: (e) => {
       console.log(e.action);

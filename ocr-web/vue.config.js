@@ -3,6 +3,7 @@
 const CompressionPlugin = require('compression-webpack-plugin');
 
 console.log("cur node env : " + process.env.NODE_ENV)
+console.log("base url : " + process.env.VUE_APP_OCR_BASE_URL)
 
 module.exports = {
     // 选项...
@@ -28,7 +29,6 @@ module.exports = {
         ]
     } : {},
     devServer: {
-        // host: "47.110.91.127"
         proxy: {
             '/ocr': {
                 // ocr这个请求代理到http://127.0.0.1:8000/ocr

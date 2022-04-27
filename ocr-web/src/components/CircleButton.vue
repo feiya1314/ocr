@@ -29,6 +29,7 @@ export default {
     btnImgPath: String,
     titleStr: String,
   },
+  // data是每个组件的内存, 可以定义各种变量，在组件内使用，这是存储数据和希望跟踪的任何其他变量的地方
   data() {
     return {
       innerbtnImgPath: this.btnImgPath, // 把传过来的值赋值给新的变量

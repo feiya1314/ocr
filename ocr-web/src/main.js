@@ -8,13 +8,16 @@ import axios from 'axios';
 // import VueRouter from 'vue-router';
 import router from './router';
 import VueClipboard from 'vue-clipboard2'
-
+import envConf from './config/config'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
 Vue.prototype.$message = Message // 这里如果使用 Vue.use(Message)，加载的时候会自动弹出一个提示框 或者使用Vue.component(Message.name,Message) 也可以
+Vue.prototype.$envConf = envConf
 
 Vue.use(VueClipboard)
+
+console.log("base url : " + process.env.OCR_BASE_URL)
 
 // 创建Vue对象时，传入的对象是选项对象，具体选项有 data、props、el、render等，参考https://cn.vuejs.org/v2/api/#name 选项部分
 new Vue({
