@@ -62,7 +62,7 @@
               </div> -->
             </div>
           </div>
-          
+
           <div v-show="showMoreLang" class="more-lang-div">
             <div class="more-lang-item-container">
               <div class="more-lang-item-div" v-for="(titleLang, langIndex) in allTitleLang" :key="langIndex">
@@ -80,10 +80,10 @@
           </div>
         </div>
         <div class="preview" v-if="showPreview" @click="zoomOutImg">
-              <div class="previewImgDiv">
-                <img :src="url" class="previewImg" />
-              </div>
-            </div>
+          <div class="previewImgDiv">
+            <img :src="url" class="previewImg" />
+          </div>
+        </div>
         <div class="right-content-box">
           <div class="top-banner-container">
             <div class="result-title">
@@ -151,6 +151,7 @@ export default {
       showDelBtn: false,
       showPreview: false,
       showCopyBtn: false,
+      innerMsg: this.$message,
       fileSizeLimit: 2101440,
       titleLang1: { display: "中文", code: "ch", select: true },
       titleLang2: { display: "英文", code: "en", select: false },
@@ -266,18 +267,17 @@ export default {
       });
     },
     startOcr() {
-      console.log("base url : " +  this.$envConf.ocrUrl)
       if (this.file == null || this.url == "") {
         var options = {
-          message:"请粘贴或者上传图片"
-        }
+          message: "请粘贴或者上传图片",
+        };
         this.$message.warning(options);
         //alert("请粘贴或者上传图片");
         return;
       }
       if (this.orcResult != null && this.orcResult != "") {
         console.log("当前图片已识别");
-        this.$message.warning({message:"当前图片已识别"});
+        this.$message.warning({ message: "当前图片已识别" });
         return;
       }
       this.sendImgRequest();
@@ -436,14 +436,14 @@ export default {
     zoomInImg() {
       this.showPreview = true;
     },
-    copyResult: (e) => {
+    copyResult(e) {
       console.log(e.action);
-      alert("复制成功");
-      this.$message.error("已复制到粘贴板");
+      //this.$message.success("已复制到粘贴板");
+      this.$message.success("已复制到粘贴板");
     },
-    copyError: (e) => {
+    copyError(e) {
       console.log(e.action);
-      alert("复制失败");
+      this.$message.error("复制失败");
     },
     onDrag: function (e) {
       e.stopPropagation();
