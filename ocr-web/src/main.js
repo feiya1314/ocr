@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import { Message } from 'element-ui';
+import { Message, Tooltip } from 'element-ui';
 import App from './App.vue';
 import axios from 'axios';
 
@@ -14,6 +14,7 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios //全局注册，使用方法为:this.$axios
 Vue.prototype.$message = Message // 这里如果使用 Vue.use(Message)，加载的时候会自动弹出一个提示框 或者使用Vue.component(Message.name,Message) 也可以
 Vue.prototype.$envConf = envConf
+Vue.component(Tooltip.name, Tooltip)
 
 Vue.use(VueClipboard)
 

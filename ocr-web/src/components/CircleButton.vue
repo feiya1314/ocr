@@ -7,10 +7,12 @@
       <!-- <svg t="1646568210137" class="circle-btn" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6313">
       <path d="M617.92 516.096l272 272-101.824 101.824-272-272-272 272-101.856-101.824 272-272-275.008-275.04L241.056 139.2l275.04 275.04 275.04-275.04 101.824 101.824-275.04 275.04z" p-id="6314"></path>
     </svg> -->
-      <div class="circle-btn-bg" :title="titleStr">
-        <!--  -->
-        <img class="circle-btn" :srcset="innerbtnImgPath" />
-      </div>
+      <el-tooltip effect="light" :content="titleStr" placement="top-start" :enterable='false' :hide-after='1000'>
+        <div class="circle-btn-bg">
+          <!--  -->
+          <img class="circle-btn" :srcset="innerbtnImgPath" />
+        </div>
+      </el-tooltip>
     </div>
 
     <!-- 下面两个都能取到值 -->
