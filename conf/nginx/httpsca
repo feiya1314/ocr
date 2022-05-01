@@ -1,0 +1,26 @@
+Your cert is in: /home/ocr/.acme.sh/easyocr.cn/easyocr.cn.cer
+[Sun May  1 23:21:04 CST 2022] Your cert key is in: /home/ocr/.acme.sh/easyocr.cn/easyocr.cn.key
+[Sun May  1 23:21:04 CST 2022] The intermediate CA cert is in: /home/ocr/.acme.sh/easyocr.cn/ca.cer
+[Sun May  1 23:21:04 CST 2022] And the full chain certs is there: /home/ocr/.acme.sh/easyocr.cn/fullchain.cer
+
+
+
+1、
+curl  https://get.acme.sh | sh -s email=yufei556@126.com
+
+systemctl stop firewalld.service
+
+2、
+
+acme.sh  --issue  --set-default-ca --server letsencrypt
+acme.sh  --issue  -d easyocr.cn -d www.easyocr.cn  --webroot  /home/ocr/ocr-web/ --debug
+
+或者
+acme.sh --issue  -d easyocr.cn   --nginx
+
+/home/ocr/nginx/ssl
+3、
+acme.sh --install-cert -d easyocr.cn   --key-file    /home/ocr/nginx/ssl/easyocr.cn.key  --fullchain-file  /home/ocr/nginx/ssl/fullchain.cer  --reloadcmd     "service nginx force-reload"
+
+4、
+acme.sh  --upgrade  --auto-upgrade
