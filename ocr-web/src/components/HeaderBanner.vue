@@ -3,7 +3,7 @@
     <header class="main-header">
       <div class="header-inner">
         <a :href="homeUrl">
-          <img class="logo-img" srcset="@/assets/images/easy-ocr-icon.png" />
+          <img class="logo-img" srcset="@/assets/images/logo-min.png" />
         </a>
       </div>
     </header>
@@ -51,6 +51,7 @@ a {
   max-width: 100px;
   max-height: 40px;
   padding-top: 4px;
+  image-rendering: -webkit-optimize-contrast;
 }
 .header-inner {
   width: auto;
