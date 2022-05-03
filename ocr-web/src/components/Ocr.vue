@@ -591,7 +591,7 @@ export default {
 }
 .content-container {
   width: 1280px;
-  height: 300px;
+  height: 500px;
   margin: 80px auto 20px auto;
   background: rgb(180, 126, 126);
   position: relative;
@@ -605,12 +605,12 @@ export default {
 }
 .more-lang-div {
   width: 1280px;
-  min-height: 300px;
+  min-height: 600px;
   max-height: 600px;
   background: white;
   font-size: 14px;
   position: absolute;
-  top: calc(100% - 249px);
+  top: calc(100% - 449px);
   box-shadow: 0 2px 3px rgb(0 0 0 / 10%);
   border-radius: 0 0 5px 5px;
 }
