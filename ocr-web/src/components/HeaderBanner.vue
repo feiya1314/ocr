@@ -3,7 +3,7 @@
     <header class="main-header">
       <div class="header-inner">
         <a :href="homeUrl">
-          <img class="logo-img" srcset="@/assets/images/logo.png" />
+          <img class="logo-img" srcset="@/assets/images/easy-ocr-icon.png" />
         </a>
       </div>
     </header>
@@ -49,6 +49,7 @@ a {
 }
 .logo-img {
   max-width: 100px;
+  max-height: 40px;
   padding-top: 4px;
 }
 .header-inner {
