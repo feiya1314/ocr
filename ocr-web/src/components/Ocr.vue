@@ -587,6 +587,8 @@ export default {
 .output-content {
   white-space: pre-line;
   display: inline-block;
+  margin-top: 5px;
+  margin-left: 10px;
   text-align: left;
 }
 .content-container {
@@ -649,6 +651,7 @@ export default {
 .input-box {
   position: relative;
   display: block;
+  margin-top: 5px;
   border-right-style: solid;
   border-right-width: 1px;
   border-color: #dddddd;

@@ -3,7 +3,7 @@
     <header class="main-header">
       <div class="header-inner">
         <a :href="homeUrl">
-          <img class="logo-img" srcset="@/assets/images/logo-min.png" />
+          <img class="logo-img" srcset="@/assets/images/logo.png" />
         </a>
       </div>
     </header>
