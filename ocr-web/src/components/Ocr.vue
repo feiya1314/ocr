@@ -651,7 +651,6 @@ export default {
 .input-box {
   position: relative;
   display: block;
-  margin-top: 5px;
   border-right-style: solid;
   border-right-width: 1px;
   border-color: #dddddd;
@@ -751,6 +750,7 @@ export default {
 .pasteImgDiv {
   position: relative;
   margin: auto;
+  padding-top: 5px;
   width: 100%;
   height: 100%;
 }
