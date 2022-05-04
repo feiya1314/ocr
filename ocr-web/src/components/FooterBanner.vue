@@ -12,42 +12,20 @@
 
           <div class="title">友情链接：</div>
           <dd>
-            <a href="http://www.json.cn" target="_blank">JSON在线解析</a>
-          </dd>
-          <dd>
-            <a href="http://www.json.cn/runcode/run_c740/" target="_blank">编译工具</a>
-          </dd>
-          <dd>
-            <a href="http://www.json.cn/jiaocheng/python3/" target="_blank">新手教程</a>
-          </dd>
-          <dd>
-            <a href="http://www.json.cn/blog/" target="_blank">博客</a>
-          </dd>
-          <dd>
-            <a href="http://www.json.cn/ceping/vpsceping/" target="_blank">主机评测</a>
-          </dd>
-          <dd>
-            <a href="https://www.meishuzi.cn" target="_blank">在线ps 美术字</a>
-          </dd>
-          <dd>
-            <a href="https://www.wenku365.com/" target="_blank">天天文库</a>
-          </dd>
-          <dd>
-            <a href="https://www.275.com/" target="_blank">学霸说保险</a>
-          </dd>
-          <dd>
-            <a href="https://www.ip138.com/" target="_blank">ip查询</a>
+            <a href="https://www.easyocr.cn" target="_blank">在线图片文字识别</a>
           </dd>
         </div>
         <div class="footer-gav-list">
           <div class="footer-gav-link">
-            <a href="http://www.json.cn/privacy.html">隐私保护</a>
-            <a href="http://www.json.cn/right.html">权利保护</a>
-            <a href="http://www.json.cn/contact.html" class="footer-gg-b-email">联系我们</a>
-            <a href="http://www.json.cn/feedback.html" class="footer-gg-b-feedback">问题反馈</a>
+            <a href="">隐私保护</a>
+            <a href="">权利保护</a>
+            <a href="" class="footer-gg-b-email">联系我们</a>
+            <a href="" class="footer-gg-b-feedback">问题反馈</a>
           </div>
           <p class="footer-gg-b-copy">
-            <a href="https://beian.miit.gov.cn" target="_blank">闽ICP备16038489号-5</a> &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35020302034699" rel="nofollow noreferrer" target="_blank">闽公网安备 35020302034699号</a> &nbsp;&nbsp;&nbsp;&nbsp;©2014 - 2021 JSON.CN ALL RIGHT RESERVED
+            <a href="https://beian.miit.gov.cn" target="_blank">豫ICP备2022010979号-1</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35020302034699" rel="nofollow noreferrer" target="_blank">闽公网安备 35020302034699号</a>  -->
+            &nbsp;&nbsp;&nbsp;&nbsp;©2021 - 2022 EASYOCR.CN ALL RIGHT RESERVED
           </p>
         </div>
       </div>
@@ -146,7 +124,6 @@ a {
   text-align: center;
   width: 100%;
   margin: 0 auto;
-  display: none;
 }
 .footer-nav-list .title {
   display: inline-block;
@@ -183,7 +160,6 @@ a {
 }
 .footer-gav-list {
   flex: 1;
-  display: none;
   padding: 20px;
 }
 .footer-gav-link {
@@ -205,7 +181,6 @@ a {
 }
 .footer-gg-b-copy a {
   display: inline-block;
-  text-decoration: none;
   color: #0fd59d;
   cursor: pointer;
   font-family: "微软雅黑", monospace, Tahoma;
