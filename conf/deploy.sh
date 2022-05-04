@@ -26,4 +26,9 @@ rm dist.zip
 
 cd /home/ocr
 chown -R ocr:ocr /home/ocr/ocr-web
+
+echo "reboot nginx"
+systemctl stop nginx
+systemctl start nginx
+
 echo "finish"
