@@ -24,7 +24,12 @@
           </div>
           <p class="footer-gg-b-copy">
             <a href="https://beian.miit.gov.cn" target="_blank">豫ICP备2022010979号-1</a> &nbsp;&nbsp;&nbsp;&nbsp;
-            <!-- <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35020302034699" rel="nofollow noreferrer" target="_blank">闽公网安备 35020302034699号</a>  -->
+
+            <img src="@/assets/images/beian.png" style="width:18px;height:18px;vertical-align: middle;" />
+            <a target="_blank" rel="nofollow noreferrer" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402005563">
+              <p>粤公网安备 44030402005563号</p>
+            </a>
+
             &nbsp;&nbsp;&nbsp;&nbsp;©2021 - 2022 EASYOCR.CN ALL RIGHT RESERVED
           </p>
         </div>
