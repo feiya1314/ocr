@@ -1,5 +1,7 @@
 package cn.easy.ocr.main.service.dto;
 
+import cn.easy.ocr.main.service.request.OcrRequest;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 public class OcrContext {
+    private OcrRequest request;
 }

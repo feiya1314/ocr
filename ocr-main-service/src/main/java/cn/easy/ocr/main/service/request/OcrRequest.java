@@ -12,5 +12,5 @@ import lombok.Setter;
 @Setter
 public class OcrRequest {
     private String base64Img;
-    private String lang;
+    private String ocrLang;
 }

@@ -27,10 +27,11 @@ public class OcrServiceController {
     @PostMapping("/ocr")
     public BaseResult<OcrResultVo> ocr(@RequestBody OcrRequest request) {
         BaseResult<OcrResultVo> response = new BaseResult<>();
-        ocrDelegte.invokeOcr(request);
-
+        OcrResultVo vo = ocrDelegte.invokeOcr(request);
+        response.setData(vo);
         response.setCode(ResultCodeEnum.SUCCESS.getCode());
         response.setMsg("success");
+
         return response;
     }
 }

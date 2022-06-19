@@ -11,6 +11,7 @@
 
     <properties>
         <lombok.version>1.18.24</lombok.version>
+        <httpClient.version>4.5.12</httpClient.version>
     </properties>
 
     <modules>
@@ -37,6 +38,11 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpClient.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
