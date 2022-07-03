@@ -7,6 +7,7 @@ import cn.easy.ocr.main.service.service.IOcr;
 import cn.easy.ocr.main.service.utils.HttpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * @date : 2022/6/15
  * @description :
  */
+@Qualifier("PaddleOcrImpl")
 @Component
 public class PaddleOcrImpl implements IOcr {
     @Value("${ocr.paddle.source.url:https://www.easyocr.cn/ocr}")
