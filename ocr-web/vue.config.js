@@ -3,7 +3,7 @@
 const CompressionPlugin = require('compression-webpack-plugin');
 
 console.log("cur node env : " + process.env.NODE_ENV)
-console.log("base url : " + process.env.VUE_APP_OCR_BASE_URL)
+console.log("base url : " + process.env.VUE_APP_OCR_SERVICE_API)
 
 module.exports = {
     // 选项...

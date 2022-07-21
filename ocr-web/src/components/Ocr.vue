@@ -252,13 +252,19 @@ export default {
       let curLang = this.getCurLangByIndex(this.curSelectedLang);
       formData.append("ocrLang", curLang.code);
 
+      var body = {};
+      body.base64Img = this.url;
+      body.ocrLang = curLang.code;
+
       this.$axios({
         headers: {
-          "Content-Type": "multipart/form-data",
+          // "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          "Accept": "*/*",
         },
         method: "post",
         url: this.$envConf.ocrUrl,
-        data: formData,
+        data: body,
       }).then((response) => {
         this.orcResult = response.data;
         if (this.orcResult != null && this.orcResult != "") {
