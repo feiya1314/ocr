@@ -237,6 +237,8 @@ export default {
       curSelectedLang: 1,
       file: null,
       orcResult: "",
+      // 当前ocr识别结果对应的语言
+      ocrResultLang: -1,
       fileType: 0,
       showMoreLang: false,
       moreLangItemSelect: null,
@@ -269,6 +271,7 @@ export default {
         this.orcResult = response.data;
         if (this.orcResult != null && this.orcResult != "") {
           this.showCopyBtn = true;
+          this.ocrResultLang = this.curSelectedLang;
         }
       });
     },
@@ -281,7 +284,7 @@ export default {
         //alert("请粘贴或者上传图片");
         return;
       }
-      if (this.orcResult != null && this.orcResult != "") {
+      if (this.orcResult != null && this.orcResult != "" && this.ocrResultLang == this.curSelectedLang) {
         console.log("当前图片已识别");
         this.$message.warning({ message: "当前图片已识别" });
         return;
