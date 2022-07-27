@@ -1,10 +1,9 @@
 <template>
-  <div id="appcss">
-    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-    <!-- 使用HelloWorld组件，并对组件msg属性添加值 -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-    <router-view></router-view>
-  </div>
+
+  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
+  <!-- 使用HelloWorld组件，并对组件msg属性添加值 -->
+  <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
+  <router-view></router-view>
 </template>
 
 <script>
@@ -30,7 +29,7 @@ body {
   height: 100%;
   background: rgb(247, 247, 247);
 }
-#appcss {
+#app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

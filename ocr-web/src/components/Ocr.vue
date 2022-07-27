@@ -262,13 +262,13 @@ export default {
         headers: {
           // "Content-Type": "multipart/form-data",
           "Content-Type": "application/json",
-          "Accept": "*/*",
+          Accept: "*/*",
         },
         method: "post",
         url: this.$envConf.ocrUrl,
         data: body,
       }).then((response) => {
-        this.orcResult = response.data;
+        this.orcResult = response.data.data.text;
         if (this.orcResult != null && this.orcResult != "") {
           this.showCopyBtn = true;
           this.ocrResultLang = this.curSelectedLang;
@@ -284,7 +284,11 @@ export default {
         //alert("请粘贴或者上传图片");
         return;
       }
-      if (this.orcResult != null && this.orcResult != "" && this.ocrResultLang == this.curSelectedLang) {
+      if (
+        this.orcResult != null &&
+        this.orcResult != "" &&
+        this.ocrResultLang == this.curSelectedLang
+      ) {
         console.log("当前图片已识别");
         this.$message.warning({ message: "当前图片已识别" });
         return;
@@ -399,7 +403,7 @@ export default {
         let fileResult = event.target.result;
         this.url = fileResult;
         this.srcList.push(fileResult);
-        this.$emit("imgBase64", event.target.result);
+        this.$emit("imgbase64", event.target.result);
       };
       // this.$emit("imgFile", file);
       this.file = file;
@@ -447,7 +451,6 @@ export default {
     },
     copyResult(e) {
       console.log(e.action);
-      //this.$message.success("已复制到粘贴板");
       this.$message.success("已复制到粘贴板");
     },
     copyError(e) {

@@ -27,9 +27,8 @@
 
             <img src="@/assets/images/beian.png" style="width:18px;height:18px;vertical-align: middle;" />
             <a target="_blank" rel="nofollow noreferrer" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402005563">
-              <p>粤公网安备 44030402005563号</p>
+              粤公网安备 44030402005563号 
             </a>
-
             &nbsp;&nbsp;&nbsp;&nbsp;©2021 - 2022 EASYOCR.CN ALL RIGHT RESERVED
           </p>
         </div>
@@ -180,7 +179,7 @@ a {
 .footer-gg-b-copy {
   font-size: 12px;
   color: #999999;
-  margin: 0;
+  margin: 15px;
   padding: 0;
   text-align: center;
 }
