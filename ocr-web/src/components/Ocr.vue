@@ -42,11 +42,13 @@
             </div>
           </div>
           <div class="input-box">
-            <div class="input">
+            <div class="input" id="imgDivFocus" tabindex="-1" style="outline: none;">
             </div>
             <div v-show="!show" id="pasteInputDivId" class="pasteInputDiv" @paste="handlePaste">
               <input type="text" class="pasteInput" autosize placeholder="请粘贴或者拖拽图片到此处" maxlength="0" readonly="readonly" />
             </div>
+            <!-- style="outline: none;" -->
+            <!-- <div v-if="show" ref="imgDivFocus" class="pasteImgDiv" tabindex="-1" @keyup.enter="startOcr"> -->
             <div v-if="show" class="pasteImgDiv">
               <div @click="deleteImg">
                 <!-- 向组件 CircleButton 的 btnImgName 参数传值 btnImgPath 是传一个静态的值，就是一个字符串，不会从属性中 delBtnImg 找对应的值
@@ -54,6 +56,7 @@
                 <CircleButton class="common-btn" :btnImgPath="delBtnImg" titleStr="清除图片" />
                 <!-- <CircleButton class="del-preview-btn" :btnImgName="del.svg"/> -->
               </div>
+              <!--   contenteditable="true" @keyup.enter="startOcr" -->
               <div class="pasteImgContainer">
                 <img class="pasteImg" v-bind:src="url" @click="zoomInImg" />
               </div>
@@ -113,6 +116,7 @@ import HeaderBanner from "./HeaderBanner.vue";
 import FooterBanner from "./FooterBanner.vue";
 import CircleButton from "./CircleButton.vue";
 import WordButton from "./WordButton.vue";
+// import { ref } from "vue";
 
 export default {
   name: "ScreenShot",
@@ -237,6 +241,7 @@ export default {
       curSelectedLang: 1,
       file: null,
       orcResult: "",
+      imgDivFocusV: null,
       // 当前ocr识别结果对应的语言
       ocrResultLang: -1,
       fileType: 0,
@@ -244,6 +249,17 @@ export default {
       moreLangItemSelect: null,
     };
   },
+  //添加监听回车按键
+  created() {
+    //var _this = this;
+    //document.addEventListener("keydown", _this.watchEnter);
+  },
+  destroyed() {
+    //移除监听回车按键
+    //var _this = this;
+    //document.removeEventListener("keydown", _this.watchEnter);
+  },
+
   methods: {
     sendImgRequest() {
       var formData = new FormData();
@@ -275,6 +291,17 @@ export default {
         }
       });
     },
+    //监听回车按钮事件
+    watchEnter(e) {
+      var keyNum = window.event ? e.keyCode : e.which; //获取被按下的键值
+      console.log("watchEnter");
+      //判断如果用户按下了回车键（keycody=13）
+      if (keyNum == 13) {
+        this.startOcr();
+        console.log("keydown ");
+        this.imgDivFocusV.removeEventListener("keydown", this.watchEnter);
+      }
+    },
     startOcr() {
       if (this.file == null || this.url == "") {
         var options = {
@@ -282,6 +309,7 @@ export default {
         };
         this.$message.warning(options);
         //alert("请粘贴或者上传图片");
+        //document.removeEventListener("keydown", this.watchEnter);
         return;
       }
       if (
@@ -291,9 +319,11 @@ export default {
       ) {
         console.log("当前图片已识别");
         this.$message.warning({ message: "当前图片已识别" });
+        //document.removeEventListener("keydown", this.watchEnter);
         return;
       }
       this.sendImgRequest();
+      //document.removeEventListener("keydown", this.watchEnter);
     },
     getCurLangByIndex(index) {
       if (index == 1) {
@@ -434,6 +464,15 @@ export default {
         }
       }
       this.setFile(file);
+      // const cc=ref(null);
+      //const imgDivFocus = ref(null);
+      //console.log(imgDivFocus.value);
+      //DOM 更新了
+      // imgDivFocus.value.focus();
+
+      //var focusDiv = document.getElementById("imgDivFocus");
+      this.imgDivFocusV.addEventListener("keydown", this.watchEnter);
+      this.imgDivFocusV.focus();
     },
     deleteImg() {
       this.show = false;
@@ -488,6 +527,10 @@ export default {
     dropbox.addEventListener("dragover", this.onDrag, false);
     dropbox.addEventListener("dragleave", this.onDragLeave, false);
     dropbox.addEventListener("drop", this.onDrop, false);
+
+    let foc = document.getElementById("imgDivFocus");
+    console.log(foc);
+    this.imgDivFocusV = foc;
   },
 };
 </script>
