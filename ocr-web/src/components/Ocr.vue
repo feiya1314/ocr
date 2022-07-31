@@ -42,6 +42,7 @@
             </div>
           </div>
           <div class="input-box">
+            <!-- tabindex 表示div表格属性，outline 选中后不显示黑边 -->
             <div class="input" id="imgDivFocus" tabindex="-1" style="outline: none;">
             </div>
             <div v-show="!show" id="pasteInputDivId" class="pasteInputDiv" @paste="handlePaste">
