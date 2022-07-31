@@ -530,7 +530,7 @@ export default {
     dropbox.addEventListener("drop", this.onDrop, false);
 
     let foc = document.getElementById("imgDivFocus");
-    console.log(foc);
+    // console.log(foc);
     this.imgDivFocusV = foc;
   },
 };

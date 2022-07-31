@@ -5,32 +5,34 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css';
 import App from './App.vue';
 import axios from 'axios';
-import { createRouter, createWebHashHistory } from 'vue-router'
+// import { createRouter, createWebHistory } from 'vue-router'
 
-import Ocr from './components/Ocr.vue'
+// import Ocr from './components/Ocr.vue'
+// import JsonPretty from './components/JsonPretty.vue'
 
 // 引入路由
 // import VueRouter from 'vue-router';
-// import router from './router';
+import router from './router';
 import envConf from './config/config'
 // import { apply } from 'core-js/fn/reflect';
 
 import { VueClipboard } from '@soerenmartius/vue3-clipboard'
 
-const routes = [
-    { path: '/', component: Ocr },
-    { path: '/ocr', component: Ocr },
-]
+// const routes = [
+//     { path: '/', component: Ocr },
+//     { path: '/ocr', component: Ocr },
+//     { path: '/json', component: JsonPretty },
+// ]
 
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
 // keep it simple for now.
-const router = createRouter({
-    // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-    history: createWebHashHistory(),
-    routes, // short for `routes: routes`
-})
+// const router = createRouter({
+//     // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
+//     history: createWebHistory(),
+//     routes, // short for `routes: routes`
+// })
 
 // vue3 初始化方式
 const app = createApp(App);
