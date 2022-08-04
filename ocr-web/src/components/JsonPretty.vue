@@ -153,7 +153,7 @@ export default {
   overflow: hidden;
 }
 .pretty-json-container {
-  height: calc(100% - 155px);
+  /* height: calc(100% - 155px); */
   padding: 16px;
   box-sizing: border-box;
   overflow: hidden;
@@ -177,6 +177,8 @@ export default {
 #resize-left {
   width: calc(50% - 2px);
   background-color: indianred;
+  overflow: hidden auto;
+  word-break: normal;
 }
 #resize-bar {
   width: 4px;
@@ -191,5 +193,7 @@ export default {
   width: calc(50% - 2px);
   /* height: 100vh; */
   background-color: green;
+  overflow: hidden auto;
+  word-break: normal;
 }
 </style>
