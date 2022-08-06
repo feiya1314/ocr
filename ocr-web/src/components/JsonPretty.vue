@@ -5,7 +5,11 @@
       <div class="main-content-container">
         <div class="main-content">
           <div id="resize-container">
-            <div id="resize-left">{{formatJsonText}}</div>
+            <div id="resize-left">
+              <div id="origin-json-container" class="origin-json-container-class">
+                <textarea id="origin-json-text" placeholder="请输入json数据..." />
+              </div>
+            </div>
             <div id="resize-bar"></div>
             <div id="resize-right">
               <div class="pretty-json-container">
@@ -71,6 +75,7 @@ export default {
           },
         ],
       },
+      originJson: null,
     };
   },
   methods: {
@@ -81,6 +86,7 @@ export default {
       var container = document.getElementById("resize-container");
       var mouseDown = false;
       var borderLimit = 150;
+      //var resizeBarWidth = 10;
       var windowWidth = window.outerWidth;
       var bodyWidth = document.body.clientWidth;
       console.log("windowWidth:" + windowWidth);
@@ -107,9 +113,9 @@ export default {
           // 设置左边区域的宽度
           left.style.width = leftWidth + "px";
           // 设备分栏竖条的left位置
-          resize.style.left = leftWidth;
+          resize.style.left = leftWidth + "px";
           // 设置右边区域的宽度
-          right.style.width = container.clientWidth - leftWidth - 4 + "px";
+          right.style.width = container.clientWidth - leftWidth + "px";
         };
         document.onmouseup = function (e) {
           console.log("document mouse move up ");
@@ -166,34 +172,85 @@ export default {
   margin: 0 auto;
   background: rgb(247, 247, 247);
 }
+/* ------------ 左栏 ----------------- */
+#origin-json-container {
+  height: 100%;
+  width: 100%;
+}
+/* #origin-json-container:focus-within {
+  -webkit-transition: border linear 0.2s, -webkit-box-shadow linear 0.5s;
+  border-color: rgba(141, 39, 142, 0.75);
+  -webkit-box-shadow: 0 0 18px rgba(111, 1, 32, 3);
+} */
+#resize-left:focus-within {
+  /* box-shadow: 2px 2px 5px #000;
+  border-color: #246b9b; */
+  /* -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+  border: 1px solid #eee; */
+  /* -webkit-transition: border linear 0.2s, -webkit-box-shadow linear 0.5s;
+  -webkit-box-shadow: 10px 10px 10px 18px rgba(111, 1, 32, 3);
+  box-shadow: 10px 10px 10px 5px #888888;
+  transition: border linear 0.2s, -webkit-box-shadow linear 0.5s; */
+  box-shadow: inset -3px -3px 9px 5px #62bfb8, 0 0 10px 2px #62bfb8;
+  border: 1px solid #62bfb8;
+  -webkit-box-shadow: inset -3px -3px 9px 5px #62bfb8, 0 0 10px 2px #62bfb8;
+  /* box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+  border: 1px solid #eee; */
+}
 
+#origin-json-text {
+  height: 100%;
+  width: 100%;
+  border: 0px solid #eee;
+  outline: none;
+  resize: none;
+  display: block;
+  box-sizing: border-box;
+  padding: 10px 10px 10px 30px;
+}
+/* ------------ 左栏 ----------------- */
+
+/* ------------ 分栏页配置 -------------*/
 #resize-container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
+  position: relative;
 }
 #resize-left {
-  width: calc(50% - 2px);
-  background-color: indianred;
+  width: calc(50%);
+  background-color: rgb(255, 255, 255);
   overflow: hidden auto;
   word-break: normal;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(219, 215, 215);
+  z-index: 111;
 }
 #resize-bar {
-  width: 4px;
+  width: 10px;
   height: 100%;
-  cursor: ew-resize;
+  left: 50%;
+  position: absolute;
+  z-index: 100;
 }
 #resize-bar:hover {
-  background-color: blue;
+  background: transparent;
   cursor: ew-resize !important;
 }
 #resize-right {
-  width: calc(50% - 2px);
+  width: calc(50%);
   /* height: 100vh; */
-  background-color: green;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(219, 215, 215);
+  background-color: rgb(255, 255, 255);
   overflow: hidden auto;
   word-break: normal;
+  position: relative;
 }
+/* ------------ 分栏页配置 -------------*/
 </style>
