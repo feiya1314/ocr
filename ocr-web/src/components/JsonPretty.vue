@@ -7,17 +7,31 @@
           <div id="resize-container">
             <div id="resize-left">
               <div id="origin-json-container" class="origin-json-container-class">
-                <textarea id="origin-json-text" placeholder="请输入json数据..." />
+                <textarea id="origin-json-text" v-model="originJsonData" placeholder="请输入json数据..." />
               </div>
             </div>
             <div id="resize-bar"></div>
             <div id="resize-right">
+              <div id="pretty-json-options-container" @mouseenter='changeRightOptionState("visible")' @mouseleave='changeRightOptionState("hidden")'>
+                <div id="pretty-json-options">
+                  <div id="copy-text" class="output-content" v-clipboard:error="copyError" v-clipboard:copy="prettyJsonStr" v-clipboard:success="copyResult">
+                    <CircleButton class="common-btn" :btnImgPath="copyImg" titleStr="复制" />
+                  </div>
+
+                  <div id="compressImg-text" class="output-content" v-clipboard:error="copyError" v-clipboard:copy="compressJsonStr" v-clipboard:success="copyResult">
+                    <CircleButton class="common-btn" :btnImgPath="compressImg" titleStr="压缩后复制" />
+                  </div>
+
+                </div>
+              </div>
               <div class="pretty-json-container">
-                <vue-json-pretty :path="'res'" :data='formatJsonText' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
+                <vue-json-pretty v-if="!parseError && formatJsonData!=null " :path="'res'" :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
+                <div v-if="parseError" style="text-align: left;">
+                  <span style="color: #f1592a;font-weight:bold;">{{parseErrorMsg}}</span>
+                </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </main>
@@ -32,14 +46,15 @@ import "vue-json-pretty/lib/styles.css";
 
 import HeaderBanner from "./HeaderBanner.vue";
 import FooterBanner from "./FooterBanner.vue";
-// import CircleButton from "./CircleButton.vue";
+import CircleButton from "./CircleButton.vue";
+// import { jsonlint } from '@/utils/jsonlint'
 
 export default {
   components: {
     VueJsonPretty,
     HeaderBanner,
     FooterBanner,
-    // CircleButton,
+    CircleButton,
   },
   props: {},
   data() {
@@ -48,34 +63,17 @@ export default {
         showLine: true,
         showLength: true,
       },
-      formatJsonText: {
-        status: 200,
-        error: "",
-        data: [
-          {
-            news_id: 51184,
-            title:
-              "iPhone X Review: Innovative future with real black technology",
-            source: "Netease phone",
-          },
-          {
-            news_id: 51183,
-            title:
-              "Traffic paradise: How to design streets for people and unmanned vehicles in the future?",
-            source: "Netease smart",
-            link: "http://netease.smart/traffic-paradise/1235",
-            author: { names: ["Daniel", "Mike", "John"] },
-          },
-          {
-            news_id: 51182,
-            title:
-              "Teslamask's American Business Relations: The government does not pay billions to build factories",
-            source: "AI Finance",
-            members: ["Daniel", "Mike", "John"],
-          },
-        ],
-      },
-      originJson: null,
+      delBtnImg: require("@/assets/images/del.svg"),
+      compressImg: require("@/assets/images/compress.svg"),
+      copyImg: require("@/assets/images/copy.svg"),
+      // jsonlintIns:require("jsonlint"),
+      formatJsonData: null,
+      originJsonData: null,
+      parseError: false,
+      parseErrorMsg: null,
+      rightOptionShow: "visible",
+      prettyJsonStr: null,
+      compressJsonStr: null,
     };
   },
   methods: {
@@ -134,9 +132,65 @@ export default {
         resize.releaseCapture && resize.releaseCapture();
       };
     },
+    inputJson: function (e) {
+      console.log(e);
+    },
+    changeRightOptionState: function (state) {
+      this.rightOptionShow = state;
+    },
+    handleClick: function (e) {
+      console.log(e);
+    },
+    copyResult(e) {
+      console.log(e.action);
+      this.$message.success("已复制到粘贴板");
+    },
+    copyError(e) {
+      console.log(e.action);
+      this.$message.error("复制失败");
+    },
+    // replaceBlank(jsonStr) {
+    //   //去掉空格
+    //   let str = jsonStr.replace(/\ +/g, "");
+    //   //去掉回车换行
+    //   str = str.replace(/[\r\n]/g, "");
+
+    //   return str;
+    // },
   },
   mounted: function () {
     this.dragAndMove();
+  },
+  watch: {
+    // 监听 originJsonData 属性的变化，此方法名要和属性名一致
+    originJsonData(newVal) {
+      var jsonData = null;
+      // console.log(newVal);
+      if (newVal == null || newVal == "") {
+        this.parseError = true;
+        this.formatJsonData = jsonData;
+        this.parseErrorMsg = "";
+        return;
+      }
+
+      try {
+        // jsonlint.parse(newVal);
+        jsonData = JSON.parse(newVal);
+        // todo 当对象中有NaN、Infinity和-Infinity这三种值的时候 --- 会变成null
+        this.prettyJsonStr = JSON.stringify(jsonData, null, 2);
+        this.compressJsonStr = JSON.stringify(jsonData);
+        console.log(this.prettyJsonStr);
+        console.log(this.compressJsonStr);
+        //this.originJsonData = this.prettyJsonStr;
+      } catch (e) {
+        console.log(e);
+        this.parseError = true;
+        this.parseErrorMsg = e.message;
+        return;
+      }
+      this.parseError = false;
+      this.formatJsonData = jsonData;
+    },
   },
 };
 </script>
@@ -172,6 +226,29 @@ export default {
   margin: 0 auto;
   background: rgb(247, 247, 247);
 }
+.common-btn {
+  width: 40px;
+  height: 40px;
+}
+
+/* -------------- 右栏选项栏 ---------- */
+#pretty-json-options-container {
+  border-bottom-color: rgb(231, 231, 231);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+#pretty-json-options {
+  display: flex;
+  height: 40px;
+}
+
+#copy-text {
+  width: 40px;
+  height: 40px;
+}
+/*-------------- 右栏选项栏 ---------- */
+
 /* ------------ 左栏 ----------------- */
 #origin-json-container {
   height: 100%;
@@ -227,7 +304,7 @@ export default {
   word-break: normal;
   border-style: solid;
   border-width: 1px;
-  border-color: rgb(219, 215, 215);
+  border-color: rgb(231, 231, 231);
   z-index: 111;
 }
 #resize-bar {
@@ -246,7 +323,7 @@ export default {
   /* height: 100vh; */
   border-style: solid;
   border-width: 1px;
-  border-color: rgb(219, 215, 215);
+  border-color: rgb(231, 231, 231);
   background-color: rgb(255, 255, 255);
   overflow: hidden auto;
   word-break: normal;
