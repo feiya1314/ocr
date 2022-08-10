@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="circle-btn-container">
+    <!-- <div class="circle-btn-container" @click.native="switchState"> -->
+    <div class="circle-btn-container" @mousedown.native="clickingState = true" @mouseup.native="clickingState = false">
       <!-- <button class="circle-btn">
 
     </button> -->
@@ -8,7 +9,7 @@
       <path d="M617.92 516.096l272 272-101.824 101.824-272-272-272 272-101.856-101.824 272-272-275.008-275.04L241.056 139.2l275.04 275.04 275.04-275.04 101.824 101.824-275.04 275.04z" p-id="6314"></path>
     </svg> -->
       <el-tooltip effect="light" :content="titleStr" placement="top-start" :enterable='false' :hide-after='20'>
-        <div class="circle-btn-bg">
+        <div class="circle-btn-bg" :style="[innerBtnSelected || clickingState ? 'background-color: #D8D8D8' : '']">
           <!--  -->
           <img class="circle-btn" :srcset="innerbtnImgPath" />
         </div>
@@ -30,16 +31,30 @@ export default {
     // 使用该组件时，{{ msg }} 来取该属性的值
     btnImgPath: String,
     titleStr: String,
+    //supportSelected: Boolean,
+    selected: { type: Boolean, required: false, default: false },
   },
   // data是每个组件的内存, 可以定义各种变量，在组件内使用，这是存储数据和希望跟踪的任何其他变量的地方
   data() {
     return {
       innerbtnImgPath: this.btnImgPath, // 把传过来的值赋值给新的变量
+      // 是否支持点击
+      // supportClick: this.supportSelected,
+      innerBtnSelected: this.selected,
+      clickingState: false,
     };
+  },
+  methods: {
+    // clicking() {
+    //   this.clickingState = true;
+    // },
   },
   watch: {
     btnImgPath(newVal) {
       this.innerbtnImgPath = newVal; //对父组件传过来的值进行监听，如果改变也对子组件内部的值进行改变
+    },
+    selected(newVal) {
+      this.innerBtnSelected = newVal;
     },
   },
   //   methods: {

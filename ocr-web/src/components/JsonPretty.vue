@@ -21,7 +21,7 @@
                   <div id="compressImg-text" class="output-content" v-clipboard:error="copyError" v-clipboard:copy="compressJsonStr" v-clipboard:success="copyResult">
                     <CircleButton class="common-btn" :btnImgPath="compressImg" titleStr="压缩后复制" />
                   </div>
-
+                  <CircleButton class="common-btn" :btnImgPath="treeLine" titleStr="显示缩进对齐线" :selected="lineBtnSelected" @click="switchShowLine" />
                 </div>
               </div>
               <div class="pretty-json-container">
@@ -66,6 +66,7 @@ export default {
       delBtnImg: require("@/assets/images/del.svg"),
       compressImg: require("@/assets/images/compress.svg"),
       copyImg: require("@/assets/images/copy.svg"),
+      treeLine: require("@/assets/images/treeLine.svg"),
       // jsonlintIns:require("jsonlint"),
       formatJsonData: null,
       originJsonData: null,
@@ -74,6 +75,7 @@ export default {
       rightOptionShow: "visible",
       prettyJsonStr: null,
       compressJsonStr: null,
+      lineBtnSelected: true,
     };
   },
   methods: {
@@ -149,6 +151,15 @@ export default {
       console.log(e.action);
       this.$message.error("复制失败");
     },
+    switchShowLine() {
+      if (this.formatJsonConfig.showLine == true) {
+        this.formatJsonConfig.showLine = false;
+        this.lineBtnSelected = false;
+        return;
+      }
+      this.formatJsonConfig.showLine = true;
+      this.lineBtnSelected = true;
+    },
     // replaceBlank(jsonStr) {
     //   //去掉空格
     //   let str = jsonStr.replace(/\ +/g, "");
@@ -179,8 +190,8 @@ export default {
         // todo 当对象中有NaN、Infinity和-Infinity这三种值的时候 --- 会变成null
         this.prettyJsonStr = JSON.stringify(jsonData, null, 2);
         this.compressJsonStr = JSON.stringify(jsonData);
-        console.log(this.prettyJsonStr);
-        console.log(this.compressJsonStr);
+       // console.log(this.prettyJsonStr);
+       // console.log(this.compressJsonStr);
         //this.originJsonData = this.prettyJsonStr;
       } catch (e) {
         console.log(e);
