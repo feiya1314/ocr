@@ -1,5 +1,10 @@
 #! /bin/sh
 
+###################### 说明 ########################
+# 将打包好的前端文件，文件名dist.zip，放到/ home/ocr目录
+# 执行该脚本
+###################################################
+
 if [ ! -d "/home/ocr/ocr-web" ]; then
   echo "web dir not exist"
   mkdir /home/ocr/ocr-web
