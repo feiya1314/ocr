@@ -117,6 +117,7 @@ import HeaderBanner from "./HeaderBanner.vue";
 import FooterBanner from "./FooterBanner.vue";
 import CircleButton from "./CircleButton.vue";
 import WordButton from "./WordButton.vue";
+import { ElLoading } from "element-plus";
 // import { ref } from "vue";
 
 export default {
@@ -275,6 +276,39 @@ export default {
       body.base64Img = this.url;
       body.ocrLang = curLang.code;
 
+      var loadingOpt = {
+        fullscreen: true,
+        text: "图片识别中...",
+      };
+      var loading = ElLoading.service(loadingOpt);
+      // http request 请求发送之前 拦截器
+      this.$axios.interceptors.request.use(
+        (config) => {
+          loading = ElLoading.service(loadingOpt);
+          return config;
+        },
+        (err) => {
+          return Promise.reject(err);
+        }
+      );
+
+      // http response 请求发送之后 拦截器
+      this.$axios.interceptors.response.use(
+        (response) => {
+          //拦截响应，做统一处理
+          console.log("response code " + response.data.code);
+          if (response.data.code) {
+            // 根据不同code分条处理
+            //console.log(re);
+          }
+          loading.close();
+          return response;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+
       this.$axios({
         headers: {
           // "Content-Type": "multipart/form-data",
@@ -284,13 +318,20 @@ export default {
         method: "post",
         url: this.$envConf.ocrUrl,
         data: body,
-      }).then((response) => {
-        this.orcResult = response.data.data.text;
-        if (this.orcResult != null && this.orcResult != "") {
-          this.showCopyBtn = true;
-          this.ocrResultLang = this.curSelectedLang;
-        }
-      });
+        timeout: 10000,
+      })
+        .then((response) => {
+          this.orcResult = response.data.data.text;
+          if (this.orcResult != null && this.orcResult != "") {
+            this.showCopyBtn = true;
+            this.ocrResultLang = this.curSelectedLang;
+          }
+          loading.close();
+        })
+        .catch(function (error) {
+          console.log(error);
+          loading.close();
+        });
     },
     //监听回车按钮事件
     watchEnter(e) {

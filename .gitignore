@@ -25,4 +25,5 @@ package-lock.json
 *.png
 *.iml
 *.class
+*/target
 /venv/
