@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Ocr from './components/Ocr.vue';
-import JsonPretty from './components/JsonPretty.vue';
+// import JsonPretty from './components/JsonPretty.vue';
+import betaRoutes from './config/betaRoute';
 
 // // const HellowWord = () =>
 // //     import ( /* webpackChunkName: "group-foo" */ './components/HelloWorld.vue');
@@ -14,9 +15,10 @@ import JsonPretty from './components/JsonPretty.vue';
 const routes = [
     { path: '/', component: Ocr },
     { path: '/ocr', component: Ocr },
-    { path: '/json', component: JsonPretty },
 ]
 
+// 添加beta的页面
+routes.push(...betaRoutes.routes);
 
 // 3. Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
