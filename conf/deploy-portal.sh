@@ -34,6 +34,9 @@ rm $deploy_file
 chown -R ocr:ocr /home/ocr/ocr-portal-service/
 chmod -R +x /home/ocr/ocr-portal-service/ocr-main-service
 
+# 以ocr用户停止
+su - ocr -c "sh /home/ocr/ocr-portal-service/ocr-main-service/bin/stop.sh"
+
 # 以ocr用户启动
 su - ocr -c "sh /home/ocr/ocr-portal-service/ocr-main-service/bin/start.sh"
 
