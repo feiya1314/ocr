@@ -1,0 +1,9 @@
+server:
+  port : 8081
+  servlet:
+    # 给所有controller的url增加/data前缀
+    context-path : /api/v1
+
+ocr:
+  service:
+    paddleSource: http://127.0.0.1:8000/ocr
