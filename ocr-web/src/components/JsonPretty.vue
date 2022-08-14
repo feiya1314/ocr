@@ -75,7 +75,7 @@ export default {
       rightOptionShow: "visible",
       prettyJsonStr: null,
       compressJsonStr: null,
-      lineBtnSelected: true,
+      lineBtnSelected: false,
     };
   },
   methods: {
