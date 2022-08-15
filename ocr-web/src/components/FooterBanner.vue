@@ -12,7 +12,8 @@
 
           <div class="title">友情链接：</div>
           <dd>
-            <a href="https://www.easyocr.cn" target="_blank">在线图片文字识别</a>
+            <a href="https://www.easyocr.cn" target="_blank">在线图片文字识别</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="https://www.easyocr.cn/beta/json" target="_blank">JSON格式化</a>
           </dd>
         </div>
         <div class="footer-gav-list">

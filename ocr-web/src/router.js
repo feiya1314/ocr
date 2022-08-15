@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Ocr from './components/Ocr.vue';
+import NotFound from './components/NotFound.vue';
 // import JsonPretty from './components/JsonPretty.vue';
 import betaRoutes from './config/betaRoute';
 
@@ -15,6 +16,16 @@ import betaRoutes from './config/betaRoute';
 const routes = [
     { path: '/', component: Ocr },
     { path: '/ocr', component: Ocr },
+    {
+        name: '404',
+        path: '/404',
+        component: NotFound
+    },
+    {
+        path: "/:pathMatch(.*)", // 此处需特别注意至于最底部
+        redirect: '/404'
+    }
+
 ]
 
 // 添加beta的页面
