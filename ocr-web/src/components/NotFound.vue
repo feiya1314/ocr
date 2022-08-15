@@ -38,7 +38,7 @@ export default {
   // },
   data() {
     let innerStars = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 100; i++) {
       let top = Math.round(Math.random() * 98) + 1;
       let left = Math.round(Math.random() * 98) + 1;
       let alternate = Math.round(Math.random() * 10) + 1;
