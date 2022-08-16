@@ -12,6 +12,7 @@
     <properties>
         <lombok.version>1.18.24</lombok.version>
         <httpClient.version>4.5.12</httpClient.version>
+        <captcha.version>1.6.2</captcha.version>
     </properties>
 
     <modules>
@@ -44,6 +45,11 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${httpClient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.whvcse</groupId>
+                <artifactId>easy-captcha</artifactId>
+                <version>${captcha.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

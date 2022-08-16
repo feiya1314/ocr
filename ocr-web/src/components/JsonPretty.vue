@@ -7,7 +7,7 @@
           <div id="resize-container">
             <div id="resize-left">
               <div id="origin-json-container" class="origin-json-container-class">
-                <textarea id="origin-json-text" v-model="originJsonData" placeholder="请输入json数据..." />
+                <textarea spellcheck="false" id="origin-json-text" v-model="originJsonData" placeholder="请输入json数据..." />
               </div>
             </div>
             <div id="resize-bar"></div>
@@ -22,10 +22,11 @@
                     <CircleButton class="common-btn" :btnImgPath="compressImg" titleStr="压缩后复制" />
                   </div>
                   <CircleButton class="common-btn" :btnImgPath="treeLine" titleStr="显示缩进对齐线" :selected="lineBtnSelected" @click="switchShowLine" />
+                  <CircleButton class="common-btn" :btnImgPath="orderedListImg" titleStr="显示行号" :selected="showLineNumber" @click="showLineNumber=!showLineNumber" />
                 </div>
               </div>
               <div class="pretty-json-container">
-                <vue-json-pretty v-if="!parseError && formatJsonData!=null " :path="'res'" :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
+                <vue-json-pretty v-if="!parseError && formatJsonData!=null " :path="'res'" :showLineNumber="showLineNumber" showIcon=true :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
                 <div v-if="parseError" style="text-align: left;">
                   <span style="color: #f1592a;font-weight:bold;">{{parseErrorMsg}}</span>
                 </div>
@@ -67,6 +68,7 @@ export default {
       compressImg: require("@/assets/images/compress.svg"),
       copyImg: require("@/assets/images/copy.svg"),
       treeLine: require("@/assets/images/treeLine.svg"),
+      orderedListImg: require("@/assets/images/ordered-list.svg"),
       // jsonlintIns:require("jsonlint"),
       formatJsonData: null,
       originJsonData: null,
@@ -76,6 +78,7 @@ export default {
       prettyJsonStr: null,
       compressJsonStr: null,
       lineBtnSelected: false,
+      showLineNumber: false,
     };
   },
   methods: {
@@ -190,8 +193,8 @@ export default {
         // todo 当对象中有NaN、Infinity和-Infinity这三种值的时候 --- 会变成null
         this.prettyJsonStr = JSON.stringify(jsonData, null, 2);
         this.compressJsonStr = JSON.stringify(jsonData);
-       // console.log(this.prettyJsonStr);
-       // console.log(this.compressJsonStr);
+        // console.log(this.prettyJsonStr);
+        // console.log(this.compressJsonStr);
         //this.originJsonData = this.prettyJsonStr;
       } catch (e) {
         console.log(e);
