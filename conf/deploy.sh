@@ -15,10 +15,17 @@ if [ ! -f "dist.zip" ]; then
   exit 0
 fi
 
+if [ -d "/home/ocr/ocr-web-bak" ]; then
+  echo "web bak dir exist"
+  rm -rf /home/ocr/ocr-web-bak
+fi
+
 echo "start deploy"
 
 echo "clear dir"
-rm -rf /home/ocr/ocr-web/*
+mv /home/ocr/ocr-web /home/ocr/ocr-web-bak
+
+mkdir /home/ocr/ocr-web
 
 echo "move package"
 mv dist.zip /home/ocr/ocr-web/dist.zip

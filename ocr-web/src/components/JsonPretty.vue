@@ -10,7 +10,7 @@
                 <textarea spellcheck="false" id="origin-json-text" v-model="originJsonData" placeholder="请输入json数据..." />
               </div>
             </div>
-            <div id="resize-bar"></div>
+            <div id="resize-bar" ref="resizebarref"></div>
             <div id="resize-right">
               <div id="pretty-json-options-container" @mouseenter='changeRightOptionState("visible")' @mouseleave='changeRightOptionState("hidden")'>
                 <div id="pretty-json-options">
@@ -26,7 +26,7 @@
                 </div>
               </div>
               <div class="pretty-json-container">
-                <vue-json-pretty v-if="!parseError && formatJsonData!=null " :path="'res'" :showLineNumber="showLineNumber" showIcon=true :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
+                <vue-json-pretty v-if="!parseError && formatJsonData!=null " :virtual=true :height='formatJsonConfig.inhight' :path="'res'" :editable=true :showLineNumber="showLineNumber" :showIcon=true :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
                 <div v-if="parseError" style="text-align: left;">
                   <span style="color: #f1592a;font-weight:bold;">{{parseErrorMsg}}</span>
                 </div>
@@ -63,6 +63,7 @@ export default {
       formatJsonConfig: {
         showLine: true,
         showLength: true,
+        inhight: 800,
       },
       delBtnImg: require("@/assets/images/del.svg"),
       compressImg: require("@/assets/images/compress.svg"),
@@ -171,9 +172,22 @@ export default {
 
     //   return str;
     // },
+    initVirtualHight() {
+      let height = this.$refs.resizebarref.offsetHeight;
+      console.log("resize height " + height);
+      this.formatJsonConfig.inhight = height - 70;
+
+      // var right = document.getElementsByClassName("vjs-tree-list")[0];
+      // right.style.height = this.formatJsonConfig.height;
+    },
+  },
+  beforeMount: function () {
+    console.log("onBeforeMount ");
+    //this.initVirtualHight();
   },
   mounted: function () {
     this.dragAndMove();
+   // this.initVirtualHight();
   },
   watch: {
     // 监听 originJsonData 属性的变化，此方法名要和属性名一致
@@ -204,6 +218,7 @@ export default {
       }
       this.parseError = false;
       this.formatJsonData = jsonData;
+      this.initVirtualHight();
     },
   },
 };
@@ -228,7 +243,7 @@ export default {
 }
 .pretty-json-container {
   /* height: calc(100% - 155px); */
-  padding: 16px;
+  padding: 10px 10px 10px 10px;
   box-sizing: border-box;
   overflow: hidden;
 }
