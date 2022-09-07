@@ -90,10 +90,10 @@ export default {
       var mouseDown = false;
       var borderLimit = 150;
       //var resizeBarWidth = 10;
-      var windowWidth = window.outerWidth;
-      var bodyWidth = document.body.clientWidth;
-      console.log("windowWidth:" + windowWidth);
-      console.log("bodyWidth:" + bodyWidth);
+      // var windowWidth = window.outerWidth;
+      // var bodyWidth = document.body.clientWidth;
+      // console.log("windowWidth:" + windowWidth);
+      // console.log("bodyWidth:" + bodyWidth);
       resize.onmousedown = function (e) {
         // 记录鼠标按下时的x轴坐标
         var preX = e.clientX;
@@ -116,7 +116,7 @@ export default {
           // 设置左边区域的宽度
           left.style.width = leftWidth + "px";
           // 设备分栏竖条的left位置
-          resize.style.left = leftWidth + "px";
+          resize.style.left = leftWidth - 5 + "px";
           // 设置右边区域的宽度
           right.style.width = container.clientWidth - leftWidth + "px";
         };
