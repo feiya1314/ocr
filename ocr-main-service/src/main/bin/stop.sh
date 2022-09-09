@@ -1,6 +1,7 @@
 #！ /bin/sh
 
-CUR_PATH=$(dirname "$0")
+CUR_PATH=$(cd "$(dirname "$0")";pwd)
+
 echo "CUR_PATH:""$CUR_PATH"
 
 ROOT_PATH=$(dirname "$CUR_PATH")
