@@ -27,3 +27,4 @@ package-lock.json
 *.class
 */target
 /venv/
+logs/

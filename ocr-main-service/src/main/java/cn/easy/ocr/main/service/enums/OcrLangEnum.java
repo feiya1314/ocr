@@ -12,6 +12,8 @@ public enum OcrLangEnum {
     FRENCH("french", "french", "法语", "法语"),
     GERMAN("german", "german", "德语", "德语"),
     KOREAN("korean", "korean", "韩文", "韩文"),
+
+    RUSSIA("russia", "russia", "俄语", "俄语"),
     ;
     private final String code;
     private final String lang;

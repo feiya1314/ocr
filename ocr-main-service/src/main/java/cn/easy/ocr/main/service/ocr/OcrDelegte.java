@@ -1,4 +1,4 @@
-package cn.easy.ocr.main.service.service;
+package cn.easy.ocr.main.service.ocr;
 
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.request.OcrRequest;

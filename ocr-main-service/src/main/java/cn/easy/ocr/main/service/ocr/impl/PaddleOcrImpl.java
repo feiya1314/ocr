@@ -1,10 +1,10 @@
-package cn.easy.ocr.main.service.service.impl;
+package cn.easy.ocr.main.service.ocr.impl;
 
 import cn.easy.ocr.main.service.config.ServiceConfg;
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
-import cn.easy.ocr.main.service.service.IOcr;
+import cn.easy.ocr.main.service.ocr.IOcr;
 import cn.easy.ocr.main.service.utils.HttpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,13 @@ public class PaddleOcrImpl implements IOcr {
     private ObjectMapper objectMapper;
 
     @Override
+    public void afterPropertiesSet() throws Exception {
+
+    }
+
+    @Override
     public OcrResult ocr(OcrContext context) throws OcrServiceException {
+        log.info("paddle ocr start");
         OcrResult ocrResult = new OcrResult();
         Map<String, String> params = new HashMap<>();
         params.put("base64Img", context.getRequest().getBase64Img());
@@ -40,6 +46,7 @@ public class PaddleOcrImpl implements IOcr {
         String text = HttpUtil.doPostForm(serviceConfg.getPaddleSource(), params);
         ocrResult.setImageText(text);
 
+        log.info("paddle ocr finish");
         return ocrResult;
     }
 
@@ -50,8 +57,18 @@ public class PaddleOcrImpl implements IOcr {
     }
 
     @Override
+    public String convertLanguage(String inputLang) {
+        return null;
+    }
+
+    @Override
     public int getOrder() {
         // 自研服务优先级最低
         return LOWEST_PRECEDENCE;
+    }
+
+    @Override
+    public String ocrSourceName() {
+        return "paddle-ocr";
     }
 }

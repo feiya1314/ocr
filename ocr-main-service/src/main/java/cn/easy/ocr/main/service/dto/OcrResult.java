@@ -11,5 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OcrResult {
+    private boolean success = true;
+    private boolean exception = false;
     private String imageText;
 }

@@ -16,4 +16,15 @@ import org.springframework.stereotype.Component;
 @Setter
 public class ServiceConfg {
     private String paddleSource;
+
+    private BaiduSource baiduSource;
+
+    @Getter
+    @Setter
+    @ConfigurationProperties(prefix = "ocr.service.baiduSource")
+    public static class BaiduSource {
+        private String appID;
+        private String apiKey;
+        private String secretKey;
+    }
 }

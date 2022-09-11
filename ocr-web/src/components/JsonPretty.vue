@@ -26,7 +26,7 @@
                 </div>
               </div>
               <div class="pretty-json-container">
-                <vue-json-pretty v-if="!parseError && formatJsonData!=null " :virtual=true :height='formatJsonConfig.inhight' :path="'res'" :editable=true :showLineNumber="showLineNumber" :showIcon=true :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
+                <vue-json-pretty class="pretty-json-compon" v-if="!parseError && formatJsonData!=null " :virtual=true :height='formatJsonConfig.inhight' :path="'res'" :editable=true editableTrigger="dblclick" :showLineNumber="showLineNumber" :showIcon=true :data='formatJsonData' :showLine='formatJsonConfig.showLine' :showLength='formatJsonConfig.showLength' @click="handleClick"> </vue-json-pretty>
                 <div v-if="parseError" style="text-align: left;">
                   <span style="color: #f1592a;font-weight:bold;">{{parseErrorMsg}}</span>
                 </div>
@@ -187,7 +187,7 @@ export default {
   },
   mounted: function () {
     this.dragAndMove();
-   // this.initVirtualHight();
+    // this.initVirtualHight();
   },
   watch: {
     // 监听 originJsonData 属性的变化，此方法名要和属性名一致
@@ -224,6 +224,13 @@ export default {
 };
 </script>
 <style scoped>
+/* .root::-webkit-scrollbar {
+  display: none;
+} */
+/* 隐藏滚动条 */
+/* .pretty-json-compon::-webkit-scrollbar {
+  display: none;
+} */
 .root {
   /* margin-top: 10px; */
   width: 100%;

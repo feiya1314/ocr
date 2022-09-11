@@ -3,7 +3,7 @@ package cn.easy.ocr.main.service.controller;
 import cn.easy.ocr.main.service.enums.ResultCodeEnum;
 import cn.easy.ocr.main.service.request.OcrRequest;
 import cn.easy.ocr.main.service.response.BaseResult;
-import cn.easy.ocr.main.service.service.OcrDelegte;
+import cn.easy.ocr.main.service.ocr.OcrDelegte;
 import cn.easy.ocr.main.service.vo.OcrResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,13 @@ public class OcrServiceController {
     @ResponseBody
     @PostMapping("/ocr")
     public BaseResult<OcrResultVo> ocr(@RequestBody OcrRequest request) {
+        log.info("ocr request start");
         BaseResult<OcrResultVo> response = new BaseResult<>();
         OcrResultVo vo = ocrDelegte.invokeOcr(request);
         response.setData(vo);
         response.setCode(ResultCodeEnum.SUCCESS.getCode());
         response.setMsg("success");
-
+        log.info("ocr request finish");
         return response;
     }
 }

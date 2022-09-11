@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 级别从高到低 OFF 、 FATAL 、 ERROR 、 WARN 、 INFO 、 DEBUG 、 TRACE 、 ALL -->
+<!-- 日志输出规则 根据当前ROOT 级别，日志输出时，级别高于root默认的级别时 会输出 -->
+<!-- 以下 每个配置的 filter 是过滤掉输出文件里面，会出现高级别文件，依然出现低级别的日志信息，通过filter 过滤只记录本级别的日志 -->
+<!-- scan 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。 -->
+<!-- scanPeriod 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!-- 动态日志级别 ,可以通过jmx动态改变日志级别  -->
+    <!--    <jmxConfigurator/>-->
+
+    <!-- 定义日志文件 输出位置 -->
+    <property name="log.log_dir" value="./logs"/>
+    <property name="log.log_name" value="log"/>
+    <property name="log.total_size_cap" value="200MB"/>
+    <!-- 日志最大的历史 30天 -->
+    <property name="log.maxHistory" value="10"/>
+    <!--    <property name="log.level" value="debug"/>-->
+    <property name="log.maxSize" value="10MB"/>
+
+    <!-- ConsoleAppender 控制台输出日志 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                <!-- 设置日志输出格式 -->
+                <!-- 日期|线程|class类|日志级别|log内容 -->
+                %blue(%d{yyyy-MM-dd HH:mm:ss,SSS})|%cyan(%t)|%yellow(%c)|%highlight(%p)|%X{request_id}|%m%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- ERROR级别日志 -->
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 RollingFileAppender -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.log_dir}/error.log</file>
+        <!-- 过滤器，只记录WARN级别的日志 -->
+        <!-- 果日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志。 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 设置过滤级别 -->
+            <level>ERROR</level>
+            <!-- 用于配置符合过滤条件的操作 -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 用于配置不符合过滤条件的操作 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 最常用的滚动策略，它根据时间来制定滚动策略.既负责滚动也负责触发滚动 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--日志输出位置 可相对、和绝对路径 -->
+            <fileNamePattern>${log.log_dir}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件,假设设置每个月滚动，且<maxHistory>是6，
+            则只保存最近6个月的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除 -->
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <!--日志文件最大的大小-->
+            <MaxFileSize>${log.maxSize}</MaxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                <!-- 设置日志输出格式 -->
+                <!-- %msg%n 输出应用程序的日志，并且换行 -->
+                %d{yyyy-MM-dd HH:mm:ss.SSS}|%thread|%t|%level|%logger{50}|%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- INFO级别日志 appender -->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.log_dir}/info.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.log_dir}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <MaxFileSize>${log.maxSize}</MaxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%t|%logger|%msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- DEBUG级别日志 appender -->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.log_dir}/debug.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.log_dir}/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <MaxFileSize>${log.maxSize}</MaxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%t|%logger|%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--设置一个向上传递的appender,所有级别的日志都会输出-->
+    <appender name="ocr-service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--文件路径-->
+        <file>${log.log_dir}/ocr-service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--归档文件名称-->
+            <fileNamePattern>${log.log_dir}/ocr-service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <MaxFileSize>${log.maxSize}</MaxFileSize>
+            <!--所有日志最多占多大容量-->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%t|%logger|%X{request_id}|%msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ocr-interface" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--文件路径-->
+        <file>${log.log_dir}/ocr-interface.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--归档文件名称-->
+            <fileNamePattern>${log.log_dir}/ocr-interface.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <MaxFileSize>${log.maxSize}</MaxFileSize>
+            <!--所有日志最多占多大容量-->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%t|%logger|%X{request_id}|%msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--name包下的类的日志输出，如果没设置打印级别，会继承他的上级<root>的日志级别-->
+    <!--   additivity 作用在于 children-logger是否使用 rootLogger配置的appender进行输出。
+        false：表示只用当前logger的appender-ref。
+        true：表示当前logger的appender-ref和rootLogger的appender-ref都有效。
+        当为true 时，logger中的日志会向上 root 传递，同一条日志可能会打印两边，logger中打印一次，root中打印一次
+    -->
+    <logger name="cn.easy.ocr.main.service" additivity="false" level="INFO">
+        <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
+        <appender-ref ref="ocr-service"/>
+        <!--  <appender-ref ref="INFO"/>-->
+    </logger>
+
+    <!--  controller 包下的日志，不会再 打印到上面的  ocr-service
+    cn.easy.ocr.main.service.controller 是 cn.easy.ocr.main.service 子logger,
+    当下面的logger（子logger） additivity 为true 时，上面的logger（父logger）也会打印日志，向上传递
+    -->
+    <logger name="cn.easy.ocr.main.service.controller" additivity="false" level="INFO">
+        <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
+        <appender-ref ref="ocr-interface"/>
+        <!--        <appender-ref ref="INFO"/>-->
+    </logger>
+    <!-- root级别   DEBUG -->
+    <root level="INFO">
+        <!-- 控制台输出 -->
+        <appender-ref ref="CONSOLE"/>
+        <!--  除了 additivity false的logger , 错误日志管的日志都输出错误文件 -->
+        <appender-ref ref="ERROR"/>
+    </root>
+</configuration>
