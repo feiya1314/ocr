@@ -48,6 +48,7 @@ public class BaiduOcrImpl implements IOcr {
 
     @Override
     public OcrResult ocr(OcrContext context) throws OcrServiceException {
+        log.info("baidu ocr start");
         // 传入可选参数调用接口
         HashMap<String, String> options = new HashMap<>();
         options.put("language_type", BdOcrLangEnum.getLangCode(context.getLang()));

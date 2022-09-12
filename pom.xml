@@ -14,6 +14,8 @@
         <httpClient.version>4.5.12</httpClient.version>
         <captcha.version>1.6.2</captcha.version>
         <baidocr.version>4.16.10</baidocr.version>
+        <mybatis.version>2.2.2</mybatis.version>
+        <mysql.version>8.0.16</mysql.version>
     </properties>
 
     <modules>
@@ -62,6 +64,18 @@
                 <groupId>com.github.whvcse</groupId>
                 <artifactId>easy-captcha</artifactId>
                 <version>${captcha.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <!-- 默认是mysql 8.x的驱动，可以用<version>指定mysql 5.x的驱动 -->
+                <scope>runtime</scope>
+                <version>${mysql.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

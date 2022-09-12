@@ -5,11 +5,11 @@ server:
     context-path: /api/v1
 
 spring:
-  datastore:
-    url: jdbc:mysql://localhost:3306/ocr?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+  datasource:
+    url: jdbc:mysql://localhost:3306/ocr?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       #最小空闲连接数
       minimum-idle: 5

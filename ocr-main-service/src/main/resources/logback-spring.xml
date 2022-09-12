@@ -160,4 +160,53 @@
         <!--  除了 additivity false的logger , 错误日志管的日志都输出错误文件 -->
         <appender-ref ref="ERROR"/>
     </root>
+
+    <!--开发环境:打印控制台-->
+<!--    <springProfile name="dev">-->
+<!--        &lt;!&ndash;可以输出项目中的debug日志，包括mybatis的sql日志&ndash;&gt;-->
+<!--        &lt;!&ndash;<logger name="com.bylz.api.dao" level="DEBUG" />&ndash;&gt;-->
+<!--        &lt;!&ndash;<logger name="com.bylz.api.controller.feign" level="DEBUG" />&ndash;&gt;-->
+
+<!--        &lt;!&ndash;-->
+<!--            root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性-->
+<!--            level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，默认是DEBUG-->
+<!--            可以包含零个或多个appender元素。-->
+<!--        &ndash;&gt;-->
+<!--        <root level="INFO">-->
+<!--            <appender-ref ref="CONSOLE"/>-->
+<!--            <appender-ref ref="INFO_FILE"/>-->
+<!--            <appender-ref ref="WARN_FILE"/>-->
+<!--            <appender-ref ref="ERROR_FILE"/>-->
+<!--        </root>-->
+<!--    </springProfile>-->
+
+<!--    &lt;!&ndash;测试环境:输出到文件&ndash;&gt;-->
+<!--    <springProfile name="test">-->
+
+<!--        &lt;!&ndash;可以输出项目中的debug日志，包括mybatis的sql日志&ndash;&gt;-->
+<!--        &lt;!&ndash;<logger name="com.bylz.api.dao" level="DEBUG" />&ndash;&gt;-->
+<!--        &lt;!&ndash;<logger name="com.bylz.api.controller.feign" level="DEBUG" />&ndash;&gt;-->
+
+<!--        <root level="INFO">-->
+<!--            <appender-ref ref="CONSOLE"/>-->
+<!--            <appender-ref ref="INFO_FILE"/>-->
+<!--            <appender-ref ref="WARN_FILE"/>-->
+<!--            <appender-ref ref="ERROR_FILE"/>-->
+<!--        </root>-->
+<!--    </springProfile>-->
+
+<!--    &lt;!&ndash;生产环境:输出到文件&ndash;&gt;-->
+<!--    <springProfile name="prod">-->
+
+<!--        &lt;!&ndash;可以输出项目中的debug日志，包括mybatis的sql日志&ndash;&gt;-->
+<!--        &lt;!&ndash;<logger name="com.bylz.api.dao" level="DEBUG" />&ndash;&gt;-->
+<!--        &lt;!&ndash;<logger name="com.bylz.api.controller.feign" level="DEBUG" />&ndash;&gt;-->
+
+<!--        <root level="INFO">-->
+<!--            <appender-ref ref="ERROR_FILE"/>-->
+<!--            <appender-ref ref="WARN_FILE"/>-->
+<!--            <appender-ref ref="INFO_FILE"/>-->
+<!--        </root>-->
+<!--    </springProfile>-->
+
 </configuration>
