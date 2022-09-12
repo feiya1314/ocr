@@ -92,8 +92,9 @@ public class BaiduOcrImpl implements IOcr {
     }
 
     @Override
-    public int remainingTimes() {
-        return 0;
+    public boolean available() {
+        // todo
+        return true;
     }
 
     @Override

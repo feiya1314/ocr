@@ -51,9 +51,9 @@ public class PaddleOcrImpl implements IOcr {
     }
 
     @Override
-    public int remainingTimes() {
+    public boolean available() {
         // 自研服务一直可用
-        return 1;
+        return true;
     }
 
     @Override

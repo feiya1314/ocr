@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easy.ocr.main.service.dao.mapper.OcrSourceInfoMapper">
+    <resultMap id="baseMap" type="cn.easy.ocr.main.service.dao.po.OcrSourceInfo">
+        <result property="id" column="id"/>
+        <result property="sourceId" column="source_id"/>
+        <result property="sourceName" column="source_name"/>
+        <result property="dayLimit" column="day_limit"/>
+        <result property="dayUsed" column="day_used"/>
+        <result property="monthLimit" column="month_limit"/>
+        <result property="monthUsed" column="month_used"/>
+        <result property="yearLimit" column="year_limit"/>
+        <result property="yearUsed" column="year_used"/>
+        <result property="paramsConfig" column="params_config"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="find" resultMap="baseMap">
+        select
+        id,
+        source_id,
+        source_name,
+        day_limit,
+        day_used,
+        month_limit,
+        month_used,
+        year_limit,
+        year_used,
+        params_config,
+        type,
+        create_time,
+        update_time
+        from ocr_source_info
+        <where>
+            1=1
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO ocr_source_info
+        (
+        source_id,
+        <if test="dayLimit != null">
+            day_limit,
+        </if>
+        <if test="dayUsed != null">
+            day_used,
+        </if>
+        <if test="monthLimit != null">
+            month_limit,
+        </if>
+        <if test="monthUsed != null">
+            month_used,
+        </if>
+        <if test="yearLimit != null">
+            year_limit,
+        </if>
+        <if test="yearUsed != null">
+            year_used,
+        </if>
+        <if test="type != null">
+            type,
+        </if>
+        <if test="createTime != null">
+            create_time,
+        </if>
+        <if test="updateTime != null">
+            update_time,
+        </if>
+        <if test="paramsConfig != null and !paramsConfig.isEmpty()">
+            params_config,
+        </if>
+        source_name
+        )
+        VALUES
+        (
+        #{sourceId},
+        <if test="dayLimit != null">
+            #{dayLimit},
+        </if>
+        <if test="dayUsed != null">
+            #{dayUsed},
+        </if>
+        <if test="monthLimit != null">
+            #{monthLimit},
+        </if>
+        <if test="monthUsed != null">
+            #{monthUsed},
+        </if>
+        <if test="yearLimit != null">
+            #{yearLimit},
+        </if>
+        <if test="yearUsed != null">
+            #{yearUsed},
+        </if>
+        <if test="type != null">
+            #{type},
+        </if>
+        <if test="createTime != null">
+            #{createTime},
+        </if>
+        <if test="updateTime != null">
+            #{updateTime},
+        </if>
+        <if test="paramsConfig != null and !paramsConfig.isEmpty()">
+            #{paramsConfig},
+        </if>
+        #{sourceName}
+        )
+    </insert>
+</mapper>

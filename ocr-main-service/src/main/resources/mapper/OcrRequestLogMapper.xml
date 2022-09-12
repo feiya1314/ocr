@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easy.ocr.main.service.dao.mapper.OcrRequestLogMapper">
+    <resultMap id="baseMap" type="cn.easy.ocr.main.service.dao.po.OcrRequestLog">
+        <result property="id" column="id"/>
+        <result property="ip" column="ip"/>
+        <result property="userId" column="user_id"/>
+        <result property="requestId" column="request_id"/>
+        <result property="ua" column="ua"/>
+        <result property="refer" column="refer"/>
+        <result property="timestamp" column="timestamp"/>
+        <result property="sdevId" column="sdev_id"/>
+        <result property="deviceData" column="device_data"/>
+        <result property="ptd" column="ptd"/>
+    </resultMap>
+    <select id="find" resultMap="baseMap">
+        select
+        id,
+        ip,
+        user_id,
+        request_id,
+        ua,
+        refer,
+        timestamp,
+        sdev_id,
+        device_data,
+        ptd
+        from ocr_request_log
+        <where>
+            1=1
+        </where>
+    </select>
+    <insert id="insert">
+        INSERT INTO ocr_request_log
+        (
+        ip,
+        user_id,
+        request_id,
+        ua,
+        refer,
+        timestamp,
+        sdev_id,
+        device_data,
+        ptd)
+        VALUES
+        (
+        #{ip},
+        #{userId},
+        #{requestId},
+        #{ua},
+        #{refer},
+        #{timestamp},
+        #{sdevId},
+        #{deviceData},
+        #{ptd})
+    </insert>
+</mapper>

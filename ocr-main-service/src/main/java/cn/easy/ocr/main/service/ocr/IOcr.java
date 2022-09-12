@@ -22,11 +22,11 @@ public interface IOcr extends Ordered, InitializingBean {
     OcrResult ocr(OcrContext context) throws OcrServiceException;
 
     /**
-     * ocr服务剩余可用次数，当为0时，ocr服务不可用
+     * ocr服务是否可用，比如超过次数限制了
      *
-     * @return 剩余可用次数
+     * @return ocr服务是否可用
      */
-    int remainingTimes();
+    boolean available();
 
     /**
      * 将页面输入的识别语言转为对应识别源的语言

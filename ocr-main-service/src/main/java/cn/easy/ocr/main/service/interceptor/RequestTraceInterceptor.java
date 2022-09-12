@@ -1,13 +1,13 @@
 package cn.easy.ocr.main.service.interceptor;
 
 import cn.easy.ocr.main.service.utils.Constants;
+import cn.easy.ocr.main.service.utils.UuidUtil;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 /**
  * @author : feiya
@@ -23,7 +23,8 @@ public class RequestTraceInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                Exception ex) throws Exception {
         // 把requestId添加到响应头，以便其它应用使用
         response.addHeader(Constants.REQUEST_TRACE_KEY, MDC.get(Constants.REQUEST_TRACE_KEY));
         // 请求完成，从MDC中移除requestId
@@ -36,14 +37,10 @@ public class RequestTraceInterceptor implements HandlerInterceptor {
         // 根据请求参数或请求头判断是否有“request-id”，有则使用，无则创建
         String requestId;
         if (paramRequestId == null && headerRequestId == null) {
-            requestId = simpleUuid();
+            requestId = UuidUtil.getUuid();
         } else {
             requestId = paramRequestId != null ? paramRequestId : headerRequestId;
         }
         return requestId;
-    }
-
-    private static String simpleUuid() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
