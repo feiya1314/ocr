@@ -7,6 +7,8 @@
         <result property="id" column="id"/>
         <result property="sourceId" column="source_id"/>
         <result property="sourceName" column="source_name"/>
+        <result property="enable" column="enable"/>
+        <result property="grey" column="grey"/>
         <result property="dayLimit" column="day_limit"/>
         <result property="dayUsed" column="day_used"/>
         <result property="monthLimit" column="month_limit"/>
@@ -24,6 +26,8 @@
         id,
         source_id,
         source_name,
+        enable,
+        grey,
         day_limit,
         day_used,
         month_limit,
@@ -44,6 +48,12 @@
         INSERT INTO ocr_source_info
         (
         source_id,
+        <if test="enable != null">
+            enable,
+        </if>
+        <if test="grey != null">
+            grey,
+        </if>
         <if test="dayLimit != null">
             day_limit,
         </if>
@@ -79,6 +89,12 @@
         VALUES
         (
         #{sourceId},
+        <if test="enable != null">
+            #{enable},
+        </if>
+        <if test="grey != null">
+            #{grey},
+        </if>
         <if test="dayLimit != null">
             #{dayLimit},
         </if>

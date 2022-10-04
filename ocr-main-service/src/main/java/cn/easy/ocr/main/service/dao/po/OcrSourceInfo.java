@@ -15,6 +15,10 @@ import java.util.Date;
 public class OcrSourceInfo {
     private Integer id;
 
+    private Integer enable;
+
+    private Integer grey;
+
     private String sourceId;
 
     private String sourceName;

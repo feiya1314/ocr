@@ -5,13 +5,18 @@ import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.ocr.IOcr;
+import cn.easy.ocr.main.service.response.BaseResult;
 import cn.easy.ocr.main.service.utils.HttpUtil;
+import cn.easy.ocr.main.service.vo.OcrResultVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +24,13 @@ import java.util.Map;
 /**
  * @author : feiya
  * @date : 2022/6/15
- * @description : paddle ocr服务
+ * @description : paddle ocr服务,用于测试
  */
 @Qualifier("PaddleOcrImpl")
-@Profile("prod")
+@Profile("dev")
 @Component
 @Slf4j
-public class PaddleOcrImpl implements IOcr {
+public class PaddleOcrDevImpl implements IOcr {
     @Autowired
     private ServiceConfg serviceConfg;
 
@@ -45,11 +50,29 @@ public class PaddleOcrImpl implements IOcr {
         params.put("base64Img", context.getRequest().getBase64Img());
         params.put("ocrLang", context.getRequest().getOcrLang());
 
-        String text = HttpUtil.doPostForm(serviceConfg.getPaddleSource(), params);
-        ocrResult.setImageText(text);
+        String jsonBody;
+        try {
+            jsonBody = objectMapper.writeValueAsString(params);
+        } catch (JsonProcessingException e) {
+            log.error("get json string error", e);
+            throw new RuntimeException(e);
+        }
+        String text = HttpUtil.doPostJson(serviceConfg.getPaddleSource(), jsonBody);
+        if (StringUtils.hasText(text)) {
+            try {
+                BaseResult<OcrResultVo> result = objectMapper.readValue(text,
+                        new TypeReference<BaseResult<OcrResultVo>>() {
+                });
 
-        log.info("paddle ocr finish");
-        return ocrResult;
+                ocrResult.setImageText(result.getData().getText());
+                log.info("paddle ocr finish");
+                return ocrResult;
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -71,6 +94,6 @@ public class PaddleOcrImpl implements IOcr {
 
     @Override
     public String ocrSourceName() {
-        return "paddle-ocr";
+        return "paddle-ocr-dev";
     }
 }
