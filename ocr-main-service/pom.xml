@@ -60,10 +60,12 @@
                     <excludes>
                         <exclude>**/*.properties</exclude>
                         <exclude>**/*.yml</exclude>
-                        <exclude>**/*.xml</exclude>
+                        <exclude>**/logback-spring.xml</exclude>
                         <exclude>**/*.txt</exclude>
                     </excludes>
-
+<!--                    <includes>-->
+<!--                        <include>mapper/*Mapper.xml</include>-->
+<!--                    </includes>-->
                     <archive>
                         <!-- 生成的jar中，不要包含pom.xml和pom.properties这两个文件 -->
                         <addMavenDescriptor>false</addMavenDescriptor>
@@ -77,7 +79,7 @@
                             <mainClass>cn.easy.ocr.main.service.Bootstrap</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>./</Class-Path>
+                            <Class-Path>config/</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>

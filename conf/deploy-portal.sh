@@ -19,11 +19,15 @@ fi
 echo "start deploy portal service"
 echo "deploy_file:$deploy_file"
 echo "clear dir"
+rm -rf /home/ocr/ocr-portal-service/ocr-main-service-bak
+# 以ocr用户停止
+su - ocr -c "sh /home/ocr/ocr-portal-service/ocr-main-service/bin/stop.sh"
 
-rm -rf /home/ocr/ocr-portal-service/*
+mv /home/ocr/ocr-portal-service/ocr-main-service /home/ocr/ocr-portal-service/ocr-main-service-bak
+#rm -rf /home/ocr/ocr-portal-service/*
 
 echo "move package"
-mv $deploy_file /home/ocr/ocr-portal-service/$deploy_file
+cp $deploy_file /home/ocr/ocr-portal-service/$deploy_file
 
 cd /home/ocr/ocr-portal-service/
 

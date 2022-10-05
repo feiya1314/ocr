@@ -27,7 +27,7 @@ spring:
 
 mybatis:
   #指定xml映射文件位置，多个时逗号分隔
-  mapper-locations: classpath:mapper/**.xml
+  mapper-locations: classpath:mapper/*Mapper.xml
 
 ocr:
   service:
