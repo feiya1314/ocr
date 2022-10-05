@@ -8,6 +8,7 @@
         <result property="ip" column="ip"/>
         <result property="userId" column="user_id"/>
         <result property="requestId" column="request_id"/>
+        <result property="origin" column="origin"/>
         <result property="ua" column="ua"/>
         <result property="refer" column="refer"/>
         <result property="timestamp" column="timestamp"/>
@@ -21,6 +22,7 @@
         ip,
         user_id,
         request_id,
+        origin,
         ua,
         refer,
         timestamp,
@@ -38,6 +40,7 @@
         ip,
         user_id,
         request_id,
+        origin,
         ua,
         refer,
         timestamp,
@@ -49,6 +52,7 @@
         #{ip},
         #{userId},
         #{requestId},
+        #{origin},
         #{ua},
         #{refer},
         #{timestamp},

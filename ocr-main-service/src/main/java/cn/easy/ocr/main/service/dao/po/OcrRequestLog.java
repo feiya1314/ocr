@@ -18,6 +18,8 @@ public class OcrRequestLog {
     private String userId;
 
     private String requestId;
+    
+    private String origin;
 
     private String ua;
 

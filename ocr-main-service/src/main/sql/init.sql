@@ -4,6 +4,7 @@ CREATE TABLE `ocr_request_log` (
    `ip` VARCHAR(64) DEFAULT NULL COMMENT '请求客户端ip',
    `user_id` VARCHAR(64) DEFAULT NULL COMMENT '用户id',
    `request_id` VARCHAR(64) DEFAULT NULL COMMENT '请求id',
+   `origin` VARCHAR(64) DEFAULT NULL COMMENT '请求来源接口',
    `ua` VARCHAR(1024) DEFAULT NULL COMMENT '请求ua',
    `refer` VARCHAR(1024) DEFAULT NULL COMMENT '请求refer',
    `timestamp` BIGINT NOT NULL COMMENT '请求实践',
