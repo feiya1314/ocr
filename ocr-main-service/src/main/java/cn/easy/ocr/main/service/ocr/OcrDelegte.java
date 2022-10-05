@@ -1,6 +1,8 @@
 package cn.easy.ocr.main.service.ocr;
 
 import cn.easy.ocr.main.service.dto.OcrContext;
+import cn.easy.ocr.main.service.enums.OcrSourceEnum;
+import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.request.OcrRequest;
 import cn.easy.ocr.main.service.vo.OcrResultVo;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +29,18 @@ public class OcrDelegte {
         OcrContext.OcrContextBuilder builder = OcrContext.builder();
         builder.request(request);
         OcrContext context = builder.build();
-        vo.setText(ocrSources.get(1).ocr(context).getImageText());
+        vo.setText(getOcrSource().ocr(context).getImageText());
 
         return vo;
+    }
+
+    private IOcr getOcrSource() {
+        // todo 根据ocr优先级
+        for (IOcr ocr : ocrSources) {
+            if (OcrSourceEnum.PADDLE.getSourceName().equals(ocr.ocrSourceName())) {
+                return ocr;
+            }
+        }
+        throw new OcrServiceException("no avaliable ocr source");
     }
 }
