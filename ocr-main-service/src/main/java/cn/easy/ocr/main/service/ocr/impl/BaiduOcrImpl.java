@@ -4,6 +4,7 @@ import cn.easy.ocr.main.service.config.ServiceConfg;
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.enums.BdOcrLangEnum;
+import cn.easy.ocr.main.service.enums.OcrSourceEnum;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.ocr.IOcr;
 import com.baidu.aip.ocr.AipOcr;
@@ -37,7 +38,8 @@ public class BaiduOcrImpl implements IOcr {
     @Override
     public void afterPropertiesSet() throws Exception {
         log.info("init baidu ocr source");
-        ocrClient = new AipOcr(serviceConfg.getBaiduSource().getAppID(), serviceConfg.getBaiduSource().getApiKey(), serviceConfg.getBaiduSource().getSecretKey());
+        ocrClient = new AipOcr(serviceConfg.getBaiduSource().getAppID(), serviceConfg.getBaiduSource().getApiKey(),
+                serviceConfg.getBaiduSource().getSecretKey());
         // 可选：设置网络连接参数
         ocrClient.setConnectionTimeoutInMillis(2000);
         ocrClient.setSocketTimeoutInMillis(60000);
@@ -104,6 +106,6 @@ public class BaiduOcrImpl implements IOcr {
 
     @Override
     public String ocrSourceName() {
-        return "baidu-ocr";
+        return OcrSourceEnum.BAIDU_GENERAL.getSourceName();
     }
 }

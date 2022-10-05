@@ -3,6 +3,7 @@ package cn.easy.ocr.main.service.ocr.impl;
 import cn.easy.ocr.main.service.config.ServiceConfg;
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
+import cn.easy.ocr.main.service.enums.OcrSourceEnum;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.ocr.IOcr;
 import cn.easy.ocr.main.service.response.BaseResult;
@@ -94,6 +95,6 @@ public class PaddleOcrDevImpl implements IOcr {
 
     @Override
     public String ocrSourceName() {
-        return "paddle-ocr-dev";
+        return OcrSourceEnum.PADDLE.getSourceName();
     }
 }
