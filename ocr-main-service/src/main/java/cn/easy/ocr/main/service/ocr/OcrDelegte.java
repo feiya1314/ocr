@@ -27,7 +27,7 @@ public class OcrDelegte {
         OcrContext.OcrContextBuilder builder = OcrContext.builder();
         builder.request(request);
         OcrContext context = builder.build();
-        vo.setText(ocrSources.get(0).ocr(context).getImageText());
+        vo.setText(ocrSources.get(1).ocr(context).getImageText());
 
         return vo;
     }
