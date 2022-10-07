@@ -6,3 +6,4 @@ sanic==0.4.1
 Sanic_Cors==0.4.1.4
 requests==2.27.1
 paddlepaddle==2.2.2
+loguru==0.6.0

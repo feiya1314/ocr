@@ -4,6 +4,7 @@ from sanic_cors import CORS
 from paddleocr import PaddleOCR, draw_ocr
 from ocr import OcrCore
 from PIL import Image
+from log import LogUtil
 import io
 import numpy as np
 import base64
@@ -14,7 +15,8 @@ CORS(app)
 
 @app.route("/ocr", methods=["POST"])
 async def ocrImage(request):
-    print("receive data")
+    req_id = request.headers.get("request_id")
+    LogUtil.info("|{}|receive ocr req",req_id)
 
     formData = request.form
     #fileData = request.files.get('file')
@@ -39,7 +41,11 @@ async def ocrImage(request):
     #saveImg(fileData)
 
     #result = OcrCore.parseImageWithPath(fileName, lang=ocrLang)
-    result = OcrCore.parseImage(imageArray, lang=ocrLang)
+    try:
+        result = OcrCore.parseImage(imageArray, lang=ocrLang)
+    except Exception as e:
+        LogUtil.error("error to ocr image")
+        LogUtil.exception(e)
     return text(result)
 
 
@@ -50,4 +56,5 @@ def saveImg(file):
 
 
 if __name__ == "__main__":
+    LogUtil.info("start paddle ocr")
     app.run(host="127.0.0.1", port=8000)
