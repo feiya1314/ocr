@@ -1,6 +1,6 @@
 package cn.easy.ocr.main.service.ocr.impl;
 
-import cn.easy.ocr.main.service.config.ServiceConfg;
+import cn.easy.ocr.main.service.config.ServiceConfig;
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.enums.BdOcrLangEnum;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 @Slf4j
 public class BaiduOcrImpl implements IOcr {
     @Autowired
-    private ServiceConfg serviceConfg;
+    private ServiceConfig serviceConfig;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -36,10 +36,10 @@ public class BaiduOcrImpl implements IOcr {
     private AipOcr ocrClient;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         log.info("init baidu ocr source");
-        ocrClient = new AipOcr(serviceConfg.getBaiduSource().getAppID(), serviceConfg.getBaiduSource().getApiKey(),
-                serviceConfg.getBaiduSource().getSecretKey());
+        ocrClient = new AipOcr(serviceConfig.getBaiduSource().getAppID(), serviceConfig.getBaiduSource().getApiKey(),
+                serviceConfig.getBaiduSource().getSecretKey());
         // 可选：设置网络连接参数
         ocrClient.setConnectionTimeoutInMillis(2000);
         ocrClient.setSocketTimeoutInMillis(60000);

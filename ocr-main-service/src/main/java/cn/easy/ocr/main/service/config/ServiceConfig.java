@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "ocr.service")
 @Getter
 @Setter
-public class ServiceConfg {
+public class ServiceConfig {
     private String paddleSource;
 
     private BaiduSource baiduSource;

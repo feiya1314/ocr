@@ -1,6 +1,6 @@
 package cn.easy.ocr.main.service.ocr.impl;
 
-import cn.easy.ocr.main.service.config.ServiceConfg;
+import cn.easy.ocr.main.service.config.ServiceConfig;
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.enums.OcrSourceEnum;
@@ -28,13 +28,13 @@ import java.util.Map;
 @Slf4j
 public class PaddleOcrImpl implements IOcr {
     @Autowired
-    private ServiceConfg serviceConfg;
+    private ServiceConfig serviceConfig;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
     }
 
@@ -46,7 +46,7 @@ public class PaddleOcrImpl implements IOcr {
         params.put("base64Img", context.getRequest().getBase64Img());
         params.put("ocrLang", context.getRequest().getOcrLang());
 
-        String text = HttpUtil.doPostForm(serviceConfg.getPaddleSource(), params);
+        String text = HttpUtil.doPostForm(serviceConfig.getPaddleSource(), params);
         ocrResult.setImageText(text);
 
         log.info("paddle ocr finish");

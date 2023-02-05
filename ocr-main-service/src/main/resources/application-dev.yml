@@ -36,3 +36,12 @@ ocr:
       appID: test
       apiKey: test
       secretKey: test
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  pwd:
+  maxTotal: 10
+  maxIdle: 5
+  testOnBorrow: false
+  maxWaitMills: 1000

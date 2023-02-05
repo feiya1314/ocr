@@ -16,6 +16,8 @@
         <baidocr.version>4.16.10</baidocr.version>
         <mybatis.version>2.2.2</mybatis.version>
         <mysql.version>8.0.16</mysql.version>
+        <redisson.version>3.16.8</redisson.version>
+        <jedis.version>4.3.1</jedis.version>
     </properties>
 
     <modules>
@@ -44,6 +46,20 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.baidu.aip</groupId>
                 <artifactId>java-sdk</artifactId>

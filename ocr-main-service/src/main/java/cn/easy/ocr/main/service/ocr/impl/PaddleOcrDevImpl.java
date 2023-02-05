@@ -1,6 +1,6 @@
 package cn.easy.ocr.main.service.ocr.impl;
 
-import cn.easy.ocr.main.service.config.ServiceConfg;
+import cn.easy.ocr.main.service.config.ServiceConfig;
 import cn.easy.ocr.main.service.dto.OcrContext;
 import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.enums.OcrSourceEnum;
@@ -33,13 +33,13 @@ import java.util.Map;
 @Slf4j
 public class PaddleOcrDevImpl implements IOcr {
     @Autowired
-    private ServiceConfg serviceConfg;
+    private ServiceConfig serviceConfig;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
     }
 
@@ -56,9 +56,9 @@ public class PaddleOcrDevImpl implements IOcr {
             jsonBody = objectMapper.writeValueAsString(params);
         } catch (JsonProcessingException e) {
             log.error("get json string error", e);
-            throw new RuntimeException(e);
+            throw new OcrServiceException(e);
         }
-        String text = HttpUtil.doPostJson(serviceConfg.getPaddleSource(), jsonBody);
+        String text = HttpUtil.doPostJson(serviceConfig.getPaddleSource(), jsonBody);
         if (StringUtils.hasText(text)) {
             try {
                 BaseResult<OcrResultVo> result = objectMapper.readValue(text,
@@ -69,7 +69,7 @@ public class PaddleOcrDevImpl implements IOcr {
                 log.info("paddle ocr finish");
                 return ocrResult;
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                throw new OcrServiceException(e);
             }
         }
 
