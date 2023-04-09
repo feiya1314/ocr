@@ -1,4 +1,4 @@
-package cn.easy.ocr.main.service.annotation;
+package cn.easyocr.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description : 应用启动服务入口
  */
 @SpringBootApplication
-@MapperScan(value = {"cn.easy.ocr.main.service.dao.mapper"})
+@MapperScan(value = {"cn.easy.ocr.main.service.dao.mapper","cn.easyocr.common.dao.mapper"})
 @Slf4j
 public class Bootstrap {
     public static void main(String[] args) {

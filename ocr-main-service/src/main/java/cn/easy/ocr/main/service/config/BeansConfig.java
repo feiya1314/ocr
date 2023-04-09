@@ -1,5 +1,7 @@
 package cn.easy.ocr.main.service.config;
 
+import cn.easyocr.common.thread.RequestLogThreadPool;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,4 +11,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class BeansConfig {
+    @Bean
+    public RequestLogThreadPool requestLogThreadPool() {
+        return new RequestLogThreadPool();
+    }
 }

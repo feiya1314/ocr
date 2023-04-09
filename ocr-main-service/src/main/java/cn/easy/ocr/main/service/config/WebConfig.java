@@ -1,7 +1,9 @@
 package cn.easy.ocr.main.service.config;
 
-import cn.easy.ocr.main.service.interceptor.RequestLogInterceptor;
+import cn.easyocr.common.dao.mapper.OcrRequestLogMapper;
+import cn.easyocr.common.interceptor.RequestLogInterceptor;
 import cn.easyocr.common.interceptor.RequestTraceInterceptor;
+import cn.easyocr.common.thread.RequestLogThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,12 +17,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     @Autowired
-    private RequestLogInterceptor requestLogInterceptor;
+    private OcrRequestLogMapper requestLogMapper;
+
+    @Autowired
+    private RequestLogThreadPool threadPool;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 加入的顺序就是拦截器执行的顺序
         registry.addInterceptor(new RequestTraceInterceptor());
+
+        RequestLogInterceptor requestLogInterceptor = new RequestLogInterceptor(requestLogMapper, threadPool);
         registry.addInterceptor(requestLogInterceptor);
     }
 }

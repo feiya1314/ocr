@@ -1,22 +1,14 @@
-package cn.easy.ocr.main.service.thread;
+package cn.easyocr.common.thread;
 
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
-import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author : feiya
  * @date : 2022/10/5
  * @description :
  */
-@Component
 public class RequestLogThreadPool {
     private final ThreadFactory threadFactory = new CustomizableThreadFactory("ocr-request-log-pool-");
     private final int coreSize = Runtime.getRuntime().availableProcessors() + 1;

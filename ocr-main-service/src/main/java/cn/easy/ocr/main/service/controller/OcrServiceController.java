@@ -1,6 +1,6 @@
 package cn.easy.ocr.main.service.controller;
 
-import cn.easy.ocr.main.service.annotation.ReqLogAnno;
+import cn.easyocr.common.annotation.ReqLogAnno;
 import cn.easy.ocr.main.service.ocr.OcrDelegte;
 import cn.easy.ocr.main.service.request.OcrRequest;
 import cn.easy.ocr.main.service.response.BaseResult;

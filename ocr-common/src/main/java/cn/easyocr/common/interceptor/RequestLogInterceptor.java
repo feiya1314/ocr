@@ -1,15 +1,13 @@
-package cn.easy.ocr.main.service.interceptor;
+package cn.easyocr.common.interceptor;
 
-import cn.easy.ocr.main.service.annotation.ReqLogAnno;
-import cn.easy.ocr.main.service.dao.mapper.OcrRequestLogMapper;
-import cn.easy.ocr.main.service.dao.po.OcrRequestLog;
-import cn.easy.ocr.main.service.thread.RequestLogThreadPool;
+import cn.easyocr.common.annotation.ReqLogAnno;
+import cn.easyocr.common.dao.mapper.OcrRequestLogMapper;
+import cn.easyocr.common.dao.po.OcrRequestLog;
+import cn.easyocr.common.thread.RequestLogThreadPool;
 import cn.easyocr.common.utils.Constants;
 import cn.easyocr.common.utils.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,15 +24,17 @@ import java.util.Set;
  * @date : 2022/10/4
  * @description :
  */
-@Component
 @Slf4j
 public class RequestLogInterceptor implements HandlerInterceptor {
-    @Autowired
-    private OcrRequestLogMapper requestLogMapper;
+    private final OcrRequestLogMapper requestLogMapper;
 
-    @Autowired
-    private RequestLogThreadPool threadPool;
+    private final RequestLogThreadPool threadPool;
     private final Set<String> logPackages = new HashSet<>(Collections.singletonList("cn.easy.ocr.main.service.controller"));
+
+    public RequestLogInterceptor(OcrRequestLogMapper requestLogMapper, RequestLogThreadPool threadPool) {
+        this.requestLogMapper = requestLogMapper;
+        this.threadPool = threadPool;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -84,10 +84,9 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     }
 
     private boolean checkNeedLog(Object handler) {
-        if (!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         String pack = handlerMethod.getBean().getClass().getPackage().getName();
         if (!logPackages.contains(pack)) {
             return true;

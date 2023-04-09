@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.easy.ocr.main.service.dao.mapper.OcrRequestLogMapper">
-    <resultMap id="baseMap" type="cn.easy.ocr.main.service.dao.po.OcrRequestLog">
+<mapper namespace="cn.easyocr.common.dao.mapper.OcrRequestLogMapper">
+    <resultMap id="baseMap" type="cn.easyocr.common.dao.po.OcrRequestLog">
         <result property="id" column="id"/>
         <result property="ip" column="ip"/>
         <result property="userId" column="user_id"/>
