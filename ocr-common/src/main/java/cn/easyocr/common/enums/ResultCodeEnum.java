@@ -1,4 +1,4 @@
-package cn.easy.ocr.main.service.enums;
+package cn.easyocr.common.enums;
 
 /**
  * @author : feiya

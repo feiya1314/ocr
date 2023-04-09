@@ -6,7 +6,7 @@ import cn.easy.ocr.main.service.enums.OcrLangEnum;
 import cn.easy.ocr.main.service.ocr.impl.BaiduOcrImpl;
 import cn.easy.ocr.main.service.BaseTest;
 import cn.easy.ocr.main.service.request.OcrRequest;
-import cn.easy.ocr.main.service.utils.FileUtil;
+import cn.easyocr.common.utils.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

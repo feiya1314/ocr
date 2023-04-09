@@ -1,10 +1,9 @@
-package cn.easy.ocr.main.service.interceptor;
+package cn.easyocr.common.interceptor;
 
-import cn.easy.ocr.main.service.utils.Constants;
-import cn.easy.ocr.main.service.utils.UuidUtil;
+import cn.easyocr.common.utils.Constants;
+import cn.easyocr.common.utils.UuidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,7 +16,6 @@ import java.lang.reflect.Method;
  * @date : 2022/9/11
  * @description :
  */
-@Component
 @Slf4j
 public class RequestTraceInterceptor implements HandlerInterceptor {
     @Override
@@ -46,20 +44,18 @@ public class RequestTraceInterceptor implements HandlerInterceptor {
     }
 
     private String getMethodName(Object handler) {
-        if (!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
             return "";
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
 
         return method.getName();
     }
 
     private String getClassName(Object handler) {
-        if (!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
             return "";
         }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         return handlerMethod.getBean().getClass().getName();
     }
 

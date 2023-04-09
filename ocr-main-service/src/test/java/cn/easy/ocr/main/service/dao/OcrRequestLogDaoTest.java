@@ -4,7 +4,7 @@ import cn.easy.ocr.main.service.BaseTest;
 import cn.easy.ocr.main.service.dao.mapper.OcrRequestLogMapper;
 import cn.easy.ocr.main.service.dao.po.OcrRequestLog;
 import cn.easy.ocr.main.service.query.RequestLogQuery;
-import cn.easy.ocr.main.service.utils.UuidUtil;
+import cn.easyocr.common.utils.UuidUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

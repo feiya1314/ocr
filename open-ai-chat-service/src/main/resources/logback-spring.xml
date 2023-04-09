@@ -102,9 +102,9 @@
     </appender>
 
     <!--设置一个向上传递的appender,所有级别的日志都会输出-->
-    <appender name="ocr-service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ai-chat-service" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--文件路径-->
-        <file>${log.log_dir}/ocr-service.log</file>
+        <file>${log.log_dir}/ai-chat-service.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--归档文件名称-->
             <fileNamePattern>${log.log_dir}/ocr-service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
@@ -117,9 +117,9 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%t|%logger|%method|%X{request_id}|%msg%n</pattern>
         </encoder>
     </appender>
-    <appender name="ocr-interface" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ai-chat-interface" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--文件路径-->
-        <file>${log.log_dir}/ocr-interface.log</file>
+        <file>${log.log_dir}/ai-chat-interface.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--归档文件名称-->
             <fileNamePattern>${log.log_dir}/ocr-interface.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
@@ -138,9 +138,9 @@
         true：表示当前logger的appender-ref和rootLogger的appender-ref都有效。
         当为true 时，logger中的日志会向上 root 传递，同一条日志可能会打印两边，logger中打印一次，root中打印一次
     -->
-    <logger name="cn.easy.ocr.main.service" additivity="false" level="INFO">
+    <logger name="cn.easyocr.ai.chat.service" additivity="false" level="INFO">
         <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
-        <appender-ref ref="ocr-service"/>
+        <appender-ref ref="ai-chat-service"/>
         <!--  <appender-ref ref="INFO"/>-->
     </logger>
 
@@ -150,7 +150,7 @@
     -->
     <logger name="cn.easyocr.common.interceptor.RequestTraceInterceptor" additivity="false" level="INFO">
         <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
-        <appender-ref ref="ocr-interface"/>
+        <appender-ref ref="ai-chat-interface"/>
         <!--        <appender-ref ref="INFO"/>-->
     </logger>
     <!-- root级别   DEBUG -->

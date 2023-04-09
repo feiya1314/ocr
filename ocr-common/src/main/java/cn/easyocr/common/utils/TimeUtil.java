@@ -1,4 +1,4 @@
-package cn.easy.ocr.main.service.utils;
+package cn.easyocr.common.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

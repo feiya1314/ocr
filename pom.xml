@@ -18,10 +18,13 @@
         <mysql.version>8.0.16</mysql.version>
         <redisson.version>3.16.8</redisson.version>
         <jedis.version>4.3.1</jedis.version>
+        <commons-pool.version>2.11.1</commons-pool.version>
     </properties>
 
     <modules>
         <module>ocr-main-service</module>
+        <module>open-ai-chat-service</module>
+        <module>ocr-common</module>
     </modules>
 
     <parent>
@@ -85,6 +88,11 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>

@@ -1,11 +1,11 @@
 package cn.easy.ocr.main.service.controller;
 
 import cn.easy.ocr.main.service.annotation.ReqLogAnno;
-import cn.easy.ocr.main.service.enums.ResultCodeEnum;
 import cn.easy.ocr.main.service.ocr.OcrDelegte;
 import cn.easy.ocr.main.service.request.OcrRequest;
 import cn.easy.ocr.main.service.response.BaseResult;
 import cn.easy.ocr.main.service.vo.OcrResultVo;
+import cn.easyocr.common.enums.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
 package cn.easy.ocr.main.service;
 
-import cn.easy.ocr.main.service.utils.JsonUtils;
+import cn.easyocr.common.utils.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.LinkedList;
