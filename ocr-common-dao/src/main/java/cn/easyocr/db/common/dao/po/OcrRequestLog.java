@@ -1,4 +1,4 @@
-package cn.easyocr.common.dao.po;
+package cn.easyocr.db.common.dao.po;
 
 import lombok.Getter;
 import lombok.Setter;

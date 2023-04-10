@@ -1,9 +1,9 @@
 package cn.easy.ocr.main.service.config;
 
-import cn.easyocr.common.dao.mapper.OcrRequestLogMapper;
-import cn.easyocr.common.interceptor.RequestLogInterceptor;
 import cn.easyocr.common.interceptor.RequestTraceInterceptor;
 import cn.easyocr.common.thread.RequestLogThreadPool;
+import cn.easyocr.db.common.dao.interceptor.RequestLogInterceptor;
+import cn.easyocr.db.common.dao.mapper.OcrRequestLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

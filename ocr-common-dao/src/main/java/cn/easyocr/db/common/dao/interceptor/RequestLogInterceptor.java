@@ -1,11 +1,11 @@
-package cn.easyocr.common.interceptor;
+package cn.easyocr.db.common.dao.interceptor;
 
-import cn.easyocr.common.annotation.ReqLogAnno;
-import cn.easyocr.common.dao.mapper.OcrRequestLogMapper;
-import cn.easyocr.common.dao.po.OcrRequestLog;
 import cn.easyocr.common.thread.RequestLogThreadPool;
 import cn.easyocr.common.utils.Constants;
 import cn.easyocr.common.utils.TimeUtil;
+import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
+import cn.easyocr.db.common.dao.mapper.OcrRequestLogMapper;
+import cn.easyocr.db.common.dao.po.OcrRequestLog;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.util.StringUtils;

@@ -1,10 +1,10 @@
 package cn.easy.ocr.main.service.dao;
 
 import cn.easy.ocr.main.service.BaseTest;
-import cn.easyocr.common.dao.mapper.OcrRequestLogMapper;
-import cn.easyocr.common.dao.po.OcrRequestLog;
-import cn.easyocr.common.dao.query.RequestLogQuery;
 import cn.easyocr.common.utils.UuidUtil;
+import cn.easyocr.db.common.dao.mapper.OcrRequestLogMapper;
+import cn.easyocr.db.common.dao.po.OcrRequestLog;
+import cn.easyocr.db.common.dao.query.RequestLogQuery;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

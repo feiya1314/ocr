@@ -1,4 +1,4 @@
-package cn.easyocr.common.annotation;
+package cn.easyocr.db.common.dao.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

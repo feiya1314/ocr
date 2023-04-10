@@ -1,4 +1,4 @@
-package cn.easyocr.common.dao.query;
+package cn.easyocr.db.common.dao.query;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -25,6 +25,7 @@
         <module>ocr-main-service</module>
         <module>open-ai-chat-service</module>
         <module>ocr-common</module>
+        <module>ocr-common-dao</module>
     </modules>
 
     <parent>
