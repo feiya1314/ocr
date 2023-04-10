@@ -8,23 +8,21 @@ import cn.easyocr.common.enums.ResultCodeEnum;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author : feiya
  * @date : 2022/6/14
  * @description :
  */
-@Controller
+@RestController
 @Slf4j
 public class OcrServiceController {
     @Autowired
     private OcrDelegte ocrDelegte;
 
-    @ResponseBody
     @PostMapping("/ocr")
     @ReqLogAnno(origin = "ocr")
     public BaseResult<OcrResultVo> ocr(@RequestBody OcrRequest request) {
