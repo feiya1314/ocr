@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * @author : feiya
  * @date : 2022/6/14
@@ -25,7 +27,7 @@ public class OcrServiceController {
 
     @PostMapping("/ocr")
     @ReqLogAnno(origin = "ocr")
-    public BaseResult<OcrResultVo> ocr(@RequestBody OcrRequest request) {
+    public BaseResult<OcrResultVo> ocr(@Valid @RequestBody OcrRequest request) {
         log.info("ocr request start");
         BaseResult<OcrResultVo> response = new BaseResult<>();
         OcrResultVo vo = ocrDelegte.invokeOcr(request);

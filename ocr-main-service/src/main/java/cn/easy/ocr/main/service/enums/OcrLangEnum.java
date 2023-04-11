@@ -42,4 +42,14 @@ public enum OcrLangEnum {
     public String getDescription() {
         return description;
     }
+
+    public static OcrLangEnum getEnumByCode(String code) {
+        for (OcrLangEnum lang : OcrLangEnum.values()) {
+            if (lang.code.equals(code)) {
+                return lang;
+            }
+        }
+
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package cn.easy.ocr.main.service.ocr;
 
 import cn.easy.ocr.main.service.dto.OcrContext;
+import cn.easy.ocr.main.service.enums.OcrLangEnum;
 import cn.easy.ocr.main.service.enums.OcrSourceEnum;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.request.OcrRequest;
@@ -27,7 +28,7 @@ public class OcrDelegte {
         log.info("invoke ocr");
         OcrResultVo vo = new OcrResultVo();
         OcrContext.OcrContextBuilder builder = OcrContext.builder();
-        builder.request(request);
+        builder.request(request).lang(OcrLangEnum.getEnumByCode(request.getOcrLang()));
         OcrContext context = builder.build();
         vo.setText(getOcrSource().ocr(context).getImageText());
 
