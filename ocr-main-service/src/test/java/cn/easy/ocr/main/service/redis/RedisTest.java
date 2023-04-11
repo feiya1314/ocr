@@ -1,6 +1,8 @@
 package cn.easy.ocr.main.service.redis;
 
 import cn.easy.ocr.main.service.BaseTest;
+import cn.easyocr.common.redis.JedisManager;
+import cn.easyocr.common.redis.RedissonManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

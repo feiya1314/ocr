@@ -1,4 +1,4 @@
-package cn.easy.ocr.main.service.config;
+package cn.easyocr.ai.chat.service.config;
 
 import cn.easyocr.common.redis.JedisManager;
 import cn.easyocr.common.redis.RedisConfig;

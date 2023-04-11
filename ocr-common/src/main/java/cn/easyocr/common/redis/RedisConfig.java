@@ -1,17 +1,13 @@
-package cn.easy.ocr.main.service.config;
+package cn.easyocr.common.redis;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * @author : feiya
  * @description :
  * @since : 2023/2/5
  */
-@Component
-@ConfigurationProperties(prefix = "redis")
 @Getter
 @Setter
 public class RedisConfig {
