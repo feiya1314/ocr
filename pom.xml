@@ -27,6 +27,9 @@
         <module>open-ai-chat-service</module>
         <module>ocr-common</module>
         <module>ocr-common-dao</module>
+        <module>uni-auth</module>
+        <module>task-service</module>
+        <module>risk-check-service</module>
     </modules>
 
     <parent>
