@@ -7,6 +7,7 @@ import cn.easy.ocr.main.service.enums.OcrSourceEnum;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.ocr.IOcr;
 import cn.easy.ocr.main.service.utils.HttpUtil;
+import cn.easyocr.common.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class PaddleOcrImpl implements IOcr {
     private ObjectMapper objectMapper;
 
     @Override
-    public void afterPropertiesSet() {
+    public void afterPropertiesSet() throws Exception {
 
     }
 
@@ -46,7 +47,9 @@ public class PaddleOcrImpl implements IOcr {
         params.put("base64Img", context.getRequest().getBase64Img());
         params.put("ocrLang", context.getRequest().getOcrLang());
 
-        String text = HttpUtil.doPostForm(serviceConfig.getPaddleSource(), params);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(Constants.REQUEST_TRACE_KEY, context.getRequestId());
+        String text = HttpUtil.doPostForm(serviceConfig.getPaddleSource(), headers, params);
         ocrResult.setImageText(text);
 
         log.info("paddle ocr finish");

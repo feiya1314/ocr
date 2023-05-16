@@ -73,7 +73,7 @@ public class HttpUtil {
         return null;
     }
 
-    public static String doPostForm(String url, Map<String, String> params) {
+    public static String doPostForm(String url, Map<String, String> headers, Map<String, String> params) {
         HttpPost post = new HttpPost(url);
         List<NameValuePair> values = new ArrayList<>();
 
@@ -81,7 +81,11 @@ public class HttpUtil {
             values.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
         HttpEntity httpEntity = new UrlEncodedFormEntity(values, StandardCharsets.UTF_8);
-
+        if (headers != null && !headers.isEmpty()) {
+            for (Map.Entry<String, String> head : headers.entrySet()) {
+                post.setHeader(head.getKey(), head.getValue());
+            }
+        }
         post.setHeader(HttpHeaders.ACCEPT, "application/json, text/plain, */*");
 
         post.setEntity(httpEntity);
@@ -97,5 +101,9 @@ public class HttpUtil {
             log.error("error to exec http post form", e);
         }
         return null;
+    }
+
+    public static String doPostForm(String url, Map<String, String> params) {
+        return doPostForm(url, null, params);
     }
 }

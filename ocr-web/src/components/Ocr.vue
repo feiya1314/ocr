@@ -123,7 +123,7 @@ import { ElLoading } from "element-plus";
 export default {
   name: "ScreenShot",
   components: {
-    //导入组件，这样在当前组件中，使用导入的组件
+    //注册导入组件，这样在当前组件中，使用导入的组件
     HeaderBanner,
     FooterBanner,
     CircleButton,

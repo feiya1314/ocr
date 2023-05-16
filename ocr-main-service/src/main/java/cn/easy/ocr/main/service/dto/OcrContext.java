@@ -19,4 +19,5 @@ public class OcrContext {
     private byte[] img;
     private boolean detectLanguage;
     private OcrLangEnum lang;
+    private String requestId;
 }

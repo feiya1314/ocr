@@ -1,6 +1,6 @@
 #! /bin/sh
 
-#crontab -e
+#crontab -e 每5分钟 */5 * * * *
 # * * * * * /home/ocr/monitor.sh >> /home/ocr/logs/cron.log 2>&1
 cd /home/ocr
 

@@ -5,8 +5,10 @@ import cn.easy.ocr.main.service.enums.OcrLangEnum;
 import cn.easy.ocr.main.service.enums.OcrSourceEnum;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.request.OcrRequest;
+import cn.easyocr.common.utils.Constants;
 import cn.easy.ocr.main.service.vo.OcrResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,8 @@ public class OcrDelegte {
         log.info("invoke ocr");
         OcrResultVo vo = new OcrResultVo();
         OcrContext.OcrContextBuilder builder = OcrContext.builder();
-        builder.request(request).lang(OcrLangEnum.getEnumByCode(request.getOcrLang()));
+        String reqId = MDC.get(Constants.REQUEST_TRACE_KEY);
+        builder.requestId(reqId).request(request).lang(OcrLangEnum.getEnumByCode(request.getOcrLang()));
         OcrContext context = builder.build();
         vo.setText(getOcrSource().ocr(context).getImageText());
 

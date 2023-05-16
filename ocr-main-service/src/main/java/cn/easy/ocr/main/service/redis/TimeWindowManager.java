@@ -1,5 +1,6 @@
 package cn.easy.ocr.main.service.redis;
 
+import cn.easyocr.common.redis.JedisManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedList;
