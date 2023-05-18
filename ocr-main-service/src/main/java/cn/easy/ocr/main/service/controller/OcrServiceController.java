@@ -2,9 +2,9 @@ package cn.easy.ocr.main.service.controller;
 
 import cn.easy.ocr.main.service.ocr.OcrDelegte;
 import cn.easy.ocr.main.service.request.OcrRequest;
-import cn.easy.ocr.main.service.response.BaseResult;
 import cn.easy.ocr.main.service.vo.OcrResultVo;
 import cn.easyocr.common.enums.ResultCodeEnum;
+import cn.easyocr.common.resp.BaseResponse;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ public class OcrServiceController {
 
     @PostMapping("/ocr")
     @ReqLogAnno(origin = "ocr")
-    public BaseResult<OcrResultVo> ocr(@Valid @RequestBody OcrRequest request) {
+    public BaseResponse<OcrResultVo> ocr(@Valid @RequestBody OcrRequest request) {
         log.info("ocr request start");
-        BaseResult<OcrResultVo> response = new BaseResult<>();
+        BaseResponse<OcrResultVo> response = new BaseResponse<>();
         OcrResultVo vo = ocrDelegte.invokeOcr(request);
         response.setData(vo);
         response.setCode(ResultCodeEnum.SUCCESS.getCode());

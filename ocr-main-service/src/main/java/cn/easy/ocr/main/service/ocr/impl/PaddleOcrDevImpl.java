@@ -6,9 +6,9 @@ import cn.easy.ocr.main.service.dto.OcrResult;
 import cn.easy.ocr.main.service.enums.OcrSourceEnum;
 import cn.easy.ocr.main.service.exception.OcrServiceException;
 import cn.easy.ocr.main.service.ocr.IOcr;
-import cn.easy.ocr.main.service.response.BaseResult;
 import cn.easy.ocr.main.service.utils.HttpUtil;
 import cn.easy.ocr.main.service.vo.OcrResultVo;
+import cn.easyocr.common.resp.BaseResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,9 +61,9 @@ public class PaddleOcrDevImpl implements IOcr {
         String text = HttpUtil.doPostJson(serviceConfig.getPaddleSource(), jsonBody);
         if (StringUtils.hasText(text)) {
             try {
-                BaseResult<OcrResultVo> result = objectMapper.readValue(text,
-                        new TypeReference<BaseResult<OcrResultVo>>() {
-                });
+                BaseResponse<OcrResultVo> result = objectMapper.readValue(text,
+                        new TypeReference<>() {
+                        });
 
                 ocrResult.setImageText(result.getData().getText());
                 log.info("paddle ocr finish");
