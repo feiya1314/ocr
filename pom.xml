@@ -18,6 +18,7 @@
         <mysql.version>8.0.16</mysql.version>
         <redisson.version>3.16.8</redisson.version>
         <jedis.version>4.3.1</jedis.version>
+        <okhttp.version>4.9.3</okhttp.version>
         <validation.version>2.7.0</validation.version>
         <commons-pool.version>2.11.1</commons-pool.version>
     </properties>
@@ -66,6 +67,17 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-sse</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
             </dependency>
 
             <dependency>

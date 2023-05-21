@@ -11,7 +11,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatContext {
-    private String conversationId;
-
-    private String parentMessageId;
+    private AiChatReq aiChatReq;
 }

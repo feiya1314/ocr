@@ -19,9 +19,17 @@ public class AiChatReq {
     @NotBlank(message = "问题不能为空")
     private String prompt;
 
-    private ChatContext options;
+    private ChatOptions options;
 
     private Integer temperature;
 
     private Integer topP;
+
+    @Getter
+    @Setter
+    public static class ChatOptions {
+        private String conversationId;
+
+        private String parentMessageId;
+    }
 }

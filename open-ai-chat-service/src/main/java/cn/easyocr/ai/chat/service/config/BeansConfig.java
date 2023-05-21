@@ -20,23 +20,23 @@ public class BeansConfig {
         return new RequestLogThreadPool();
     }
 
-    @Bean
-    public JedisManager jedisManager() {
-        JedisManager jedisManager = new JedisManager(redisConfig());
-        jedisManager.init();
-        return jedisManager;
-    }
-
-    @Bean
-    public RedissonManager redissonManager() {
-        RedissonManager redissonManager = new RedissonManager(redisConfig());
-        redissonManager.init();
-        return redissonManager;
-    }
-
-    @ConfigurationProperties(prefix = "redis")
-    @Bean
-    public RedisConfig redisConfig() {
-        return new RedisConfig();
-    }
+//    @Bean
+//    public JedisManager jedisManager() {
+//        JedisManager jedisManager = new JedisManager(redisConfig());
+//        jedisManager.init();
+//        return jedisManager;
+//    }
+//
+//    @Bean
+//    public RedissonManager redissonManager() {
+//        RedissonManager redissonManager = new RedissonManager(redisConfig());
+//        redissonManager.init();
+//        return redissonManager;
+//    }
+//
+//    @ConfigurationProperties(prefix = "redis")
+//    @Bean
+//    public RedisConfig redisConfig() {
+//        return new RedisConfig();
+//    }
 }
