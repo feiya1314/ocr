@@ -1,9 +1,6 @@
 package cn.easyocr.ai.chat.service.listener;
 
-import com.alibaba.fastjson.JSON;
-import com.plexpt.chatgpt.entity.chat.ChatChoice;
-import com.plexpt.chatgpt.entity.chat.ChatCompletionResponse;
-import com.plexpt.chatgpt.entity.chat.Message;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
@@ -11,7 +8,7 @@ import okhttp3.sse.EventSourceListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -45,11 +42,38 @@ public class SseEventListener extends EventSourceListener {
 
     @Override
     public void onFailure(@NotNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
-        super.onFailure(eventSource, t, response);
+        log.error("Stream connection error", t);
+
+        String responseText = "";
+
+        if (Objects.nonNull(response)) {
+            responseText = response.body().toString();
+        }
+
+        log.error("response：{}", responseText);
+
+        String forbiddenText = "Your access was terminated due to violation of our policies";
+
+        if (StrUtil.contains(responseText, forbiddenText)) {
+            log.error("Chat session has been terminated due to policy violation");
+            log.error("检测到号被封了");
+        }
+
+        String overloadedText = "That model is currently overloaded with other requests.";
+
+        if (StrUtil.contains(responseText, overloadedText)) {
+            log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
+        }
+
+        this.onError(t, responseText);
     }
 
     @Override
     public void onOpen(@NotNull EventSource eventSource, @NotNull Response response) {
         super.onOpen(eventSource, response);
+    }
+
+    public void onError(Throwable t, String response) {
+
     }
 }
