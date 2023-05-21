@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 3002
   servlet:
     # 给所有controller的url增加/data前缀
     context-path: /api/v1
@@ -29,13 +29,11 @@ mybatis:
   #指定xml映射文件位置，多个时逗号分隔
   mapper-locations: classpath:mapper/*Mapper.xml
 
-ocr:
-  service:
-    paddleSource: test
-    baiduSource:
-      appID: test
-      apiKey: test
-      secretKey: test
+chat:
+  api2D:
+    apiKey: dev
+  chatGpt:
+    apiKey: dev
 
 redis:
   host: 127.0.0.1

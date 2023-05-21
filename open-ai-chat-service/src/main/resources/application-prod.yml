@@ -29,13 +29,12 @@ mybatis:
   #指定xml映射文件位置，多个时逗号分隔
   mapper-locations: classpath:mapper/*Mapper.xml
 
-ocr:
-  service:
-    paddleSource: http://127.0.0.1:8000/ocr
-    baiduSource:
-      appID: test
-      apiKey: test
-      secretKey: test
+chat:
+  api2d:
+    apiKey:dev
+
+  gpt:
+    apiKey:dev
 
 redis:
   host: 127.0.0.1
