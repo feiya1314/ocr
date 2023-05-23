@@ -1,11 +1,20 @@
 package cn.easyocr.ai.chat.service.controller;
 
 import cn.easyocr.ai.chat.service.config.ChatConfig;
+import cn.easyocr.ai.chat.service.enums.ChatRole;
+import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
+import cn.easyocr.ai.chat.service.listener.SseEvent;
+import cn.easyocr.ai.chat.service.listener.SseEventListener;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
+import cn.easyocr.ai.chat.service.req.ChatGptReq;
 import cn.easyocr.ai.chat.service.resp.AiChatMsgResp;
 import cn.easyocr.common.utils.JsonUtils;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.sse.EventSource;
+import okhttp3.sse.EventSources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,12 +22,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author : feiya
@@ -33,40 +46,133 @@ public class AiChatController {
 
     @PostMapping(value = "/chat-process", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ReqLogAnno(origin = "ai-chat")
-    public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq,
-                                                             HttpServletResponse response, HttpServletRequest request) {
+    public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq) {
         log.info("chatProcess request start");
 
         ChatConfig.ChatGpt gpt = config.getChatGpt();
-        // OcrResultVo vo = ocrDelegte.invokeOcr(request);
-        StreamingResponseBody responseBody = outputStream -> {
-            String text = "我是GPT3.5系统版本，是一种自然语言处理人工智能技术。我的主要功能是理解和生成自然语言文本，如回答问题、编写文章";
-            char[] chars = text.toCharArray();
 
-            AiChatMsgResp resp = new AiChatMsgResp();
-            resp.setId("7GqvCVoecxmttgaJDqaV8auFyN0Yp");
-            resp.setText("");
-            resp.setRole("assistant");
-            resp.setParentMessageId("66639c80-b1bf-4a84-b76f-43efaeb4bbaf");
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.connectTimeout(60, TimeUnit.SECONDS);
+        clientBuilder.writeTimeout(60, TimeUnit.SECONDS);
+        clientBuilder.readTimeout(60, TimeUnit.SECONDS);
 
-            for (char c : chars) {
-                resp.setText(resp.getText() + c);
-                String responseJson = JsonUtils.toJson(resp) + System.lineSeparator();
-                outputStream.write(responseJson.getBytes(StandardCharsets.UTF_8));
-                outputStream.flush();
+        OkHttpClient client = clientBuilder.build();
+        EventSource.Factory factory = EventSources.createFactory(client);
+
+        ChatGptReq chatGptReq = new ChatGptReq();
+        String requestBody = JsonUtils.toJson(chatGptReq);
+
+        okhttp3.MediaType mediaType = okhttp3.MediaType.Companion.parse("application/json;charset=UTF-8");
+        okhttp3.RequestBody okHttpReqBody = okhttp3.RequestBody.Companion.create(requestBody, mediaType);
+
+        Request request = new Request.Builder()
+                .url("http://127.0.0.1:8081/api/v1/stream")
+                .post(okHttpReqBody)
+                .build();
+
+        GptStreamResponse streamResponse = new GptStreamResponse();
+        ISseEventHandler<SseEvent> eventHandler = new ISseEventHandler<>() {
+            @Override
+            public void accept(SseEvent sseEvent) {
+                try {
+                    streamResponse.sseEvent.put(sseEvent);
+                } catch (InterruptedException e) {
+                    log.error("sseEvent put InterruptedException", e);
+                }
+            }
+
+            @Override
+            public void onClose() {
+                streamResponse.onComplete();
+            }
+
+            @Override
+            public void onFailure() {
 
             }
         };
+        SseEventListener sseEventListener = new SseEventListener(eventHandler);
 
-
+        factory.newEventSource(request, sseEventListener);
         HttpHeaders headers = new HttpHeaders();
-//        headers.set(HttpHeaders.TRANSFER_ENCODING, null);
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=result.txt");
 
-        log.info("chatProcess request finish");
-        return ResponseEntity.ok().headers(headers).body(responseBody);
+        return ResponseEntity.ok().headers(headers).body(streamResponse);
+    }
 
+    public static class GptStreamResponse implements StreamingResponseBody {
+        public final SynchronousQueue<SseEvent> sseEvent = new SynchronousQueue<>();
+        private volatile boolean working = true;
+        private String text = "";
 
+        @Override
+        public void writeTo(OutputStream outputStream) throws IOException {
+            while (working) {
+                try {
+                    SseEvent event = sseEvent.take();
+                    AiChatMsgResp resp = new AiChatMsgResp();
+                    resp.setId(event.getId());
+
+                    text = text + event.getData();
+                    resp.setText(text);
+                    resp.setRole(ChatRole.ASSISTANT.getRole());
+                    resp.setParentMessageId("parent_id");
+
+                    String respJson = JsonUtils.toJson(resp) + System.lineSeparator();
+                    outputStream.write(respJson.getBytes(StandardCharsets.UTF_8));
+                    outputStream.flush();
+                } catch (InterruptedException e) {
+                    log.error("GptStreamResponse sseEvent take Interrupted", e);
+                }
+            }
+        }
+
+        public void onComplete() {
+            working = false;
+            SseEvent.SseEventBuilder sseEventBuilder = SseEvent.builder()
+                    .id("-1")
+                    .event("finish")
+                    .data("");
+            try {
+                sseEvent.put(sseEventBuilder.build());
+            } catch (InterruptedException e) {
+                log.error("GptStreamResponse complete Interrupted", e);
+            }
+        }
+    }
+
+    @PostMapping(value = "/chat-stream")
+    @ReqLogAnno(origin = "ai-chat")
+    public SseEmitter chatStreamResponse(@Valid @RequestBody AiChatReq aiChatReq) {
+        // 超时时间60s，超时后服务端主动关闭连接 todo cache请求连接
+        SseEmitter emmitter = new SseEmitter(60 * 1000L);
+        emmitter.onTimeout(() -> {
+            log.warn("emmitter timeout");
+        });
+
+        emmitter.onCompletion(() -> {
+            log.warn("emmitter onCompletion");
+        });
+
+        Random random = new Random();
+        new Thread(() -> {
+            try {
+                String text = "response for:" + aiChatReq.getPrompt();
+                char[] chars = text.toCharArray();
+                int i = 1;
+                for (char c : chars) {
+                    SseEmitter.SseEventBuilder sb = SseEmitter.event().id(String.valueOf(i++)).data(String.valueOf(c));
+                    emmitter.send(sb);
+                    Thread.sleep(300 + random.nextInt(200));
+                }
+                emmitter.complete();
+            } catch (Exception e) {
+                log.error("emmitter send error", e);
+            }
+        });
+
+        return emmitter;
     }
 }
 

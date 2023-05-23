@@ -1,5 +1,6 @@
 package cn.easyocr.ai.chat.service.listener;
 
+import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
@@ -9,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * @author : feiya
@@ -18,26 +18,26 @@ import java.util.function.Consumer;
  */
 @Slf4j
 public class SseEventListener extends EventSourceListener {
-    private Consumer<SseEvent> eventConsumer;
+    private final ISseEventHandler<SseEvent> eventConsumer;
 
-    public SseEventListener(Consumer<SseEvent> eventConsumer) {
+    public SseEventListener(ISseEventHandler<SseEvent> eventConsumer) {
         this.eventConsumer = eventConsumer;
     }
 
     @Override
     public void onClosed(@NotNull EventSource eventSource) {
-        super.onClosed(eventSource);
+        this.eventConsumer.onClose();
     }
 
     @Override
     public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type,
                         @NotNull String data) {
-        SseEvent sseEvent = new SseEvent();
-        sseEvent.setId(id);
-        sseEvent.setEvent(type);
-        sseEvent.setData(data);
+        SseEvent.SseEventBuilder sseEvent = SseEvent.builder()
+                .id(id)
+                .event(type)
+                .data(data);
 
-        eventConsumer.accept(sseEvent);
+        this.eventConsumer.accept(sseEvent.build());
     }
 
     @Override
@@ -65,15 +65,11 @@ public class SseEventListener extends EventSourceListener {
             log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
         }
 
-        this.onError(t, responseText);
+        this.eventConsumer.onFailure();
     }
 
     @Override
     public void onOpen(@NotNull EventSource eventSource, @NotNull Response response) {
         super.onOpen(eventSource, response);
-    }
-
-    public void onError(Throwable t, String response) {
-
     }
 }
