@@ -1,7 +1,7 @@
 package cn.easyocr.ai.chat.service.service;
 
-import cn.easyocr.ai.chat.service.req.ChatContext;
-import cn.easyocr.ai.chat.service.resp.AiChatMsgResp;
+import cn.easyocr.ai.chat.service.context.ChatContext;
+import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 
 /**
  * @author : feiya
@@ -10,7 +10,7 @@ import cn.easyocr.ai.chat.service.resp.AiChatMsgResp;
  */
 public class AiChatServiceAdapter implements IAiChatService {
     @Override
-    public AiChatMsgResp chat(ChatContext chatContext) {
+    public ChatServiceResult chat(ChatContext chatContext) {
         return null;
     }
 }

@@ -36,7 +36,7 @@ public class ChatGptReq {
      * 用于控制生成文本的创造性和随机性程度,值越大，生成的结果越随机，更低，则结果更确定，意思是同一个问题，每次得到的答案和上次是否一致
      * 同一个问题，每次得到的答案不一定完全一致
      */
-    private Integer temperature;
+    private Double temperature;
 
     /**
      * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
@@ -49,7 +49,7 @@ public class ChatGptReq {
      * 较小的"top_p"值会限制模型从概率最高的候选词中进行选择，从而生成较为保守和确定性的回答。而较大的"top_p"值允许更多候选词参与选择，增加回答的多样性。
      * 可以通过调整"top_p"参数来控制ChatGPT生成回答的多样性程度。较小的值会使回答更加集中和可控，而较大的值会产生更多不同的可能性和多样性。根据具体应用需求，您可以自行设置合适的"top_p"值。
      */
-    private Integer top_p;
+    private Double top_p;
 
     /**
      * How many chat completion choices to generate for each input message.
@@ -85,7 +85,7 @@ public class ChatGptReq {
      * <p>
      * 请注意，"stop"参数的效果依赖于模型的训练数据和模型的理解能力。确保选择的停止标记在模型的上下文中有明确的含义和可识别性。
      */
-    private String[] stop;
+    private List<String> stop;
 
     /**
      * The maximum number of tokens to generate in the chat completion.
@@ -98,14 +98,14 @@ public class ChatGptReq {
      * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so
      * far, increasing the model's likelihood to talk about new topics.
      */
-    private Integer presence_penalty;
+    private Double presence_penalty;
 
     /**
      * Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text
      * so far,
      * decreasing the model's likelihood to repeat the same line verbatim.
      */
-    private Integer frequency_penalty;
+    private Double frequency_penalty;
 
     /**
      * Modify the likelihood of specified tokens appearing in the completion.

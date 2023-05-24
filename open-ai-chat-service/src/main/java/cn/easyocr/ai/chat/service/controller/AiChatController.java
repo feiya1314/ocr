@@ -1,19 +1,11 @@
 package cn.easyocr.ai.chat.service.controller;
 
-import cn.easyocr.ai.chat.service.config.ChatConfig;
-import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
-import cn.easyocr.ai.chat.service.listener.SseEvent;
-import cn.easyocr.ai.chat.service.listener.SseEventListener;
+import cn.easyocr.ai.chat.service.context.ChatContext;
+import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
-import cn.easyocr.ai.chat.service.req.ChatGptReq;
-import cn.easyocr.ai.chat.service.resp.GptStreamResp;
-import cn.easyocr.common.utils.JsonUtils;
+import cn.easyocr.ai.chat.service.service.IAiChatService;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.sse.EventSource;
-import okhttp3.sse.EventSources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,7 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 import javax.validation.Valid;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author : feiya
@@ -37,57 +28,17 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AiChatController {
     @Autowired
-    private ChatConfig config;
+    private IAiChatService aiChatService;
 
     @PostMapping(value = "/chat-process", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ReqLogAnno(origin = "ai-chat")
     public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq) {
         log.info("chatProcess request start");
-        ChatConfig.ChatGpt gpt = config.getChatGpt();
+        ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder().aiChatReq(aiChatReq);
+        ChatServiceResult chatServiceResult = aiChatService.chat(chatContextBuilder.build());
 
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.connectTimeout(60, TimeUnit.SECONDS);
-        clientBuilder.writeTimeout(60, TimeUnit.SECONDS);
-        clientBuilder.readTimeout(60, TimeUnit.SECONDS);
+        StreamingResponseBody streamResponse = chatServiceResult.getStreamingResponseBody();
 
-        OkHttpClient client = clientBuilder.build();
-        EventSource.Factory factory = EventSources.createFactory(client);
-
-        // ChatGptReq chatGptReq = new ChatGptReq();
-        String requestBody = JsonUtils.toJson(aiChatReq);
-
-        okhttp3.MediaType mediaType = okhttp3.MediaType.Companion.parse("application/json;charset=UTF-8");
-        okhttp3.RequestBody okHttpReqBody = okhttp3.RequestBody.Companion.create(requestBody, mediaType);
-
-        Request request = new Request.Builder()
-                .url(gpt.getUrl())
-                .post(okHttpReqBody)
-                .build();
-
-        GptStreamResp streamResponse = new GptStreamResp();
-        ISseEventHandler<SseEvent> eventHandler = new ISseEventHandler<>() {
-            @Override
-            public void accept(SseEvent sseEvent) {
-                try {
-                    streamResponse.sseEvent.put(sseEvent);
-                } catch (InterruptedException e) {
-                    log.error("sseEvent put InterruptedException", e);
-                }
-            }
-
-            @Override
-            public void onClose() {
-                streamResponse.onComplete();
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        };
-        SseEventListener sseEventListener = new SseEventListener(eventHandler);
-
-        factory.newEventSource(request, sseEventListener);
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=result.txt");

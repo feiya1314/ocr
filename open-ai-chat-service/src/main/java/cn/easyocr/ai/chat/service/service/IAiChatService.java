@@ -1,7 +1,7 @@
 package cn.easyocr.ai.chat.service.service;
 
-import cn.easyocr.ai.chat.service.req.ChatContext;
-import cn.easyocr.ai.chat.service.resp.AiChatMsgResp;
+import cn.easyocr.ai.chat.service.context.ChatContext;
+import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 
 /**
  * @author : feiya
@@ -9,5 +9,5 @@ import cn.easyocr.ai.chat.service.resp.AiChatMsgResp;
  * @description :
  */
 public interface IAiChatService {
-    AiChatMsgResp chat(ChatContext chatContext);
+    ChatServiceResult chat(ChatContext chatContext);
 }

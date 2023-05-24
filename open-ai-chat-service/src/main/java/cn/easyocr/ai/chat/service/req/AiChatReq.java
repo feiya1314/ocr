@@ -24,12 +24,4 @@ public class AiChatReq {
     private Integer temperature;
 
     private Integer topP;
-
-    @Getter
-    @Setter
-    public static class ChatOptions {
-        private String conversationId;
-
-        private String parentMessageId;
-    }
 }

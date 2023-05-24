@@ -1,5 +1,7 @@
-package cn.easyocr.ai.chat.service.req;
+package cn.easyocr.ai.chat.service.context;
 
+import cn.easyocr.ai.chat.service.req.AiChatReq;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 public class ChatContext {
     private AiChatReq aiChatReq;
 }

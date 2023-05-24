@@ -20,4 +20,16 @@ public class Usage {
 
     @JsonProperty("total_tokens")
     private long totalTokens;
+
+    @JsonProperty("pre_token_count")
+    private long preTokenCount;
+
+    @JsonProperty("pre_total")
+    private long preTotal;
+
+    @JsonProperty("adjust_total")
+    private long adjustTotal;
+
+    @JsonProperty("final_total")
+    private long finalTotal;
 }
