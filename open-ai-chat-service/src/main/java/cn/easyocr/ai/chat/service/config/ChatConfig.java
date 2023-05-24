@@ -24,6 +24,7 @@ public class ChatConfig {
     @ConfigurationProperties(prefix = "chat.chatGpt")
     public static class ChatGpt {
         private String apiKey;
+        private String url;
     }
 
     @Getter
