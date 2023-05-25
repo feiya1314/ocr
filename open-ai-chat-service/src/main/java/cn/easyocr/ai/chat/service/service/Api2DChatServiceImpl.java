@@ -4,20 +4,16 @@ import cn.easyocr.ai.chat.service.config.ChatConfig;
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
+import cn.easyocr.ai.chat.service.helper.HttpClientHelper;
 import cn.easyocr.ai.chat.service.listener.SseEvent;
 import cn.easyocr.ai.chat.service.listener.SseEventListener;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
 import cn.easyocr.ai.chat.service.resp.GptStreamResp;
 import cn.easyocr.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.sse.EventSource;
-import okhttp3.sse.EventSources;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author : feiya
@@ -30,6 +26,9 @@ public class Api2DChatServiceImpl implements IAiChatService {
     @Autowired
     private ChatConfig config;
 
+    @Autowired
+    private HttpClientHelper httpHelper;
+
     @Override
     public ChatServiceResult chat(ChatContext chatContext) {
         ChatServiceResult result = new ChatServiceResult();
@@ -41,20 +40,14 @@ public class Api2DChatServiceImpl implements IAiChatService {
 
     private GptStreamResp callChatApi(AiChatReq aiChatReq) {
         GptStreamResp streamResponse = new GptStreamResp();
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.connectTimeout(60, TimeUnit.SECONDS);
-        clientBuilder.writeTimeout(60, TimeUnit.SECONDS);
-        clientBuilder.readTimeout(60, TimeUnit.SECONDS);
 
-        OkHttpClient client = clientBuilder.build();
-        EventSource.Factory factory = EventSources.createFactory(client);
         String requestBody = JsonUtils.toJson(aiChatReq);
 
         okhttp3.MediaType mediaType = okhttp3.MediaType.Companion.parse("application/json;charset=UTF-8");
         okhttp3.RequestBody okHttpReqBody = okhttp3.RequestBody.Companion.create(requestBody, mediaType);
 
         Request request = new Request.Builder().url(config.getApi2D().getUrl()).post(okHttpReqBody).build();
-        factory.newEventSource(request, buildEventListener(streamResponse));
+        httpHelper.eventSourceFactory().newEventSource(request, buildEventListener(streamResponse));
 
         return streamResponse;
     }
