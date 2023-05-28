@@ -117,7 +117,7 @@
                             <!-- 因为我们将第三方jar和本项目jar放在同一个目录下，这里就使用./ -->
                             <classpathPrefix>lib/</classpathPrefix>
                             <!-- 项目启动类 -->
-                            <mainClass>cn.easy.ocr.main.service.Bootstrap</mainClass>
+                            <mainClass>cn.easyocr.ai.chat.service.Bootstrap</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>config/</Class-Path>
@@ -130,7 +130,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
-                    <finalName>ocr-main-service</finalName>
+                    <finalName>easy-chat-service</finalName>
                     <descriptors>
                         <!--具体的配置文件-->
                         <descriptor>src/main/assembly/assembly.xml</descriptor>

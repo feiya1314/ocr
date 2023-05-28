@@ -7,6 +7,7 @@ import cn.easyocr.ai.chat.service.service.IAiChatService;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.Random;
 @Slf4j
 public class AiChatController {
     @Autowired
+    @Qualifier("aiChatServiceAdapter")
     private IAiChatService aiChatService;
 
     @PostMapping(value = "/chat-process", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -68,7 +70,7 @@ public class AiChatController {
                 for (char c : chars) {
                     SseEmitter.SseEventBuilder sb = SseEmitter.event().id(String.valueOf(i++)).data(String.valueOf(c));
                     emmitter.send(sb);
-                    Thread.sleep(200 + random.nextInt(100));
+                    Thread.sleep(100 + random.nextInt(50));
                 }
                 emmitter.complete();
             } catch (Exception e) {

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easyocr.ai.chat.service.dao.mapper.ChatMsgsMapper">
+    <resultMap id="baseMap" type="cn.easyocr.ai.chat.service.dao.po.ChatMsgs">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="model" column="model"/>
+        <result property="chatId" column="chat_id"/>
+        <result property="msgId" column="msg_id"/>
+        <result property="nextMsgId" column="n_msg_id"/>
+        <result property="content" column="content"/>
+        <result property="role" column="role"/>
+        <result property="timestamp" column="timestamp"/>
+        <result property="ptd" column="ptd"/>
+    </resultMap>
+
+    <sql id="baseFindCondition">
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="chatId != null">
+                AND chat_id = #{chatId}
+            </if>
+            <if test="msgId != null">
+                AND msg_id = #{msgId}
+            </if>
+            <if test="nextMsgId != null">
+                AND n_msg_id = #{nextMsgId}
+            </if>
+            <if test="role != null">
+                AND role = #{role}
+            </if>
+            <if test="ptd != null">
+                AND ptd = #{ptd}
+            </if>
+        </where>
+    </sql>
+    <select id="find" resultMap="baseMap">
+        select
+            id,
+            user_id,
+            model,
+            chat_id,
+            msg_id,
+            n_msg_id,
+            content,
+            role,
+            timestamp,
+            ptd
+        from chat_msgs
+        <include refid="baseFindCondition" />
+    </select>
+
+    <select id="count" resultMap="baseMap">
+        select count(1) from chat_msgs
+        <include refid="baseFindCondition" />
+    </select>
+
+    <select id="findBaseMsg" resultMap="baseMap">
+        select
+            id,
+            user_id,
+            chat_id,
+            msg_id,
+            n_msg_id,
+            content
+        from chat_msgs
+        <include refid="baseFindCondition" />
+    </select>
+
+    <insert id="insert">
+        INSERT INTO chat_msgs
+        (
+        <if test="userId != null">
+            user_id,
+        </if>
+            model,
+            chat_id,
+            msg_id,
+        <if test="nextMsgId != null">
+            n_msg_id,
+        </if>
+        <if test="content != null">
+            content,
+        </if>
+            role,
+            timestamp,
+            ptd
+        )
+        VALUES
+        (
+        <if test="userId != null">
+            #{userId},
+        </if>
+        #{model},
+        #{chatId},
+        #{msgId},
+        <if test="nextMsgId != null">
+            #{nextMsgId},
+        </if>
+        <if test="content != null">
+            #{content},
+        </if>
+        #{role},
+        #{timestamp},
+        #{ptd}
+        )
+    </insert>
+
+    <update id="update">
+        update chat_msgs
+        set
+        <if test="nextMsgId != null">
+            n_msg_id=#{nextMsgId},
+        </if>
+        <if test="content != null">
+            content=#{content},
+        </if>
+        timestamp=#{timestamp}
+        <where>
+            id = #{id}
+        </where>
+    </update>
+</mapper>

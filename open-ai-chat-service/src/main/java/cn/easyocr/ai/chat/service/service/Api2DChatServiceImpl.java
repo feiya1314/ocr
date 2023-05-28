@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @date : 2023/5/21
  * @description :
  */
-@Component
+@Component("api2DChatService")
 @Slf4j
 public class Api2DChatServiceImpl implements IAiChatService {
     @Autowired
@@ -46,7 +46,10 @@ public class Api2DChatServiceImpl implements IAiChatService {
         okhttp3.MediaType mediaType = okhttp3.MediaType.Companion.parse("application/json;charset=UTF-8");
         okhttp3.RequestBody okHttpReqBody = okhttp3.RequestBody.Companion.create(requestBody, mediaType);
 
-        Request request = new Request.Builder().url(config.getApi2D().getUrl()).post(okHttpReqBody).build();
+        Request request = new Request.Builder()
+                .url(config.getApi2D().getUrl())
+                .post(okHttpReqBody)
+                .build();
         httpHelper.eventSourceFactory().newEventSource(request, buildEventListener(streamResponse));
 
         return streamResponse;
