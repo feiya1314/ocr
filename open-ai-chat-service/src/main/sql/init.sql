@@ -9,6 +9,7 @@ CREATE TABLE `chat_msgs` (
    `content` TEXT DEFAULT NULL COMMENT '消息信息，请求的text 或者 ai返回的文本信息',
    `role` tinyint(1) NOT NULL COMMENT '消息对应角色',
    `timestamp` BIGINT NOT NULL COMMENT '请求时间',
-   `ptd` INT NOT NULL COMMENT '请求日期yyyyMMdd'
+   `ptd` INT NOT NULL COMMENT '请求日期yyyyMMdd',
+   UNIQUE KEY `chat_msg` (`chat_id`,`msg_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT "请求消息表";
 
