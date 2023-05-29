@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `chat_msgs`;
 CREATE TABLE `chat_msgs` (
    `id` bigint(20) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主表id',
    `user_id` VARCHAR(64) DEFAULT NULL COMMENT '用户id',
-   `model` tinyint(1) NOT NULL COMMENT '使用的模型',
+   `model` tinyint(1) DEFAULT NULL COMMENT '使用的模型',
    `chat_id` VARCHAR(64) NOT NULL COMMENT '一个对话id，包含多个消息，用户提问和ai回答',
    `msg_id` VARCHAR(64) NOT NULL COMMENT '一个对话下的消息id',
    `n_msg_id` VARCHAR(64) DEFAULT NULL COMMENT '当前消息的下一个消息id',

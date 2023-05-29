@@ -102,22 +102,41 @@ public class AiChatServiceAdapter implements IAiChatService {
      * @param aiChatReq req
      */
     private void startNewChat(AiChatReq aiChatReq) {
-        ChatMsgs.ChatMsgsBuilder chatMsgs = ChatMsgs.builder();
-        String systemMsgId = UuidUtil.getUuid();
         String chatId = UuidUtil.getUuid();
-        //  chatMsgs.setUserId();
-        chatMsgs.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
+        String userReqMsgId = UuidUtil.getUuid();
+        String respMsgId = UuidUtil.getUuid();
+
+        recordSysMsg(aiChatReq, chatId, userReqMsgId);
+
+        ChatMsgs.ChatMsgsBuilder reqMsgBuilder = ChatMsgs.builder();
+        reqMsgBuilder.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
                 .chatId(chatId)
-                .msgId(systemMsgId)
+                .msgId(userReqMsgId)
+                .nextMsgId(respMsgId)
+                .content(aiChatReq.getPrompt())
+                .role(ChatRole.USER.getRoleId())
+                .timestamp(System.currentTimeMillis())
+                .ptd(TimeUtil.getPtd());
+
+        chatMsgsMapper.insert(reqMsgBuilder.build());
+
+
+    }
+
+    private void recordSysMsg(AiChatReq aiChatReq, String chatId, String nexMsgId) {
+        ChatMsgs.ChatMsgsBuilder sysMsgBuilder = ChatMsgs.builder();
+        //  chatMsgs.setUserId();
+        sysMsgBuilder.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
+                .chatId(chatId)
+                .msgId(UuidUtil.getUuid())
+                .nextMsgId(nexMsgId)
                 .content(aiChatReq.getSystemMessage())
                 .role(ChatRole.SYSTEM.getRoleId())
                 .timestamp(System.currentTimeMillis())
                 .ptd(TimeUtil.getPtd());
 
-        ChatMsgs systemMsg = chatMsgs.build();
+        ChatMsgs systemMsg = sysMsgBuilder.build();
         chatMsgsMapper.insert(systemMsg);
-
-        systemMsg.setContent(aiChatReq.getPrompt());
     }
 
     private void checkChatOptions(ChatOptions options) {
