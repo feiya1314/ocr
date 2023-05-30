@@ -37,15 +37,16 @@ public class AiChatServiceAdapter implements IAiChatService {
 
     @Override
     public ChatServiceResult chat(ChatContext chatContext) {
-        AiChatReq aiChatReq = chatContext.getAiChatReq();
-        preProcessReq(aiChatReq);
+        checkChatOptions(chatContext.getAiChatReq().getOptions());
+
+        preProcessReq(chatContext);
 
         return api2DChatService.chat(chatContext);
     }
 
-    private void preProcessReq(AiChatReq aiChatReq) {
+    private void preProcessReq(ChatContext chatContext) {
+        AiChatReq aiChatReq = chatContext.getAiChatReq();
         ChatOptions options = aiChatReq.getOptions();
-        checkChatOptions(options);
 
         // ChatOptions 中有对话信息，说明已经开启了一个会话，不是一个会话的第一个请求,需要带上之前的上下文msg信息
         if (options != null && StringUtils.hasText(options.getConversationId()) && StringUtils.hasText(options.getParentMessageId())) {
@@ -58,69 +59,128 @@ public class AiChatServiceAdapter implements IAiChatService {
                 throw new ParamValidateException(ResultCodeEnum.PARAM_ERROR);
             }
 
+            chatContext.setParentMsgId(options.getParentMessageId());
+
             // 当次请求的上一个回答，有记录下一个消息的id，说明当此请求属于重复请求，比如重新生成请求，例如上次请求 ai返回错误,
             // 需要重新生成
             if (StringUtils.hasText(msgs.get(0).getNextMsgId())) {
                 // 走重新生成的对话的逻辑
-                regenerateChat(aiChatReq, msgs.get(0));
+                regenerateChat(chatContext, msgs.get(0));
                 return;
             }
 
             // 带上之前的msg 创建chat请求 更新parent msg的nextmsgId
-            continueChat(aiChatReq, msgs.get(0));
+            continueChat(chatContext, msgs.get(0));
             return;
         }
 
         // 新创建一个对话，因为之前没有context信息
-        startNewChat(aiChatReq);
+        startNewChat(chatContext);
     }
 
     /**
      * 重复请求，比如重新生成请求，例如上次请求 ai返回错误, 需要重新生成。需要更新对应的ai回答的内容
      *
-     * @param aiChatReq req
-     * @param parentMsg 需要重新生成ai回答的请求对应的上个请求，重新生成请求是用户的提问，parentMsg则是上一个ai的回答
+     * @param chatContext req
+     * @param parentMsg   需要重新生成ai回答的请求对应的上个请求，重新生成请求是用户的提问，parentMsg则是上一个ai的回答
      */
-    private void regenerateChat(AiChatReq aiChatReq, ChatMsgs parentMsg) {
+    private void regenerateChat(ChatContext chatContext, ChatMsgs parentMsg) {
+        ChatMsgQuery query = ChatMsgQuery.builder()
+                .chatId(parentMsg.getChatId())
+                .msgId(parentMsg.getNextMsgId())
+                .build();
 
+        List<ChatMsgs> reqMsgs = chatMsgsMapper.find(query);
+        if (CollectionUtils.isEmpty(reqMsgs) || !chatContext.getAiChatReq().getPrompt().equals(reqMsgs.get(0).getContent())) {
+            throw new ParamValidateException(ResultCodeEnum.PARAM_ERROR);
+        }
+
+        ChatMsgs reqMsg = reqMsgs.get(0);
+        chatContext.setChatId(parentMsg.getChatId());
+        chatContext.setReqMsgId(reqMsg.getMsgId());
+        chatContext.setRespMsgId(reqMsg.getNextMsgId());
+        chatContext.setParentMsgId(parentMsg.getMsgId());
     }
 
     /**
      * 继续一个会话问答，用户的请求msg 和 ai的回答需要添加新记录，同时更新 parentMsg 对应的会话的next_msg_id(当此req的msg_id),
      * 保证parentMsg 能关联到当此请求对应的msg
      *
-     * @param aiChatReq req
-     * @param parentMsg 当前请求对应的上一个请求，当前请求是用户的提问，parentMsg则是上一个ai的回答
+     * @param chatContext req
+     * @param parentMsg   当前请求对应的上一个请求，当前请求是用户的提问，parentMsg则是上一个ai的回答
      */
-    private void continueChat(AiChatReq aiChatReq, ChatMsgs parentMsg) {
+    private void continueChat(ChatContext chatContext, ChatMsgs parentMsg) {
+        AiChatReq aiChatReq = chatContext.getAiChatReq();
+        String chatId = parentMsg.getChatId();
+        String userReqMsgId = parentMsg.getNextMsgId();
+        String respMsgId = UuidUtil.getUuid();
 
+        chatContext.setChatId(chatId);
+        chatContext.setReqMsgId(userReqMsgId);
+        chatContext.setRespMsgId(chatId);
+
+        recordReqmsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
+
+        updateParentMsg(parentMsg.getId(), userReqMsgId);
+
+        recordAiRespBase(chatId, respMsgId);
     }
 
     /**
      * 新开启一个会话问答，因为之前没有context信息，用户的请求msg 和 ai的回答需要添加新记录
      *
-     * @param aiChatReq req
+     * @param chatContext req
      */
-    private void startNewChat(AiChatReq aiChatReq) {
+    private void startNewChat(ChatContext chatContext) {
+        AiChatReq aiChatReq = chatContext.getAiChatReq();
         String chatId = UuidUtil.getUuid();
         String userReqMsgId = UuidUtil.getUuid();
         String respMsgId = UuidUtil.getUuid();
 
+        chatContext.setChatId(chatId);
+        chatContext.setReqMsgId(userReqMsgId);
+        chatContext.setRespMsgId(chatId);
+        // 记录系统角色信息
         recordSysMsg(aiChatReq, chatId, userReqMsgId);
 
+        recordReqmsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
+
+        recordAiRespBase(chatId, respMsgId);
+    }
+
+    private void updateParentMsg(long id, String nextMsgId) {
+        ChatMsgs msg = ChatMsgs.builder()
+                .id(id)
+                .nextMsgId(nextMsgId)
+                .timestamp(System.currentTimeMillis())
+                .build();
+        chatMsgsMapper.update(msg);
+    }
+
+    private void recordReqmsg(String chatId, String msgId, String content, String respMsgId) {
         ChatMsgs.ChatMsgsBuilder reqMsgBuilder = ChatMsgs.builder();
         reqMsgBuilder.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
                 .chatId(chatId)
-                .msgId(userReqMsgId)
+                .msgId(msgId)
                 .nextMsgId(respMsgId)
-                .content(aiChatReq.getPrompt())
+                .content(content)
                 .role(ChatRole.USER.getRoleId())
                 .timestamp(System.currentTimeMillis())
                 .ptd(TimeUtil.getPtd());
 
+        // 记录当前的请求
         chatMsgsMapper.insert(reqMsgBuilder.build());
+    }
 
+    private void recordAiRespBase(String chatId, String respMsgId) {
+        ChatMsgs.ChatMsgsBuilder msgBuilder = ChatMsgs.builder();
+        msgBuilder.chatId(chatId)
+                .msgId(respMsgId)
+                .role(ChatRole.ASSISTANT.getRoleId())
+                .timestamp(System.currentTimeMillis())
+                .ptd(TimeUtil.getPtd());
 
+        chatMsgsMapper.insert(msgBuilder.build());
     }
 
     private void recordSysMsg(AiChatReq aiChatReq, String chatId, String nexMsgId) {

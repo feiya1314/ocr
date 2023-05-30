@@ -20,7 +20,7 @@ import java.util.concurrent.SynchronousQueue;
 public class GptStreamResp implements StreamingResponseBody {
     public final SynchronousQueue<SseEvent> sseEvent = new SynchronousQueue<>();
     private volatile boolean working = true;
-    private String text = "";
+    public String text = "";
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
@@ -44,12 +44,12 @@ public class GptStreamResp implements StreamingResponseBody {
         }
     }
 
-    public void onComplete() {
+    public void onComplete(String event, String text) {
         working = false;
         SseEvent.SseEventBuilder sseEventBuilder = SseEvent.builder()
                 .id("-1")
-                .event("finish")
-                .data("");
+                .event(event)
+                .data(text);
         try {
             sseEvent.put(sseEventBuilder.build());
         } catch (InterruptedException e) {

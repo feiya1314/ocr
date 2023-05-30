@@ -124,7 +124,12 @@
         </if>
         timestamp=#{timestamp}
         <where>
-            id = #{id}
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="chatId != null and chatId !='' and msgId != null and msgId !=''">
+                chat_id = #{id} AND msg_id = #{msgId}
+            </if>
         </where>
     </update>
 </mapper>

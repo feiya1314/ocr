@@ -46,10 +46,7 @@ public class Api2DChatServiceImpl implements IAiChatService {
         okhttp3.MediaType mediaType = okhttp3.MediaType.Companion.parse("application/json;charset=UTF-8");
         okhttp3.RequestBody okHttpReqBody = okhttp3.RequestBody.Companion.create(requestBody, mediaType);
 
-        Request request = new Request.Builder()
-                .url(config.getApi2D().getUrl())
-                .post(okHttpReqBody)
-                .build();
+        Request request = new Request.Builder().url(config.getApi2D().getUrl()).post(okHttpReqBody).build();
         httpHelper.eventSourceFactory().newEventSource(request, buildEventListener(streamResponse));
 
         return streamResponse;
@@ -69,12 +66,16 @@ public class Api2DChatServiceImpl implements IAiChatService {
 
             @Override
             public void onClose() {
-                streamResponse.onComplete();
+                streamResponse.onComplete("finish", "");
+                String wholeText = streamResponse.text;
+                // todo 更新ai 回答结果
             }
 
             @Override
             public void onFailure() {
-
+                String wholeText = "出了点小问题，请稍后重试";
+                streamResponse.onComplete("error", wholeText);
+                // todo 更新ai 回答结果
             }
         };
 

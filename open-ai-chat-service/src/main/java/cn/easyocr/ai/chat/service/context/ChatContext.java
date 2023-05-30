@@ -15,4 +15,12 @@ import lombok.Setter;
 @Builder
 public class ChatContext {
     private AiChatReq aiChatReq;
+
+    private String chatId;
+
+    private String reqMsgId;
+
+    private String parentMsgId;
+
+    private String respMsgId;
 }
