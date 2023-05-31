@@ -3,11 +3,12 @@ package cn.easyocr.ai.chat.service.service;
 import cn.easyocr.ai.chat.service.config.ChatConfig;
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
+import cn.easyocr.ai.chat.service.enums.ChatGptModel;
 import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
 import cn.easyocr.ai.chat.service.helper.HttpClientHelper;
 import cn.easyocr.ai.chat.service.listener.SseEvent;
 import cn.easyocr.ai.chat.service.listener.SseEventListener;
-import cn.easyocr.ai.chat.service.req.AiChatReq;
+import cn.easyocr.ai.chat.service.req.ChatGptReq;
 import cn.easyocr.ai.chat.service.resp.GptStreamResp;
 import cn.easyocr.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +33,22 @@ public class Api2DChatServiceImpl implements IAiChatService {
     @Override
     public ChatServiceResult chat(ChatContext chatContext) {
         ChatServiceResult result = new ChatServiceResult();
-        GptStreamResp response = callChatApi(chatContext.getAiChatReq());
+        GptStreamResp response = callChatApi(chatContext);
         result.setStreamingResponseBody(response);
 
         return result;
     }
 
-    private GptStreamResp callChatApi(AiChatReq aiChatReq) {
+    private GptStreamResp callChatApi(ChatContext chatContext) {
         GptStreamResp streamResponse = new GptStreamResp();
 
-        String requestBody = JsonUtils.toJson(aiChatReq);
+        ChatGptReq chatGptReq = new ChatGptReq();
+        chatGptReq.setModel(ChatGptModel.GPT_3_5_TURBO.getModel());
+        chatGptReq.setMessages(chatContext.getReqMessages());
+        chatGptReq.setStream(true);
+        chatGptReq.setMax_tokens(config.getMaxTokens());
+
+        String requestBody = JsonUtils.toJson(chatGptReq);
 
         okhttp3.MediaType mediaType = okhttp3.MediaType.Companion.parse("application/json;charset=UTF-8");
         okhttp3.RequestBody okHttpReqBody = okhttp3.RequestBody.Companion.create(requestBody, mediaType);
@@ -72,9 +79,8 @@ public class Api2DChatServiceImpl implements IAiChatService {
             }
 
             @Override
-            public void onFailure() {
-                String wholeText = "出了点小问题，请稍后重试";
-                streamResponse.onComplete("error", wholeText);
+            public void onFailure(String msg) {
+                streamResponse.onComplete("error", msg);
                 // todo 更新ai 回答结果
             }
         };

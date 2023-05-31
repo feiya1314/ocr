@@ -9,6 +9,7 @@ import cn.easyocr.ai.chat.service.enums.ChatGptModel;
 import cn.easyocr.ai.chat.service.enums.ChatRole;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
 import cn.easyocr.ai.chat.service.req.ChatOptions;
+import cn.easyocr.ai.chat.service.req.Message;
 import cn.easyocr.common.enums.ResultCodeEnum;
 import cn.easyocr.common.exception.ParamValidateException;
 import cn.easyocr.common.utils.TimeUtil;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,6 +102,8 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatContext.setReqMsgId(reqMsg.getMsgId());
         chatContext.setRespMsgId(reqMsg.getNextMsgId());
         chatContext.setParentMsgId(parentMsg.getMsgId());
+
+        // todo 构建message
     }
 
     /**
@@ -119,7 +123,7 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatContext.setReqMsgId(userReqMsgId);
         chatContext.setRespMsgId(chatId);
 
-        recordReqmsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
+        recordReqMsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
 
         updateParentMsg(parentMsg.getId(), userReqMsgId);
 
@@ -143,9 +147,22 @@ public class AiChatServiceAdapter implements IAiChatService {
         // 记录系统角色信息
         recordSysMsg(aiChatReq, chatId, userReqMsgId);
 
-        recordReqmsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
+        recordReqMsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
 
         recordAiRespBase(chatId, respMsgId);
+
+        List<Message> messages = new ArrayList<>();
+        Message sysMsg = new Message();
+        sysMsg.setRole(ChatRole.SYSTEM.getRole());
+        sysMsg.setContent(aiChatReq.getSystemMessage());
+        messages.add(sysMsg);
+
+        Message reqMsg = new Message();
+        reqMsg.setRole(ChatRole.USER.getRole());
+        reqMsg.setContent(aiChatReq.getPrompt());
+        messages.add(reqMsg);
+
+        chatContext.setReqMessages(messages);
     }
 
     private void updateParentMsg(long id, String nextMsgId) {
@@ -157,7 +174,7 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatMsgsMapper.update(msg);
     }
 
-    private void recordReqmsg(String chatId, String msgId, String content, String respMsgId) {
+    private void recordReqMsg(String chatId, String msgId, String content, String respMsgId) {
         ChatMsgs.ChatMsgsBuilder reqMsgBuilder = ChatMsgs.builder();
         reqMsgBuilder.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
                 .chatId(chatId)

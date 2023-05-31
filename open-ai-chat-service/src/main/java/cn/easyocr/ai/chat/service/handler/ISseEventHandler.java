@@ -10,5 +10,5 @@ public interface ISseEventHandler<T>{
 
     void onClose();
 
-    void onFailure();
+    void onFailure(String msg);
 }

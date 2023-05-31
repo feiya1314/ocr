@@ -30,7 +30,7 @@ public class ChatMsgsMapperTest extends BaseTest {
     @Test
     @Order(1)
     public void testInset() throws Exception {
-        ChatMsgs chatMsgs = new ChatMsgs();
+        ChatMsgs chatMsgs = ChatMsgs.builder().build();
 
         chatMsgs.setUserId("user" + curTime);
         chatMsgs.setModel(ChatGptModel.GPT_3_5_TURBO.getModelId());
@@ -75,7 +75,7 @@ public class ChatMsgsMapperTest extends BaseTest {
     @Test
     @Order(4)
     public void testUpdate() throws Exception {
-        ChatMsgs chatMsgs = new ChatMsgs();
+        ChatMsgs chatMsgs = ChatMsgs.builder().build();
         chatMsgs.setId(curId);
         chatMsgs.setNextMsgId("updatepid" + curTime);
         chatMsgs.setContent("updatecontent" + curTime);

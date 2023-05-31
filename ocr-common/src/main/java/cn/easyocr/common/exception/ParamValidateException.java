@@ -39,4 +39,8 @@ public class ParamValidateException extends RuntimeException {
     public ParamValidateException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
+    public ResultCodeEnum getResultCodeEnum() {
+        return resultCodeEnum;
+    }
 }

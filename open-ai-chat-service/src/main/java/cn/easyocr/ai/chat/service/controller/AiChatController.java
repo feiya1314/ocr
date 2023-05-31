@@ -3,6 +3,7 @@ package cn.easyocr.ai.chat.service.controller;
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
+import cn.easyocr.ai.chat.service.req.ChatGptReq;
 import cn.easyocr.ai.chat.service.service.IAiChatService;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class AiChatController {
 
     @PostMapping(value = "/chat-stream")
     @ReqLogAnno(origin = "ai-chat")
-    public SseEmitter chatGptMock(@Valid @RequestBody AiChatReq aiChatReq) {
+    public SseEmitter chatGptMock(@Valid @RequestBody ChatGptReq chatGptReq) {
         // 超时时间60s，超时后服务端主动关闭连接 todo cache请求连接
         SseEmitter emmitter = new SseEmitter(60 * 1000L);
         emmitter.onTimeout(() -> {
@@ -64,7 +65,7 @@ public class AiChatController {
         Random random = new Random();
         new Thread(() -> {
             try {
-                String text = "response for:" + aiChatReq.getPrompt();
+                String text = "response for:" + chatGptReq.getMessages().get(chatGptReq.getMessages().size() - 1).getContent();
                 char[] chars = text.toCharArray();
                 int i = 1;
                 for (char c : chars) {

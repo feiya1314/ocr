@@ -65,7 +65,7 @@ public class SseEventListener extends EventSourceListener {
             log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
         }
 
-        this.eventConsumer.onFailure();
+        this.eventConsumer.onFailure(overloadedText);
     }
 
     @Override
