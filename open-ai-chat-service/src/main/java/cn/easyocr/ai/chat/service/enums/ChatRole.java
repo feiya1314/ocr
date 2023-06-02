@@ -23,6 +23,16 @@ public enum ChatRole {
         this.desc = desc;
     }
 
+    public static String getRoleById(int id) {
+        for (ChatRole role : ChatRole.values()) {
+            if (role.getRoleId() == id) {
+                return role.role;
+            }
+        }
+
+        return null;
+    }
+
     public int getRoleId() {
         return roleId;
     }

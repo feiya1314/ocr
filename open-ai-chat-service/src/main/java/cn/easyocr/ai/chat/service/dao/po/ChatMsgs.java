@@ -1,8 +1,9 @@
 package cn.easyocr.ai.chat.service.dao.po;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @author : feiya
@@ -11,7 +12,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Builder
 public class ChatMsgs {
     private Long id;
     private String userId;
@@ -27,6 +27,7 @@ public class ChatMsgs {
      * {@link cn.easyocr.ai.chat.service.enums.ChatRole}
      */
     private Integer role;
+    private Date createdTime;
     private Long timestamp;
     private Integer ptd;
 }

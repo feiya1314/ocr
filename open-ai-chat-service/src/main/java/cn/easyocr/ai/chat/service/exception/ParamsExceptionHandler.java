@@ -2,6 +2,7 @@ package cn.easyocr.ai.chat.service.exception;
 
 import cn.easyocr.common.enums.ResultCodeEnum;
 import cn.easyocr.common.exception.ParamValidateException;
+import cn.easyocr.common.exception.ServiceException;
 import cn.easyocr.common.resp.ErrorResponse;
 import cn.easyocr.common.utils.ResponseUtil;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,13 @@ public class ParamsExceptionHandler {
 
     @ExceptionHandler({ParamValidateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handlerOcrServiceException(ParamValidateException ex) {
+    public ErrorResponse handlerParamException(ParamValidateException ex) {
+        return ResponseUtil.fail(ex.getResultCodeEnum().getCode(), ex.getResultCodeEnum().getDesc());
+    }
+
+    @ExceptionHandler({ServiceException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handlerServiceException(ServiceException ex) {
         return ResponseUtil.fail(ex.getResultCodeEnum().getCode(), ex.getResultCodeEnum().getDesc());
     }
 }

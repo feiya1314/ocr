@@ -12,6 +12,7 @@
         <result property="nextMsgId" column="n_msg_id"/>
         <result property="content" column="content"/>
         <result property="role" column="role"/>
+        <result property="createdTime" column="created_time"/>
         <result property="timestamp" column="timestamp"/>
         <result property="ptd" column="ptd"/>
     </resultMap>
@@ -51,10 +52,29 @@
             n_msg_id,
             content,
             role,
+            created_time,
             timestamp,
             ptd
         from chat_msgs
         <include refid="baseFindCondition" />
+    </select>
+
+    <select id="findChatMsgsByOrder" resultMap="baseMap">
+        select
+        id,
+        user_id,
+        model,
+        chat_id,
+        msg_id,
+        n_msg_id,
+        content,
+        role
+        from chat_msgs
+        <where>
+            chat_id = #{chatId}
+            AND id &lt;= #{lastMsgId}
+            order by id asc;
+        </where>
     </select>
 
     <select id="count" resultMap="baseMap">
@@ -128,7 +148,7 @@
                 id = #{id}
             </if>
             <if test="chatId != null and chatId !='' and msgId != null and msgId !=''">
-                chat_id = #{id} AND msg_id = #{msgId}
+                chat_id = #{chatId} AND msg_id = #{msgId}
             </if>
         </where>
     </update>

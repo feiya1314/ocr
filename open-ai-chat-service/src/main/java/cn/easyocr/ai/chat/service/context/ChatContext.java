@@ -19,12 +19,24 @@ import java.util.List;
 public class ChatContext {
     private AiChatReq aiChatReq;
 
+    /**
+     * 会话id
+     */
     private String chatId;
 
+    /**
+     * 当次请求的记录的id
+     */
     private String reqMsgId;
 
+    /**
+     * 当次请求的记录的上个ai回答的id
+     */
     private String parentMsgId;
 
+    /**
+     * 当次请求的ai回答的id
+     */
     private String respMsgId;
 
     private List<Message> reqMessages;

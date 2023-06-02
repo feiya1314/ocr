@@ -2,6 +2,7 @@ package cn.easyocr.ai.chat.service.dao.mapper;
 
 import cn.easyocr.ai.chat.service.dao.po.ChatMsgs;
 import cn.easyocr.ai.chat.service.dao.query.ChatMsgQuery;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public interface ChatMsgsMapper {
 
     List<ChatMsgs> find(ChatMsgQuery chatMsgQuery);
 
+    List<ChatMsgs> findChatMsgsByOrder(@Param("chatId") String chatId, @Param("lastMsgId") long lastMsgId);
+
     int count(ChatMsgQuery chatMsgQuery);
+
     List<ChatMsgs> findBaseMsg(ChatMsgQuery chatMsgQuery);
 }

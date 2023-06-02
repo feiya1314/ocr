@@ -7,11 +7,14 @@ import cn.easyocr.ai.chat.service.dao.po.ChatMsgs;
 import cn.easyocr.ai.chat.service.dao.query.ChatMsgQuery;
 import cn.easyocr.ai.chat.service.enums.ChatGptModel;
 import cn.easyocr.ai.chat.service.enums.ChatRole;
+import cn.easyocr.ai.chat.service.handler.StreamResult;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
 import cn.easyocr.ai.chat.service.req.ChatOptions;
 import cn.easyocr.ai.chat.service.req.Message;
 import cn.easyocr.common.enums.ResultCodeEnum;
 import cn.easyocr.common.exception.ParamValidateException;
+import cn.easyocr.common.exception.ServiceException;
+import cn.easyocr.common.utils.JsonUtils;
 import cn.easyocr.common.utils.TimeUtil;
 import cn.easyocr.common.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : feiya
@@ -103,7 +107,7 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatContext.setRespMsgId(reqMsg.getNextMsgId());
         chatContext.setParentMsgId(parentMsg.getMsgId());
 
-        // todo 构建message
+        buildContextMsgs(chatContext, parentMsg);
     }
 
     /**
@@ -116,18 +120,21 @@ public class AiChatServiceAdapter implements IAiChatService {
     private void continueChat(ChatContext chatContext, ChatMsgs parentMsg) {
         AiChatReq aiChatReq = chatContext.getAiChatReq();
         String chatId = parentMsg.getChatId();
-        String userReqMsgId = parentMsg.getNextMsgId();
+        // 当前请求没有创建，需要新创建msgid
+        String userReqMsgId = UuidUtil.getUuid();
         String respMsgId = UuidUtil.getUuid();
 
         chatContext.setChatId(chatId);
         chatContext.setReqMsgId(userReqMsgId);
-        chatContext.setRespMsgId(chatId);
+        chatContext.setRespMsgId(respMsgId);
 
         recordReqMsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
 
         updateParentMsg(parentMsg.getId(), userReqMsgId);
 
         recordAiRespBase(chatId, respMsgId);
+
+        buildContextMsgs(chatContext, parentMsg);
     }
 
     /**
@@ -143,7 +150,7 @@ public class AiChatServiceAdapter implements IAiChatService {
 
         chatContext.setChatId(chatId);
         chatContext.setReqMsgId(userReqMsgId);
-        chatContext.setRespMsgId(chatId);
+        chatContext.setRespMsgId(respMsgId);
         // 记录系统角色信息
         recordSysMsg(aiChatReq, chatId, userReqMsgId);
 
@@ -165,55 +172,82 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatContext.setReqMessages(messages);
     }
 
+    private void buildContextMsgs(ChatContext chatContext, ChatMsgs parentMsg) {
+        List<Message> contextMsgs = queryContextMessage(parentMsg);
+        Message curReqMsg = new Message();
+        curReqMsg.setRole(ChatRole.USER.getRole());
+        curReqMsg.setContent(chatContext.getAiChatReq().getPrompt());
+
+        contextMsgs.add(curReqMsg);
+
+        chatContext.setReqMessages(contextMsgs);
+    }
+
+    private List<Message> queryContextMessage(ChatMsgs parentMsg) {
+        List<ChatMsgs> chatMsgs = chatMsgsMapper.findChatMsgsByOrder(parentMsg.getChatId(), parentMsg.getId());
+        return chatMsgs.stream().map(msg -> {
+            Message message = new Message();
+            message.setRole(ChatRole.getRoleById(msg.getRole()));
+            if (msg.getRole() == ChatRole.ASSISTANT.getRoleId()) {
+                StreamResult streamResult = JsonUtils.jsonToBean(msg.getContent(), StreamResult.class);
+                if (streamResult == null) {
+                    throw new ServiceException(ResultCodeEnum.OCR_SERVICE_ERROR);
+                }
+                message.setContent(streamResult.getContent());
+                return message;
+            }
+            message.setContent(msg.getContent());
+            return message;
+        }).collect(Collectors.toList());
+    }
+
     private void updateParentMsg(long id, String nextMsgId) {
-        ChatMsgs msg = ChatMsgs.builder()
-                .id(id)
-                .nextMsgId(nextMsgId)
-                .timestamp(System.currentTimeMillis())
-                .build();
+        ChatMsgs msg = new ChatMsgs();
+        msg.setId(id);
+        msg.setNextMsgId(nextMsgId);
+        msg.setTimestamp(System.currentTimeMillis());
         chatMsgsMapper.update(msg);
     }
 
     private void recordReqMsg(String chatId, String msgId, String content, String respMsgId) {
-        ChatMsgs.ChatMsgsBuilder reqMsgBuilder = ChatMsgs.builder();
-        reqMsgBuilder.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
-                .chatId(chatId)
-                .msgId(msgId)
-                .nextMsgId(respMsgId)
-                .content(content)
-                .role(ChatRole.USER.getRoleId())
-                .timestamp(System.currentTimeMillis())
-                .ptd(TimeUtil.getPtd());
+        ChatMsgs msg = new ChatMsgs();
+        msg.setModel(ChatGptModel.GPT_3_5_TURBO.getModelId());
+        msg.setChatId(chatId);
+        msg.setMsgId(msgId);
+        msg.setNextMsgId(respMsgId);
+        msg.setContent(content);
+        msg.setRole(ChatRole.USER.getRoleId());
+        msg.setTimestamp(System.currentTimeMillis());
+        msg.setPtd(TimeUtil.getPtd());
 
         // 记录当前的请求
-        chatMsgsMapper.insert(reqMsgBuilder.build());
+        chatMsgsMapper.insert(msg);
     }
 
     private void recordAiRespBase(String chatId, String respMsgId) {
-        ChatMsgs.ChatMsgsBuilder msgBuilder = ChatMsgs.builder();
-        msgBuilder.chatId(chatId)
-                .msgId(respMsgId)
-                .role(ChatRole.ASSISTANT.getRoleId())
-                .timestamp(System.currentTimeMillis())
-                .ptd(TimeUtil.getPtd());
+        ChatMsgs msg = new ChatMsgs();
+        msg.setChatId(chatId);
+        msg.setMsgId(respMsgId);
+        msg.setRole(ChatRole.ASSISTANT.getRoleId());
+        msg.setTimestamp(System.currentTimeMillis());
+        msg.setPtd(TimeUtil.getPtd());
 
-        chatMsgsMapper.insert(msgBuilder.build());
+        chatMsgsMapper.insert(msg);
     }
 
     private void recordSysMsg(AiChatReq aiChatReq, String chatId, String nexMsgId) {
-        ChatMsgs.ChatMsgsBuilder sysMsgBuilder = ChatMsgs.builder();
+        ChatMsgs msg = new ChatMsgs();
         //  chatMsgs.setUserId();
-        sysMsgBuilder.model(ChatGptModel.GPT_3_5_TURBO.getModelId())
-                .chatId(chatId)
-                .msgId(UuidUtil.getUuid())
-                .nextMsgId(nexMsgId)
-                .content(aiChatReq.getSystemMessage())
-                .role(ChatRole.SYSTEM.getRoleId())
-                .timestamp(System.currentTimeMillis())
-                .ptd(TimeUtil.getPtd());
+        msg.setModel(ChatGptModel.GPT_3_5_TURBO.getModelId());
+        msg.setChatId(chatId);
+        msg.setMsgId(UuidUtil.getUuid());
+        msg.setNextMsgId(nexMsgId);
+        msg.setContent(aiChatReq.getSystemMessage());
+        msg.setRole(ChatRole.SYSTEM.getRoleId());
+        msg.setTimestamp(System.currentTimeMillis());
+        msg.setPtd(TimeUtil.getPtd());
 
-        ChatMsgs systemMsg = sysMsgBuilder.build();
-        chatMsgsMapper.insert(systemMsg);
+        chatMsgsMapper.insert(msg);
     }
 
     private void checkChatOptions(ChatOptions options) {
