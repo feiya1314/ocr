@@ -24,7 +24,7 @@ echo "LOG_PATH:""$LOG_PATH" >> $LOG_PATH/nohup.log
 echo "JAVA_OPTS:""$JAVA_OPTS" >> $LOG_PATH/nohup.log
 
 cd $ROOT_PATH
-nohup java -jar $JAVA_OPTS $ROOT_PATH/ocr-main-service-1.0-SNAPSHOT.jar >> $LOG_PATH/nohup.log 2>&1 &
+nohup java -jar $JAVA_OPTS $ROOT_PATH/open-ai-chat-service-1.0-SNAPSHOT.jar >> $LOG_PATH/nohup.log 2>&1 &
 
 
 
