@@ -1,7 +1,6 @@
 package cn.easyocr.ai.chat.service.listener;
 
 import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
@@ -50,18 +49,18 @@ public class SseEventListener extends EventSourceListener {
             responseText = response.body().toString();
         }
 
-        log.error("response：{}", responseText);
+        log.error("stream response：{}", responseText);
 
         String forbiddenText = "Your access was terminated due to violation of our policies";
 
-        if (StrUtil.contains(responseText, forbiddenText)) {
+        if (responseText.contains(forbiddenText)) {
             log.error("Chat session has been terminated due to policy violation");
             log.error("检测到号被封了");
         }
 
         String overloadedText = "That model is currently overloaded with other requests.";
 
-        if (StrUtil.contains(responseText, overloadedText)) {
+        if (responseText.contains(overloadedText)) {
             log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
         }
 

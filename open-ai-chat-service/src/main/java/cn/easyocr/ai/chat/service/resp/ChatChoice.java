@@ -1,7 +1,7 @@
 package cn.easyocr.ai.chat.service.resp;
 
+import cn.easyocr.ai.chat.service.req.Message;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plexpt.chatgpt.entity.chat.Message;
 import lombok.Getter;
 import lombok.Setter;
 

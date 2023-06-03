@@ -5,6 +5,7 @@ import cn.easyocr.common.exception.ParamValidateException;
 import cn.easyocr.common.exception.ServiceException;
 import cn.easyocr.common.resp.ErrorResponse;
 import cn.easyocr.common.utils.ResponseUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -21,7 +22,8 @@ import javax.validation.ConstraintViolationException;
  * @since : 2023/4/11
  */
 @RestControllerAdvice
-public class ParamsExceptionHandler {
+@Slf4j
+public class ChatServiceExceptionHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -47,8 +49,17 @@ public class ParamsExceptionHandler {
     }
 
     @ExceptionHandler({ServiceException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handlerServiceException(ServiceException ex) {
+        log.error("chat service error", ex);
         return ResponseUtil.fail(ex.getResultCodeEnum().getCode(), ex.getResultCodeEnum().getDesc());
+    }
+
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handlerServiceException(Exception ex) {
+        log.error("service inner error", ex);
+        return ResponseUtil.fail(ResultCodeEnum.OCR_SERVICE_ERROR.getCode(),
+                ResultCodeEnum.OCR_SERVICE_ERROR.getDesc());
     }
 }
