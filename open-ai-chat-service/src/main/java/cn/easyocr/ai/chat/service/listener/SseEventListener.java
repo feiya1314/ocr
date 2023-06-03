@@ -8,7 +8,7 @@ import okhttp3.sse.EventSourceListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import java.io.IOException;
 
 /**
  * @author : feiya
@@ -43,13 +43,24 @@ public class SseEventListener extends EventSourceListener {
     public void onFailure(@NotNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
         log.error("Stream connection error", t);
 
+        if (response == null) {
+            log.error("Stream response is null");
+            this.eventConsumer.onFailure("Stream response is null");
+            return;
+        }
         String responseText = "";
-
-        if (Objects.nonNull(response)) {
-            responseText = response.body().toString();
+        try {
+            if (response.body() == null) {
+                log.error("Stream response body is null");
+                responseText = "Stream response body is null";
+            } else {
+                responseText = response.body().string();
+            }
+        } catch (IOException e) {
+            log.error("error get stream response body");
         }
 
-        log.error("stream response：{}", responseText);
+        log.error("chat stream response from remote ,code :{}, body: {}", response.code(), responseText);
 
         String forbiddenText = "Your access was terminated due to violation of our policies";
 
@@ -64,7 +75,7 @@ public class SseEventListener extends EventSourceListener {
             log.error("检测到官方超载了，赶紧优化你的代码，做重试吧");
         }
 
-        this.eventConsumer.onFailure(overloadedText);
+        this.eventConsumer.onFailure(responseText);
     }
 
     @Override

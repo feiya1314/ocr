@@ -90,7 +90,7 @@ public class Api2DChatServiceImpl implements IAiChatService {
 
             @Override
             public void onFailure(String msg) {
-                streamResponse.onComplete("error", msg);
+                streamResponse.onComplete("error", "some wrong occurs, please try it again later");
                 StreamResult streamResult = new StreamResult();
                 streamResult.setStatus("error");
                 streamResult.setContent(msg);
