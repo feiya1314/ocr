@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -27,6 +28,7 @@ import java.util.Random;
  * @since : 2023/4/10
  */
 @Controller
+@RequestMapping("/api/v1")
 @Slf4j
 public class AiChatController {
     @Autowired

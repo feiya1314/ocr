@@ -25,9 +25,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 加入的顺序就是拦截器执行的顺序
-        registry.addInterceptor(new RequestTraceInterceptor());
+        registry.addInterceptor(new RequestTraceInterceptor())
+                .addPathPatterns("/api/**");
 
         RequestLogInterceptor requestLogInterceptor = new RequestLogInterceptor(requestLogMapper, threadPool);
-        registry.addInterceptor(requestLogInterceptor);
+        registry.addInterceptor(requestLogInterceptor)
+                .addPathPatterns("/api/**");
     }
 }

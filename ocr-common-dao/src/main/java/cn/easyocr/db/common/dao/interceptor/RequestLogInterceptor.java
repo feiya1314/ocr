@@ -29,7 +29,7 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     private final OcrRequestLogMapper requestLogMapper;
 
     private final RequestLogThreadPool threadPool;
-    private final Set<String> logPackages = new HashSet<>(Collections.singletonList("cn.easy.ocr.main.service.controller"));
+//    private final Set<String> logPackages = new HashSet<>(Collections.singletonList("cn.easy.ocr.main.service.controller"));
 
     public RequestLogInterceptor(OcrRequestLogMapper requestLogMapper, RequestLogThreadPool threadPool) {
         this.requestLogMapper = requestLogMapper;
@@ -88,9 +88,9 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             return true;
         }
         String pack = handlerMethod.getBean().getClass().getPackage().getName();
-        if (!logPackages.contains(pack)) {
-            return true;
-        }
+//        if (!logPackages.contains(pack)) {
+//            return true;
+//        }
         Method method = handlerMethod.getMethod();
         ReqLogAnno anno = method.getAnnotation(ReqLogAnno.class);
 
