@@ -25,12 +25,14 @@ public class SseEventListener extends EventSourceListener {
 
     @Override
     public void onClosed(@NotNull EventSource eventSource) {
+        log.debug("event listener close");
         this.eventConsumer.onClose();
     }
 
     @Override
     public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type,
                         @NotNull String data) {
+        log.debug("event listener on event,data : {}", data);
         SseEvent.SseEventBuilder sseEvent = SseEvent.builder()
                 .id(id)
                 .event(type)

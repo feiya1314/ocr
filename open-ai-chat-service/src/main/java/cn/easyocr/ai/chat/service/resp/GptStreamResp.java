@@ -2,7 +2,8 @@ package cn.easyocr.ai.chat.service.resp;
 
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.enums.ChatRole;
-import cn.easyocr.ai.chat.service.listener.SseEvent;
+import cn.easyocr.ai.chat.service.enums.StreamRespEvent;
+import cn.easyocr.ai.chat.service.req.Message;
 import cn.easyocr.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -21,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Slf4j
 public class GptStreamResp implements StreamingResponseBody {
-    public final SynchronousQueue<SseEvent> sseEvent = new SynchronousQueue<>();
+    public final SynchronousQueue<Api2dChaGptResp> sseEvent = new SynchronousQueue<>();
     private volatile boolean working = true;
     public String text = "";
     private final ChatContext chatContext;
@@ -36,11 +38,24 @@ public class GptStreamResp implements StreamingResponseBody {
         while (working) {
             try {
                 lock.lock();
-                SseEvent event = sseEvent.take();
-                AiChatMsgResp resp = new AiChatMsgResp();
-                resp.setId(event.getId());
+                Api2dChaGptResp event = sseEvent.take();
+                if (StreamRespEvent.FINISH.getEvent().equals(event.getId())) {
+                    return;
+                }
 
-                text = text + event.getData();
+                if (StreamRespEvent.ERROR.getEvent().equals(event.getId())) {
+                    return;
+                }
+
+                AiChatMsgResp resp = new AiChatMsgResp();
+                List<ChatChoice> chatChoices = event.getChoices();
+                for (ChatChoice chatChoice : chatChoices) {
+                    Message msg = chatChoice.getDelta();
+                    if (msg != null && msg.getContent() != null) {
+                        text = text + msg.getContent();
+                    }
+                }
+
                 resp.setText(text);
                 resp.setRole(ChatRole.ASSISTANT.getRole());
 //                resp.setParentMessageId("parent_id");
@@ -58,14 +73,13 @@ public class GptStreamResp implements StreamingResponseBody {
         }
     }
 
-    public void onComplete(String event, String text) {
+    public void onComplete(String reason, String text) {
         working = false;
-        SseEvent.SseEventBuilder sseEventBuilder = SseEvent.builder()
-                .id("-1")
-                .event(event)
-                .data(text);
+        Api2dChaGptResp event = new Api2dChaGptResp();
+        event.setId(reason);
+        event.setObject(text);
         try {
-            sseEvent.put(sseEventBuilder.build());
+            sseEvent.put(event);
         } catch (InterruptedException e) {
             log.error("GptStreamResponse complete Interrupted", e);
         }

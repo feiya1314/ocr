@@ -1,5 +1,6 @@
 package cn.easyocr.ai.chat.service.req;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AiChatReq {
     @NotBlank(message = "系统信息不能为空")
     private String systemMessage;

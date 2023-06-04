@@ -18,6 +18,8 @@ public class JsonUtils {
     static {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 不序列化 null的属性
+        // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     /**

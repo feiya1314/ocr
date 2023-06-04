@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "chat")
 @Component
 public class ChatConfig {
-    private int maxTokens = 4096;
+    private int maxTokens = 2048;
 
     private Api2D api2D;
 

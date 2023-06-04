@@ -1,5 +1,6 @@
 package cn.easyocr.ai.chat.service.req;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class API2DReq extends ChatGptReq {
     /**
      * 默认为 false，为 true 时会尝试让 GPT 自己审查内容，不输出违规结果。由于 GPT 的调性，效果好坏比较随机。总的来说对暴力、色情内容效果较好，政治类效果一般。

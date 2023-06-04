@@ -4,7 +4,11 @@ import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
 import cn.easyocr.ai.chat.service.req.ChatGptReq;
+import cn.easyocr.ai.chat.service.req.Message;
+import cn.easyocr.ai.chat.service.resp.Api2dChaGptResp;
+import cn.easyocr.ai.chat.service.resp.ChatChoice;
 import cn.easyocr.ai.chat.service.service.IAiChatService;
+import cn.easyocr.common.utils.JsonUtils;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -55,7 +60,7 @@ public class AiChatController {
     @ReqLogAnno(origin = "ai-chat")
     public SseEmitter chatGptMock(@Valid @RequestBody ChatGptReq chatGptReq) {
         // 超时时间60s，超时后服务端主动关闭连接 todo cache请求连接
-        SseEmitter emmitter = new SseEmitter(60 * 1000L);
+        SseEmitter emmitter = new SseEmitter(100 * 1000L);
         emmitter.onTimeout(() -> {
             log.warn("emmitter timeout");
         });
@@ -67,11 +72,24 @@ public class AiChatController {
         Random random = new Random();
         new Thread(() -> {
             try {
-                String text = "response for:" + chatGptReq.getMessages().get(chatGptReq.getMessages().size() - 1).getContent();
+                String text =
+                        "response for:" + chatGptReq.getMessages().get(chatGptReq.getMessages().size() - 1).getContent();
                 char[] chars = text.toCharArray();
                 int i = 1;
+                Api2dChaGptResp api2dChaGptResp = new Api2dChaGptResp();
+                api2dChaGptResp.setId("ididiidiidiid");
+                api2dChaGptResp.setObject("chat.completion.chunk");
+                api2dChaGptResp.setCreated(System.currentTimeMillis());
+                api2dChaGptResp.setModel("gpt-3.5-turbo-0301");
+                ChatChoice chatChoice = new ChatChoice();
+
+                Message msg = new Message();
+                chatChoice.setDelta(msg);
+                api2dChaGptResp.setChoices(Collections.singletonList(chatChoice));
+//                api2dChaGptResp.setUsage(new Usage());
                 for (char c : chars) {
-                    SseEmitter.SseEventBuilder sb = SseEmitter.event().id(String.valueOf(i++)).data(String.valueOf(c));
+                    msg.setContent(String.valueOf(c));
+                    SseEmitter.SseEventBuilder sb = SseEmitter.event().id(String.valueOf(i++)).data(JsonUtils.toJson(api2dChaGptResp));
                     emmitter.send(sb);
                     Thread.sleep(100 + random.nextInt(50));
                 }

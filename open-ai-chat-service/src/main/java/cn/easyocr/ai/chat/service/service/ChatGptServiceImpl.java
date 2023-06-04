@@ -5,16 +5,13 @@ import cn.easyocr.ai.chat.service.context.ChatServiceResult;
 import cn.easyocr.ai.chat.service.req.ChatGptReq;
 import cn.easyocr.common.utils.JsonUtils;
 import com.plexpt.chatgpt.ChatGPTStream;
-import com.plexpt.chatgpt.entity.chat.Message;
 import com.plexpt.chatgpt.listener.SseStreamListener;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSources;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,24 +41,24 @@ public class ChatGptServiceImpl implements IAiChatService {
                 .post(okHttpReqBody)
                 .build();
 
-      //  GptStreamResponse streamResponse = new GptStreamResponse();
-        ChatGPTStream chatGPTStream = ChatGPTStream.builder()
-                .timeout(600)
-                .apiKey("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")
-                //  .proxy(proxy)
-                .apiHost("https://api.openai.com/")
-                .build()
-                .init();
-
-        SseEmitter sseEmitter = new SseEmitter(-1L);
-
-        SseStreamListener listener = new SseStreamListener(sseEmitter);
-         Message message = Message.of(chatGptReq.getModel());
-
-        listener.setOnComplate(msg -> {
-            //回答完成，可以做一些事情
-        });
-        chatGPTStream.streamChatCompletion(Arrays.asList(message), listener);
+//        GptStreamResponse streamResponse = new GptStreamResponse();
+//        ChatGPTStream chatGPTStream = ChatGPTStream.builder()
+//                .timeout(600)
+//                .apiKey("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")
+//                //  .proxy(proxy)
+//                .apiHost("https://api.openai.com/")
+//                .build()
+//                .init();
+//
+//        SseEmitter sseEmitter = new SseEmitter(-1L);
+//
+//        SseStreamListener listener = new SseStreamListener(sseEmitter);
+//         Message message = Message.of(chatGptReq.getModel());
+//
+//        listener.setOnComplate(msg -> {
+//            //回答完成，可以做一些事情
+//        });
+//        chatGPTStream.streamChatCompletion(Arrays.asList(message), listener);
 
         return null;
 

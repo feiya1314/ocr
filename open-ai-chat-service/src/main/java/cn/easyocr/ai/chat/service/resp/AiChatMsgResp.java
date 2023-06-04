@@ -1,5 +1,6 @@
 package cn.easyocr.ai.chat.service.resp;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AiChatMsgResp {
     private String id;
     private String text;
@@ -26,6 +28,7 @@ public class AiChatMsgResp {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class MsgDetails {
         private String id;
         private String object;
@@ -36,6 +39,7 @@ public class AiChatMsgResp {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Choices {
         private Delta delta;
         private Integer index;
@@ -44,6 +48,7 @@ public class AiChatMsgResp {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Delta {
         private String content;
     }
