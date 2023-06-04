@@ -40,4 +40,6 @@ public class ChatContext {
     private String respMsgId;
 
     private List<Message> reqMessages;
+
+    private String respWholeText;
 }

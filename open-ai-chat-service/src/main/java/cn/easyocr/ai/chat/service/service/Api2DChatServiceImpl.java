@@ -14,6 +14,7 @@ import cn.easyocr.ai.chat.service.listener.SseEvent;
 import cn.easyocr.ai.chat.service.listener.SseEventListener;
 import cn.easyocr.ai.chat.service.req.ChatGptReq;
 import cn.easyocr.ai.chat.service.resp.Api2dChaGptResp;
+import cn.easyocr.ai.chat.service.resp.ChatChoice;
 import cn.easyocr.ai.chat.service.resp.GptStreamResp;
 import cn.easyocr.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * @author : feiya
@@ -83,13 +86,24 @@ public class Api2DChatServiceImpl implements IAiChatService {
             public void accept(SseEvent sseEvent) {
                 String data = sseEvent.getData();
                 if (data.equals("[DONE]")) {
+                    log.debug("ISseEventHandler accept data [DONE]");
+                    responseFinish(chatContext);
                     this.onClose();
                     return;
                 }
                 Api2dChaGptResp response = JsonUtils.jsonToBean(data, Api2dChaGptResp.class);
                 if (response == null || CollectionUtils.isEmpty(response.getChoices())) {
                     log.warn("sse event choices is empty");
+                    responseFinish(chatContext);
                     return;
+                }
+
+                List<ChatChoice> choices = response.getChoices();
+                for (ChatChoice chatChoice : choices) {
+                    if (chatChoice.getFinishReason() != null && "stop".equals(chatChoice.getFinishReason())) {
+                        responseFinish(chatContext);
+                        break;
+                    }
                 }
 
                 try {
@@ -102,20 +116,21 @@ public class Api2DChatServiceImpl implements IAiChatService {
             @Override
             public void onClose() {
                 log.debug("ISseEventHandler onClose");
-                streamResponse.onComplete(StreamRespEvent.FINISH.getEvent(), "");
-                String wholeText = streamResponse.text;
-                StreamResult streamResult = new StreamResult();
-                streamResult.setStatus(StreamRespEvent.FINISH.getEvent());
-                streamResult.setContent(wholeText);
+//                String wholeText = chatContext.getRespWholeText();
+//                StreamResult streamResult = new StreamResult();
+//                streamResult.setStatus(StreamRespEvent.FINISH.getEvent());
+//                streamResult.setContent(wholeText);
+//
+//                log.debug("ISseEventHandler onClose, update resp wholeText : {}", wholeText);
+//                updateStreamResp(chatContext, streamResult);
 
-                updateStreamResp(chatContext, streamResult);
+                streamResponse.onComplete(StreamRespEvent.FINISH.getEvent(), "");
             }
 
             @Override
             public void onFailure(String msg) {
-                log.debug("ISseEventHandler onFailure");
-                streamResponse.onComplete(StreamRespEvent.ERROR.getEvent(), "some wrong occurs, please try it again " +
-                        "later");
+                log.debug("ISseEventHandler onFailure msg : {}", msg);
+                streamResponse.onComplete(StreamRespEvent.ERROR.getEvent(), "some wrong occurs, please try it again later");
                 StreamResult streamResult = new StreamResult();
                 streamResult.setStatus(StreamRespEvent.ERROR.getEvent());
                 streamResult.setContent(msg);
@@ -125,6 +140,16 @@ public class Api2DChatServiceImpl implements IAiChatService {
         };
 
         return new SseEventListener(eventHandler);
+    }
+
+    private void responseFinish(ChatContext chatContext) {
+        String wholeText = chatContext.getRespWholeText();
+        StreamResult streamResult = new StreamResult();
+        streamResult.setStatus(StreamRespEvent.FINISH.getEvent());
+        streamResult.setContent(wholeText);
+
+        log.debug("ISseEventHandler responseFinish, update resp wholeText : {}", wholeText);
+        updateStreamResp(chatContext, streamResult);
     }
 
     private void updateStreamResp(ChatContext chatContext, StreamResult streamResult) {

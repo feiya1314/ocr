@@ -56,6 +56,7 @@ public class GptStreamResp implements StreamingResponseBody {
                     }
                 }
 
+                chatContext.setRespWholeText(text);
                 resp.setText(text);
                 resp.setRole(ChatRole.ASSISTANT.getRole());
 //                resp.setParentMessageId("parent_id");
