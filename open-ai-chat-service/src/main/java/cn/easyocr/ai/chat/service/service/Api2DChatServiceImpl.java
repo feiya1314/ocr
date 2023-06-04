@@ -82,18 +82,26 @@ public class Api2DChatServiceImpl implements IAiChatService {
     private SseEventListener buildEventListener(ChatContext chatContext, GptStreamResp streamResponse) {
         // todo 是否需要缓存 SseEventListener
         ISseEventHandler<SseEvent> eventHandler = new ISseEventHandler<>() {
+            private volatile boolean finishUpdate = false;
+
             @Override
             public void accept(SseEvent sseEvent) {
                 String data = sseEvent.getData();
                 if (data.equals("[DONE]")) {
                     log.debug("ISseEventHandler accept data [DONE]");
-                    responseFinish(chatContext);
+
+                    if (!finishUpdate) {
+                        finishUpdate = true;
+                        // 结束回答了，更新
+                        responseFinish(chatContext);
+                    }
                     this.onClose();
                     return;
                 }
                 Api2dChaGptResp response = JsonUtils.jsonToBean(data, Api2dChaGptResp.class);
                 if (response == null || CollectionUtils.isEmpty(response.getChoices())) {
                     log.warn("sse event choices is empty");
+                    // 这里先更新下，不确定有没有结束回答
                     responseFinish(chatContext);
                     return;
                 }
@@ -101,7 +109,12 @@ public class Api2DChatServiceImpl implements IAiChatService {
                 List<ChatChoice> choices = response.getChoices();
                 for (ChatChoice chatChoice : choices) {
                     if (chatChoice.getFinishReason() != null && "stop".equals(chatChoice.getFinishReason())) {
-                        responseFinish(chatContext);
+                        log.warn("sse event choices FinishReason is stop");
+                        if (!finishUpdate) {
+                            finishUpdate = true;
+                            // 结束回答了，更新
+                            responseFinish(chatContext);
+                        }
                         break;
                     }
                 }
