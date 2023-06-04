@@ -109,7 +109,7 @@ public class Api2DChatServiceImpl implements IAiChatService {
                 List<ChatChoice> choices = response.getChoices();
                 for (ChatChoice chatChoice : choices) {
                     if (chatChoice.getFinishReason() != null && "stop".equals(chatChoice.getFinishReason())) {
-                        log.warn("sse event choices FinishReason is stop");
+                        log.debug("sse event choices FinishReason is stop");
                         if (!finishUpdate) {
                             finishUpdate = true;
                             // 结束回答了，更新
