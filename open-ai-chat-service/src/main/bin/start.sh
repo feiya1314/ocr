@@ -13,6 +13,8 @@ LOG_PATH=$ROOT_PATH/logs
 
 source "$CUR_PATH"/java_opts.sh
 #echo "JAVA_OPTS:""$JAVA_OPTS"
+boot_jar=`ls $ROOT_PATH |grep open-ai-chat-service |grep jar`
+echo bootjar:$boot_jar
 
 if [ ! -d "$LOG_PATH" ]; then
   mkdir $LOG_PATH
@@ -24,7 +26,7 @@ echo "LOG_PATH:""$LOG_PATH" >> $LOG_PATH/nohup.log
 echo "JAVA_OPTS:""$JAVA_OPTS" >> $LOG_PATH/nohup.log
 
 cd $ROOT_PATH
-nohup java -jar $JAVA_OPTS $ROOT_PATH/open-ai-chat-service-1.0-SNAPSHOT.jar >> $LOG_PATH/nohup.log 2>&1 &
+nohup java -jar $JAVA_OPTS $ROOT_PATH/$boot_jar >> $LOG_PATH/nohup.log 2>&1 &
 
 
 
