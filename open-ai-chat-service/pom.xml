@@ -6,13 +6,16 @@
     <parent>
         <groupId>cn.easyocr</groupId>
         <artifactId>ocr-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>open-ai-chat-service</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <easyocr.commondao.version>1.0.0</easyocr.commondao.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -85,7 +88,7 @@
         <dependency>
             <groupId>cn.easyocr</groupId>
             <artifactId>ocr-common-dao</artifactId>
-            <version>${project.version}</version>
+            <version>${easyocr.commondao.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

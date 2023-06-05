@@ -19,8 +19,20 @@ acme.sh  --issue  -d easyocr.cn -d www.easyocr.cn  --webroot  /home/ocr/ocr-web/
 acme.sh --issue  -d easyocr.cn   --nginx
 
 /home/ocr/nginx/ssl
-3、
+3、安装证书
 acme.sh --install-cert -d easyocr.cn   --key-file    /home/ocr/nginx/ssl/easyocr.cn.key  --fullchain-file  /home/ocr/nginx/ssl/fullchain.cer  --reloadcmd     "service nginx force-reload"
 
 4、
 acme.sh  --upgrade  --auto-upgrade
+
+
+
+申请证书 如果yufei556@126.com 已注册，就去掉--register-account -m yufei556@126.com
+acme.sh --issue -d chat.easyocr.cn -d www.easyocr.cn -d easyocr.cn --register-account -m yufei556@126.com --webroot  /home/ocr/ai-chat/chat-web --debug
+[Mon Jun  5 23:09:04 CST 2023] No EAB credentials found for ZeroSSL, let's get one
+[Mon Jun  5 23:09:09 CST 2023] Registering account: https://acme.zerossl.com/v2/DV90
+[Mon Jun  5 23:09:18 CST 2023] Registered
+[Mon Jun  5 23:09:18 CST 2023] ACCOUNT_THUMBPRINT='kdgqkuPGLRzrsYNgdvLNK0xemF167MBwnTZfuNMFbo0'
+
+
+acme.sh --install-cert -d chat.easyocr.cn -d www.easyocr.cn -d easyocr.cn --key-file  /home/ocr/nginx/ssl/easyocr.cn.key  --fullchain-file  /home/ocr/nginx/ssl/fullchain.cer  --reloadcmd   "/usr/local/nginx/sbin/nginx -s reload"

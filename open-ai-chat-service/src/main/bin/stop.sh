@@ -13,7 +13,7 @@ echo "LOG_PATH:""$LOG_PATH"
 source "$CUR_PATH"/java_opts.sh
 echo "JAVA_OPTS:""$JAVA_OPTS"
 
-pid=$(ps -ef | grep java | grep "ocr-main-service" | awk '{print $2}')
+pid=$(ps -ef | grep java | grep "open-ai-chat-service" | awk '{print $2}')
 
 if [ "$pid" == "" ]; then
   echo "pid not exist"
