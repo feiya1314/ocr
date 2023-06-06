@@ -156,7 +156,7 @@
     <!-- root级别   DEBUG -->
     <root level="INFO">
         <!-- 控制台输出 -->
-        <appender-ref ref="CONSOLE"/>
+<!--        <appender-ref ref="CONSOLE"/>-->
         <!--  除了 additivity false的logger , 错误日志管的日志都输出错误文件 -->
         <appender-ref ref="ERROR"/>
     </root>

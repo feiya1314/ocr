@@ -1,3 +1,4 @@
+use ocr;
 DROP TABLE IF EXISTS `chat_msgs`;
 CREATE TABLE `chat_msgs` (
    `id` bigint(20) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主表id',

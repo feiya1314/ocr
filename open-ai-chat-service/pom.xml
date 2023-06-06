@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.easyocr</groupId>
         <artifactId>ocr-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -29,10 +29,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.redisson</groupId>-->
+<!--            <artifactId>redisson</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>redis.clients</groupId>-->
+<!--            <artifactId>jedis</artifactId>-->
+<!--        </dependency>-->
 <!--        <dependency>-->
 <!--            <groupId>com.lzhpo</groupId>-->
 <!--            <artifactId>chatgpt-spring-boot-starter</artifactId>-->
@@ -56,11 +60,6 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -1,3 +1,4 @@
+use ocr;
 DROP TABLE IF EXISTS `ocr_request_log`;
 CREATE TABLE `ocr_request_log` (
    `id` bigint(20) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主表id',
