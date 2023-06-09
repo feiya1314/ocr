@@ -23,6 +23,11 @@ public class ParamValidateException extends RuntimeException {
         this.resultCodeEnum = resultCodeEnum;
     }
 
+    public ParamValidateException(ResultCodeEnum resultCodeEnum, Object... formatParams) {
+        super(ResultCodeEnum.formatMsg(resultCodeEnum, formatParams));
+        this.resultCodeEnum = resultCodeEnum;
+    }
+
     public ParamValidateException(String message, Throwable cause) {
         super(message, cause);
     }

@@ -91,8 +91,10 @@ public class AiChatController {
                     msg.setContent(String.valueOf(c));
                     SseEmitter.SseEventBuilder sb = SseEmitter.event().id(String.valueOf(i++)).data(JsonUtils.toJson(api2dChaGptResp));
                     emmitter.send(sb);
-                    Thread.sleep(100 + random.nextInt(50));
+                    Thread.sleep(10 + random.nextInt(10));
                 }
+                SseEmitter.SseEventBuilder sb = SseEmitter.event().id("-1").data("[DONE]");
+                emmitter.send(sb);
                 emmitter.complete();
             } catch (Exception e) {
                 log.error("emmitter send error", e);

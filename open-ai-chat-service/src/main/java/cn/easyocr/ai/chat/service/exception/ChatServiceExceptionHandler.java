@@ -7,6 +7,7 @@ import cn.easyocr.common.resp.ErrorResponse;
 import cn.easyocr.common.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,7 +46,8 @@ public class ChatServiceExceptionHandler {
     @ExceptionHandler({ParamValidateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handlerParamException(ParamValidateException ex) {
-        return ResponseUtil.fail(ex.getResultCodeEnum().getCode(), ex.getResultCodeEnum().getDesc());
+        return ResponseUtil.fail(ex.getResultCodeEnum().getCode(),
+                StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : ex.getResultCodeEnum().getDesc());
     }
 
     @ExceptionHandler({ServiceException.class})

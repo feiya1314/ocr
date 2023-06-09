@@ -4,6 +4,8 @@ import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.enums.ChatRole;
 import cn.easyocr.ai.chat.service.enums.StreamRespEvent;
 import cn.easyocr.ai.chat.service.req.Message;
+import cn.easyocr.common.enums.ResultCodeEnum;
+import cn.easyocr.common.exception.ServiceException;
 import cn.easyocr.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -68,6 +70,7 @@ public class GptStreamResp implements StreamingResponseBody {
                 outputStream.flush();
             } catch (InterruptedException e) {
                 log.error("GptStreamResponse sseEvent take Interrupted", e);
+                throw new ServiceException(ResultCodeEnum.OCR_SERVICE_ERROR);
             } finally {
                 lock.unlock();
             }

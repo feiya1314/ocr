@@ -74,13 +74,13 @@ public class Api2DChatServiceImpl implements IAiChatService {
                 .headers(headers)
                 .post(okHttpReqBody)
                 .build();
+        log.info("call api2d for response");
         httpHelper.eventSourceFactory().newEventSource(request, buildEventListener(chatContext, streamResponse));
 
         return streamResponse;
     }
 
     private SseEventListener buildEventListener(ChatContext chatContext, GptStreamResp streamResponse) {
-        // todo 是否需要缓存 SseEventListener
         ISseEventHandler<SseEvent> eventHandler = new ISseEventHandler<>() {
             private volatile boolean finishUpdate = false;
 
@@ -129,21 +129,13 @@ public class Api2DChatServiceImpl implements IAiChatService {
             @Override
             public void onClose() {
                 log.debug("ISseEventHandler onClose");
-//                String wholeText = chatContext.getRespWholeText();
-//                StreamResult streamResult = new StreamResult();
-//                streamResult.setStatus(StreamRespEvent.FINISH.getEvent());
-//                streamResult.setContent(wholeText);
-//
-//                log.debug("ISseEventHandler onClose, update resp wholeText : {}", wholeText);
-//                updateStreamResp(chatContext, streamResult);
-
                 streamResponse.onComplete(StreamRespEvent.FINISH.getEvent(), "");
             }
 
             @Override
             public void onFailure(String msg) {
-                log.debug("ISseEventHandler onFailure msg : {}", msg);
-                streamResponse.onComplete(StreamRespEvent.ERROR.getEvent(), "some wrong occurs, please try it again later");
+                log.error("ISseEventHandler onFailure msg : {}", msg);
+                streamResponse.onComplete(StreamRespEvent.ERROR.getEvent(), "出了点错误，请稍后重试~");
                 StreamResult streamResult = new StreamResult();
                 streamResult.setStatus(StreamRespEvent.ERROR.getEvent());
                 streamResult.setContent(msg);
