@@ -50,14 +50,15 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             String origin = anno.origin();
             String requestId = MDC.get(Constants.REQUEST_TRACE_KEY);
             String userId = request.getHeader(Constants.REQ_USER_ID);
-
+            String ip = request.getRemoteAddr();
+            String remoteHost = request.getRemoteHost();
             String ua = request.getHeader("user-agent");
             String refer = request.getHeader("referer");
-            String ip = request.getHeader(Constants.REQ_REAL_IP);
-            if (!StringUtils.hasText(ip)) {
-                ip = request.getHeader(Constants.REQ_FORWARDED_IP);
-            }
-
+            String realIp = request.getHeader(Constants.REQ_REAL_IP);
+//            if (!StringUtils.hasText(realIp)) {
+            String fordIp = request.getHeader(Constants.REQ_FORWARDED_IP);
+//            }
+            log.info("getRemoteAddr :{},remoteHost:{},realIp:{},fordIp:{}", ip, remoteHost, realIp, fordIp);
             OcrRequestLog reqLog = new OcrRequestLog();
             reqLog.setIp(ip);
             reqLog.setUserId(userId);

@@ -153,6 +153,11 @@
         <appender-ref ref="ai-chat-interface"/>
         <!--        <appender-ref ref="INFO"/>-->
     </logger>
+    <logger name="cn.easyocr" additivity="false" level="INFO">
+        <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
+<!--        <appender-ref ref="ai-chat-service"/>-->
+          <appender-ref ref="INFO"/>
+    </logger>
     <!-- root级别   DEBUG -->
     <root level="INFO">
         <!-- 控制台输出 -->
