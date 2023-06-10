@@ -41,7 +41,7 @@ public class AiChatController {
     private IAiChatService aiChatService;
 
     @PostMapping(value = "/chat-process", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @ReqLogAnno(origin = "ai-chat")
+    @ReqLogAnno(origin = "ai-chat", asyncReq = true)
     public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq) {
         log.info("chatProcess request start");
         ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder().aiChatReq(aiChatReq);
@@ -57,17 +57,12 @@ public class AiChatController {
     }
 
     @PostMapping(value = "/chat-stream")
-    @ReqLogAnno(origin = "ai-chat")
     public SseEmitter chatGptMock(@Valid @RequestBody ChatGptReq chatGptReq) {
         // 超时时间60s，超时后服务端主动关闭连接 todo cache请求连接
         SseEmitter emmitter = new SseEmitter(100 * 1000L);
-        emmitter.onTimeout(() -> {
-            log.warn("emmitter timeout");
-        });
+        emmitter.onTimeout(() -> log.warn("emmitter timeout"));
 
-        emmitter.onCompletion(() -> {
-            log.warn("emmitter onCompletion");
-        });
+        emmitter.onCompletion(() -> log.warn("emmitter onCompletion"));
 
         Random random = new Random();
         new Thread(() -> {

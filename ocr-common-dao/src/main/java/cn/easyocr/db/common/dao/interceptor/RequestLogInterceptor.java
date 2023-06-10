@@ -10,14 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author : feiya
@@ -25,11 +22,10 @@ import java.util.Set;
  * @description :
  */
 @Slf4j
-public class RequestLogInterceptor implements HandlerInterceptor {
+public class RequestLogInterceptor implements AsyncHandlerInterceptor {
     private final OcrRequestLogMapper requestLogMapper;
 
     private final RequestLogThreadPool threadPool;
-//    private final Set<String> logPackages = new HashSet<>(Collections.singletonList("cn.easy.ocr.main.service.controller"));
 
     public RequestLogInterceptor(OcrRequestLogMapper requestLogMapper, RequestLogThreadPool threadPool) {
         this.requestLogMapper = requestLogMapper;
@@ -37,13 +33,40 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        try {
-            if (checkNeedLog(handler)) {
-                return true;
-            }
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
+            return true;
+        }
 
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
+        Method method = handlerMethod.getMethod();
+        ReqLogAnno anno = method.getAnnotation(ReqLogAnno.class);
+        // 异步请求不在此记录
+        if (anno == null || anno.asyncReq()) {
+            return true;
+        }
+
+        recordRequest(request, handlerMethod);
+        return true;
+    }
+
+
+    @Override
+    public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
+            return;
+        }
+
+        Method method = handlerMethod.getMethod();
+        ReqLogAnno anno = method.getAnnotation(ReqLogAnno.class);
+        if (anno == null || !anno.asyncReq()) {
+            return;
+        }
+
+        recordRequest(request, handlerMethod);
+    }
+
+    private void recordRequest(HttpServletRequest request, HandlerMethod handlerMethod) {
+        try {
             Method method = handlerMethod.getMethod();
             ReqLogAnno anno = method.getAnnotation(ReqLogAnno.class);
 
@@ -55,12 +78,11 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             String ua = request.getHeader("user-agent");
             String refer = request.getHeader("referer");
             String realIp = request.getHeader(Constants.REQ_REAL_IP);
-//            if (!StringUtils.hasText(realIp)) {
             String fordIp = request.getHeader(Constants.REQ_FORWARDED_IP);
-//            }
+
             log.info("getRemoteAddr :{},remoteHost:{},realIp:{},fordIp:{}", ip, remoteHost, realIp, fordIp);
             OcrRequestLog reqLog = new OcrRequestLog();
-            reqLog.setIp(ip);
+            reqLog.setIp(StringUtils.hasText(realIp) ? realIp : remoteHost);
             reqLog.setUserId(userId);
             reqLog.setRequestId(requestId);
             reqLog.setOrigin(origin);
@@ -81,20 +103,5 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             log.error("log req error", e);
         }
-        return true;
-    }
-
-    private boolean checkNeedLog(Object handler) {
-        if (!(handler instanceof HandlerMethod handlerMethod)) {
-            return true;
-        }
-        String pack = handlerMethod.getBean().getClass().getPackage().getName();
-//        if (!logPackages.contains(pack)) {
-//            return true;
-//        }
-        Method method = handlerMethod.getMethod();
-        ReqLogAnno anno = method.getAnnotation(ReqLogAnno.class);
-
-        return anno == null;
     }
 }

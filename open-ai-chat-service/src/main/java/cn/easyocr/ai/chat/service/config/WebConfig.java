@@ -28,8 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new RequestTraceInterceptor())
                 .addPathPatterns("/api/**");
 
-        RequestLogInterceptor requestLogInterceptor = new RequestLogInterceptor(requestLogMapper, threadPool);
-        registry.addInterceptor(requestLogInterceptor)
+        registry.addInterceptor(new RequestLogInterceptor(requestLogMapper, threadPool))
                 .addPathPatterns("/api/**");
     }
 }
