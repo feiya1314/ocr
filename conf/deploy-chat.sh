@@ -1,54 +1,39 @@
 #! /bin/sh
 
 ###################### 说明 ########################
-# 将打包好的前端文件，文件名dist.zip，放到/ home/ocr目录
+# 将打包好的后端服务，放到/ home/ocr目录
 # 执行该脚本
 ###################################################
-mkdir /home/ocr/nginx
+deploy_file='easy-chat-service-bin.tar.gz'
+chat_dir=/home/ocr/ai-chat
+service_dir=/home/ocr/ai-chat/easy-chat-service
+service_bak_dir=/home/ocr/ai-chat/easy-chat-service-bak
 if [ ! -d "/home/ocr/ai-chat" ]; then
   echo "web dir not exist"
   mkdir /home/ocr/ai-chat
 fi
 
-if [ ! -d "/home/ocr/ai-chat/chat-web" ]; then
-  echo "web dir not exist"
-  mkdir /home/ocr/ai-chat/chat-web
-fi
-
-if [ ! -f "dist.zip" ]; then
+if [ ! -f "$deploy_file" ]; then
   echo "部署文件不存在"
   exit 0
 fi
 
-if [ -d "/home/ocr/ocr-web-bak" ]; then
+if [ -d "/home/ocr/ai-chat/easy-chat-service-bak" ]; then
   echo "web bak dir exist"
-  rm -rf /home/ocr/ocr-web-bak
+  rm -rf /home/ocr/ai-chat/easy-chat-service-bak
 fi
 
 echo "start deploy"
 
-echo "clear dir"
-mv /home/ocr/ai-chat/chat-web /home/ocr/ai-chat/chat-web-bak
-
-mkdir /home/ocr/ai-chat/chat-web
+echo "bak dir"
+sh $service_dir/bin/stop.sh
+mv $service_dir $service_bak_dir
 
 echo "move package"
-mv dist.zip /home/ocr/ocr-web/dist.zip
+mv $deploy_file $chat_dir
 
-cd /home/ocr/ocr-web/
+cd $chat_dir
+tar -zxvf $deploy_file
 
-echo "unzip"
-unzip -q dist.zip
-rm dist.zip
-
-cd /home/ocr
-chown -R ocr:ocr /home/ocr/ocr-web
-
-mkdir /home/ocr/nginx
-chown -R ocr:ocr /home/ocr/nginx
-
-echo "reboot nginx"
-systemctl stop nginx
-systemctl start nginx
-
-echo "finish"
+sh $service_dir/bin/start.sh
+rm $deploy_file

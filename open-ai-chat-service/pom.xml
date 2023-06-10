@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <easyocr.commondao.version>1.0.0</easyocr.commondao.version>
+        <easyocr.commondao.version>1.0.2</easyocr.commondao.version>
     </properties>
     <dependencies>
         <dependency>

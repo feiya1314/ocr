@@ -24,13 +24,14 @@
     </properties>
 
     <modules>
-        <module>ocr-main-service</module>
-        <module>open-ai-chat-service</module>
         <module>ocr-common</module>
         <module>ocr-common-dao</module>
         <module>uni-auth</module>
         <module>task-service</module>
         <module>risk-check-service</module>
+
+        <module>ocr-main-service</module>
+        <module>open-ai-chat-service</module>
     </modules>
 
     <parent>
