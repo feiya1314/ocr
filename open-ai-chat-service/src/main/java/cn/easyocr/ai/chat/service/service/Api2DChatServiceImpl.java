@@ -118,12 +118,7 @@ public class Api2DChatServiceImpl implements IAiChatService {
                         break;
                     }
                 }
-
-                try {
-                    streamResponse.sseEvent.put(response);
-                } catch (InterruptedException e) {
-                    log.error("sseEvent put InterruptedException", e);
-                }
+                streamResponse.stream(response);
             }
 
             @Override

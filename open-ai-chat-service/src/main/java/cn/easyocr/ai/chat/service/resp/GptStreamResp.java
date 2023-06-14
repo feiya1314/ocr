@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -25,7 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @Slf4j
 public class GptStreamResp implements StreamingResponseBody {
-    public final SynchronousQueue<Api2dChaGptResp> sseEvent = new SynchronousQueue<>();
+    private final SynchronousQueue<Api2dChaGptResp> sseEvent = new SynchronousQueue<>();
     private volatile boolean working = true;
     public String text = "";
     private final ChatContext chatContext;
@@ -77,15 +78,38 @@ public class GptStreamResp implements StreamingResponseBody {
         }
     }
 
+    /**
+     * sse完成的请求，这里  onComplete 和 writeTo 不在同一个线程，注意线程安全问题
+     *
+     * @param reason 结束原因
+     * @param text   结束描述
+     */
     public void onComplete(String reason, String text) {
+        log.info("stream resp onComplete");
         working = false;
         Api2dChaGptResp event = new Api2dChaGptResp();
         event.setId(reason);
         event.setObject(text);
+
+        stream(event);
+    }
+
+    /**
+     * 新的数据流过来
+     *
+     * @param event 新数据
+     */
+    public void stream(Api2dChaGptResp event) {
         try {
-            sseEvent.put(event);
-        } catch (InterruptedException e) {
-            log.error("GptStreamResponse complete Interrupted", e);
+            // 这里onComplete中working = false ，但是调用stream时，writeTo 因为working = false 可能已经结束了，所以offer 需要结束,
+            // 如果使用 不带超时的方法时，会导致 sseEvent 一直阻塞，导致OKhttp线程泄漏
+            int eventOfferTimeout = 3;
+            boolean offered = sseEvent.offer(event, eventOfferTimeout, TimeUnit.SECONDS);
+            if (!offered) {
+                log.debug("stream offer event offered false ");
+            }
+        } catch (Exception e) {
+            log.error("stream offer event error", e);
         }
     }
 }
