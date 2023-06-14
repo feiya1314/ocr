@@ -85,7 +85,7 @@ public class GptStreamResp implements StreamingResponseBody {
      * @param text   结束描述
      */
     public void onComplete(String reason, String text) {
-        log.info("stream resp onComplete");
+        log.debug("stream resp onComplete");
         working = false;
         Api2dChaGptResp event = new Api2dChaGptResp();
         event.setId(reason);
