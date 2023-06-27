@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS `ocr_request_log`;
 CREATE TABLE `ocr_request_log` (
    `id` bigint(20) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主表id',
    `ip` VARCHAR(64) DEFAULT NULL COMMENT '请求客户端ip',
-   `user_id` VARCHAR(64) DEFAULT NULL COMMENT '用户id',
+   `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
    `request_id` VARCHAR(64) DEFAULT NULL COMMENT '请求id',
    `origin` VARCHAR(64) DEFAULT NULL COMMENT '请求来源接口',
    `ua` VARCHAR(1024) DEFAULT NULL COMMENT '请求ua',

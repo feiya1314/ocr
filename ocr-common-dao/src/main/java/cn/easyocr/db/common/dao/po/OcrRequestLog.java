@@ -15,7 +15,7 @@ public class OcrRequestLog {
 
     private String ip;
 
-    private String userId;
+    private Long userId;
 
     private String requestId;
     

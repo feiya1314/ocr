@@ -4,6 +4,7 @@ import cn.easyocr.common.interceptor.RequestTraceInterceptor;
 import cn.easyocr.common.thread.RequestLogThreadPool;
 import cn.easyocr.db.common.dao.interceptor.RequestLogInterceptor;
 import cn.easyocr.db.common.dao.mapper.OcrRequestLogMapper;
+import cn.easyocr.uni.auth.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,6 +17,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    private ChatConfig config;
+
     @Autowired
     private OcrRequestLogMapper requestLogMapper;
 
@@ -30,5 +34,9 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new RequestLogInterceptor(requestLogMapper, threadPool))
                 .addPathPatterns("/api/**");
+
+        registry.addInterceptor(new AuthInterceptor(uri -> uri.equals("/") || uri.startsWith("/assets") || uri.startsWith("/favicon.svg"),
+                        config.getGenTokenSecret()))
+                .addPathPatterns("/**");
     }
 }

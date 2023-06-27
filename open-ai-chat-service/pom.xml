@@ -11,10 +11,13 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>open-ai-chat-service</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
-        <easyocr.commondao.version>1.0.3</easyocr.commondao.version>
+        <easyocr.commondao.version>1.0.5-SNAPSHOT</easyocr.commondao.version>
+        <easyocr.common.version>1.0.5-SNAPSHOT</easyocr.common.version>
+        <easyocr.uniauth.version>1.0.1-SNAPSHOT</easyocr.uniauth.version>
     </properties>
     <dependencies>
         <dependency>
@@ -90,6 +93,22 @@
             <version>${easyocr.commondao.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>cn.easyocr</groupId>
+            <artifactId>ocr-common</artifactId>
+            <version>${easyocr.common.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.easyocr</groupId>
+            <artifactId>uni-auth</artifactId>
+            <version>${easyocr.uniauth.version}</version>
+            <scope>compile</scope>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.google.guava</groupId>-->
+<!--            <artifactId>guava</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>

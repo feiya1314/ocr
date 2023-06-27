@@ -83,7 +83,7 @@ public class RequestLogInterceptor implements AsyncHandlerInterceptor {
             log.info("getRemoteAddr :{},remoteHost:{},realIp:{},fordIp:{}", ip, remoteHost, realIp, fordIp);
             OcrRequestLog reqLog = new OcrRequestLog();
             reqLog.setIp(StringUtils.hasText(realIp) ? realIp : remoteHost);
-            reqLog.setUserId(userId);
+            reqLog.setUserId(userId == null ? null : Long.parseLong(userId));
             reqLog.setRequestId(requestId);
             reqLog.setOrigin(origin);
             reqLog.setUa(ua);

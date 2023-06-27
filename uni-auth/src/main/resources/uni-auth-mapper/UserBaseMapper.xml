@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easyocr.uni.auth.mapper.UserBaseMapper">
+    <resultMap id="baseMap" type="cn.easyocr.uni.auth.po.UserBase">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="ptd" column="ptd"/>
+    </resultMap>
+    <select id="find" resultMap="baseMap">
+        select
+            id,
+            user_id,
+            mobile,
+            email,
+            nick_name,
+            username,
+            password,
+            gender,
+            avatar,
+            created_time,
+            update_time,
+            ptd
+        from user_base
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="username != null">
+                AND username = #{username}
+            </if>
+            <if test="mobile != null">
+                AND mobile = #{mobile}
+            </if>
+            <if test="email != null">
+                AND email = #{email}
+            </if>
+            <if test="password != null">
+                AND password = #{password}
+            </if>
+            <if test="ptd != null">
+                AND ptd = #{ptd}
+            </if>
+        </where>
+    </select>
+    <insert id="insert">
+        INSERT INTO user_base
+        (
+            user_id,
+            mobile,
+            email,
+            nick_name,
+            username,
+            password,
+            gender,
+            avatar,
+            ptd
+        )
+        VALUES
+        (
+            #{userId},
+            #{mobile},
+            #{email},
+            #{nickName},
+            #{username},
+            #{password},
+            #{gender},
+            #{avatar},
+            #{ptd}
+        )
+    </insert>
+</mapper>

@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 public class ChatMsgs {
     private Long id;
-    private String userId;
+    private Long userId;
     /**
      * {@link cn.easyocr.ai.chat.service.enums.ChatGptModel}
      */

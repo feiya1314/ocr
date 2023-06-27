@@ -21,6 +21,7 @@
         <okhttp.version>4.9.3</okhttp.version>
         <validation.version>2.7.0</validation.version>
         <commons-pool.version>2.11.1</commons-pool.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
 
     <modules>
@@ -123,6 +124,11 @@
                 <!-- 默认是mysql 8.x的驱动，可以用<version>指定mysql 5.x的驱动 -->
                 <scope>runtime</scope>
                 <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

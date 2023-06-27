@@ -32,7 +32,7 @@ public class ChatMsgsMapperTest extends BaseTest {
     public void testInset() throws Exception {
         ChatMsgs chatMsgs = new ChatMsgs();
 
-        chatMsgs.setUserId("user" + curTime);
+        chatMsgs.setUserId(curTime);
         chatMsgs.setModel(ChatGptModel.GPT_3_5_TURBO.getModelId());
         chatMsgs.setChatId("chatid" + curTime);
         chatMsgs.setMsgId("msgId" + curTime);

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.easyocr.uni.auth.mapper.UserThirdPartyMapper">
+    <resultMap id="baseMap" type="cn.easyocr.uni.auth.po.UserThirdParty">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="unionId" column="union_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="privilege" column="privilege"/>
+        <result property="platform" column="platform"/>
+        <result property="appId" column="app_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="ptd" column="ptd"/>
+    </resultMap>
+    <select id="find" resultMap="baseMap">
+        select
+            id
+            user_id,
+            union_id,
+            open_id,
+            privilege,
+            platform,
+            app_id,
+            created_time,
+            update_time,
+            ptd
+        from user_third_party
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="unionId != null">
+                AND union_id = #{unionId}
+            </if>
+            <if test="openId != null">
+                AND open_id = #{openId}
+            </if>
+            <if test="platform != null">
+                AND platform = #{platform}
+            </if>
+            <if test="appId != null">
+                AND app_id = #{appId}
+            </if>
+            <if test="ptd != null">
+                AND ptd = #{ptd}
+            </if>
+        </where>
+    </select>
+    <insert id="insert">
+        INSERT INTO user_third_party
+        (
+            user_id,
+            union_id,
+            open_id,
+            privilege,
+            platform,
+            app_id,
+            ptd
+        )
+        VALUES
+        (
+            #{userId},
+            #{unionId},
+            #{openId},
+            #{privilege},
+            #{platform},
+            #{appId},
+            #{ptd}
+        )
+    </insert>
+</mapper>

@@ -8,16 +8,23 @@
         <version>1.0.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <version>1.0.1-SNAPSHOT</version>
     <artifactId>uni-auth</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <jjwt.version>0.11.5</jjwt.version>
+        <easyocr.common.version>1.0.5-SNAPSHOT</easyocr.common.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.easyocr</groupId>
+            <artifactId>ocr-common</artifactId>
+            <version>${easyocr.common.version}</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -39,6 +46,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,7 @@
 package cn.easyocr.ai.chat.service.exception;
 
 import cn.easyocr.common.enums.ResultCodeEnum;
+import cn.easyocr.common.exception.AuthException;
 import cn.easyocr.common.exception.ParamValidateException;
 import cn.easyocr.common.exception.ServiceException;
 import cn.easyocr.common.resp.ErrorResponse;
@@ -46,6 +47,13 @@ public class ChatServiceExceptionHandler {
     @ExceptionHandler({ParamValidateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handlerParamException(ParamValidateException ex) {
+        return ResponseUtil.fail(ex.getResultCodeEnum().getCode(),
+                StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : ex.getResultCodeEnum().getDesc());
+    }
+
+    @ExceptionHandler({AuthException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handlerAuthException(AuthException ex) {
         return ResponseUtil.fail(ex.getResultCodeEnum().getCode(),
                 StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : ex.getResultCodeEnum().getDesc());
     }
