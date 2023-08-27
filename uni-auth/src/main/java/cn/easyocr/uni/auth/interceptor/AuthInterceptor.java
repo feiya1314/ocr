@@ -2,6 +2,7 @@ package cn.easyocr.uni.auth.interceptor;
 
 import cn.easyocr.common.enums.ResultCodeEnum;
 import cn.easyocr.common.exception.AuthException;
+import cn.easyocr.common.utils.Constants;
 import cn.easyocr.uni.auth.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -42,6 +43,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (!StringUtils.hasText(token) || !validateToken(token)) {
+            throw new AuthException(ResultCodeEnum.AUTH_FAILED);
+        }
+
+        String userId = request.getHeader(Constants.REQ_USER_ID);
+        if (!StringUtils.hasText(userId)) {
             throw new AuthException(ResultCodeEnum.AUTH_FAILED);
         }
 

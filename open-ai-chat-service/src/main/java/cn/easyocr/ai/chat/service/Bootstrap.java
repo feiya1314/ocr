@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since : 2023/4/9
  */
 @SpringBootApplication
-@MapperScan(value = {"cn.easyocr.ai.chat.service.dao.mapper","cn.easyocr.db.common.dao.mapper","cn.easyocr.uni.auth.mapper"})
+@MapperScan(value = {"cn.easyocr.ai.chat.service.dao.mapper", "cn.easyocr.db.common.dao.mapper", "cn.easyocr.uni.auth.mapper"})
 @Slf4j
 public class Bootstrap {
     public static void main(String[] args) {

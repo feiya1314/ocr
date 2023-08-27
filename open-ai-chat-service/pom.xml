@@ -17,7 +17,7 @@
     <properties>
         <easyocr.commondao.version>1.0.5-SNAPSHOT</easyocr.commondao.version>
         <easyocr.common.version>1.0.5-SNAPSHOT</easyocr.common.version>
-        <easyocr.uniauth.version>1.0.1-SNAPSHOT</easyocr.uniauth.version>
+        <easyocr.uniauth.version>1.0.5-SNAPSHOT</easyocr.uniauth.version>
     </properties>
     <dependencies>
         <dependency>

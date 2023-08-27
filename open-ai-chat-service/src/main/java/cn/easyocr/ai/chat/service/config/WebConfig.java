@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     @Autowired
-    private ChatConfig config;
+    private AuthConfig authConfig;
 
     @Autowired
     private OcrRequestLogMapper requestLogMapper;
@@ -28,15 +28,18 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 加入的顺序就是拦截器执行的顺序
+        // 加入的顺序就是拦截器执行的顺序, 添加的路径不包含项目的 ontext-path: /chat
         registry.addInterceptor(new RequestTraceInterceptor())
-                .addPathPatterns("/api/**");
+                .addPathPatterns("/api/**")
+                .addPathPatterns("/auth/**");
 
         registry.addInterceptor(new RequestLogInterceptor(requestLogMapper, threadPool))
-                .addPathPatterns("/api/**");
+                .addPathPatterns("/api/**")
+                .addPathPatterns("/auth/**");
 
-        registry.addInterceptor(new AuthInterceptor(uri -> uri.equals("/") || uri.startsWith("/assets") || uri.startsWith("/favicon.svg"),
-                        config.getGenTokenSecret()))
+        registry.addInterceptor(new AuthInterceptor(uri -> uri.equals("/") || uri.startsWith("/assets")
+                        || uri.startsWith("/favicon.svg") || uri.startsWith("/chat/auth/v1"),
+                        authConfig.getGenTokenSecret()))
                 .addPathPatterns("/**");
     }
 }

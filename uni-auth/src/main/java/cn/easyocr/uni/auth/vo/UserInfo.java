@@ -1,4 +1,4 @@
-package cn.easyocr.uni.auth.yideng;
+package cn.easyocr.uni.auth.vo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Deprecated
 public class UserInfo {
     private Long userId;
     private String username;

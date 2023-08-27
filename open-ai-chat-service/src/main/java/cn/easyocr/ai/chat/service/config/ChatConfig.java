@@ -17,12 +17,6 @@ import org.springframework.stereotype.Component;
 public class ChatConfig {
     private int maxTokens;
 
-    private String ydSecret;
-
-    private String genTokenSecret;
-
-    private long tokenExpiration = 86400L;
-
     /**
      * 一个会话最大的对话数，超过需要开启一个新对话
      */

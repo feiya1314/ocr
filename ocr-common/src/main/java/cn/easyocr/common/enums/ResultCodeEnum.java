@@ -16,10 +16,12 @@ public enum ResultCodeEnum {
     AUTH_INFO_NOT_FOUND(40004, "auth_info_not_found", "auth info 不存在"),
     AUTH_IN_PROGRESS(40005, "auth_in_progress", "正在登录中"),
     AUTH_CANCELLED(40006, "auth_cancelled", "登录取消了"),
-    AUTH_FAILED(40007, "auth_failed", "请先登录"),
+    AUTH_FAILED(40007, "auth_failed", "请先登录~"),
     OCR_SERVICE_ERROR(50000, "service_error", "服务异常了, 请稍后再试~"),
     YD_QR_ERROR(50001, "yd_qr_error", "获取二维码异常, 请稍后再试~"),
     YD_REQ_ERROR(50002, "yd_req_error", "获取二维码异常, 请稍后再试~"),
+    WX_QR_ERROR(50003, "wx_qr_error", "获取二维码异常, 请稍后再试~"),
+    WX_SESSION_ERROR(50004, "wx_session_error", "获取微信session错误"),
     ;
     private final int code;
 
