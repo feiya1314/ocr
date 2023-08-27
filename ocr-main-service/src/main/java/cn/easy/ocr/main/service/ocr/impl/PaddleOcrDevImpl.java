@@ -62,7 +62,7 @@ public class PaddleOcrDevImpl implements IOcr {
         if (StringUtils.hasText(text)) {
             try {
                 BaseResponse<OcrResultVo> result = objectMapper.readValue(text,
-                        new TypeReference<>() {
+                        new TypeReference<BaseResponse<OcrResultVo>>() {
                         });
 
                 ocrResult.setImageText(result.getData().getText());

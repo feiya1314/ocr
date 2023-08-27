@@ -18,6 +18,8 @@
         <easyocr.commondao.version>1.0.5-SNAPSHOT</easyocr.commondao.version>
         <easyocr.common.version>1.0.5-SNAPSHOT</easyocr.common.version>
         <easyocr.uniauth.version>1.0.5-SNAPSHOT</easyocr.uniauth.version>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
     <dependencies>
         <dependency>
