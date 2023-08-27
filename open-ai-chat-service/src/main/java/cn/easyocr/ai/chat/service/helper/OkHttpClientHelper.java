@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @description :
  */
 @Component
-public class HttpClientHelper {
+public class OkHttpClientHelper {
     public OkHttpClient client;
 
     private EventSource.Factory eventSourceFactory;

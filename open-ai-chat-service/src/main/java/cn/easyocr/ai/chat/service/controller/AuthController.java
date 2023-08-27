@@ -1,7 +1,8 @@
 package cn.easyocr.ai.chat.service.controller;
 
+import cn.easyocr.ai.chat.service.config.AuthConfig;
 import cn.easyocr.ai.chat.service.config.ChatConfig;
-import cn.easyocr.ai.chat.service.helper.HttpClientHelper;
+import cn.easyocr.ai.chat.service.helper.OkHttpClientHelper;
 import cn.easyocr.common.enums.ResultCodeEnum;
 import cn.easyocr.common.exception.AuthException;
 import cn.easyocr.common.exception.ParamValidateException;
@@ -53,12 +54,15 @@ import java.util.Objects;
 @Slf4j
 public class AuthController {
     @Autowired
-    private ChatConfig config;
+    private AuthConfig authConfig;
+
+    @Autowired
+    private ChatConfig chatConfig;
     private final String tempUserIdUrl = "https://yd.jylt.cc/api/wxLogin/tempUserId";
 
     private Map<String, CallbackReq> userLoninCallbacks = new HashMap<>();
     @Autowired
-    private HttpClientHelper httpHelper;
+    private OkHttpClientHelper okHttpClientHelper;
 
     @Autowired
     private UserThirdPartyMapper userThirdPartyMapper;
@@ -73,10 +77,10 @@ public class AuthController {
     @ResponseBody
     public ResponseEntity<TempUserResp.UserInfo> wxQr() {
         HttpUrl.Builder builder = Objects.requireNonNull(HttpUrl.parse(tempUserIdUrl)).newBuilder();
-        builder.addQueryParameter("secret", config.getYdSecret());
+        builder.addQueryParameter("secret", authConfig.getYdSecret());
         Request request = new Request.Builder().url(builder.build()).get().build();
 
-        Call call = httpHelper.client.newCall(request);
+        Call call = okHttpClientHelper.client.newCall(request);
         try (Response response = call.execute()) {
             if (!response.isSuccessful()) {
                 log.error("get yf qr failed, status :{},msg:{}", response.code(), response.message());
@@ -105,6 +109,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/yd/callback", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public ResponseEntity<CallbackResp> callback(@RequestBody CallbackReq callbackReq) {
         userLoninCallbacks.put(callbackReq.getTempUserId(), callbackReq);
         CallbackResp resp = new CallbackResp();
@@ -134,7 +139,7 @@ public class AuthController {
         Map<String, Object> claims = new HashMap<>();
         claims.put("user_id", userId);
 
-        String token = JwtUtil.genToken(claims, config.getGenTokenSecret(), config.getTokenExpiration());
+        String token = JwtUtil.genToken(claims, authConfig.getGenTokenSecret(), authConfig.getTokenExpiration());
 
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(userId);

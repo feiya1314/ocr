@@ -19,4 +19,13 @@ public class FileUtil {
 
         return Files.readAllBytes(Paths.get(uri));
     }
+
+    public static byte[] readAbsoluteFile(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path));
+    }
+
+    public static void main(String[] args) throws Exception {
+        byte[] file = readAbsoluteFile("E:\\Desktop\\logo\\easy.png");
+        System.out.println();
+    }
 }

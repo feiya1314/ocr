@@ -9,7 +9,7 @@ import cn.easyocr.ai.chat.service.enums.ChatGptModel;
 import cn.easyocr.ai.chat.service.enums.StreamRespEvent;
 import cn.easyocr.ai.chat.service.handler.ISseEventHandler;
 import cn.easyocr.ai.chat.service.handler.StreamResult;
-import cn.easyocr.ai.chat.service.helper.HttpClientHelper;
+import cn.easyocr.ai.chat.service.helper.OkHttpClientHelper;
 import cn.easyocr.ai.chat.service.listener.SseEvent;
 import cn.easyocr.ai.chat.service.listener.SseEventListener;
 import cn.easyocr.ai.chat.service.req.ChatGptReq;
@@ -38,7 +38,7 @@ public class Api2DChatServiceImpl implements IAiChatService {
     private ChatConfig config;
 
     @Autowired
-    private HttpClientHelper httpHelper;
+    private OkHttpClientHelper okHttpClientHelper;
 
     @Autowired
     private ChatMsgsMapper chatMsgsMapper;
@@ -75,7 +75,7 @@ public class Api2DChatServiceImpl implements IAiChatService {
                 .post(okHttpReqBody)
                 .build();
         log.info("call api2d for response");
-        httpHelper.eventSourceFactory().newEventSource(request, buildEventListener(chatContext, streamResponse));
+        okHttpClientHelper.eventSourceFactory().newEventSource(request, buildEventListener(chatContext, streamResponse));
 
         return streamResponse;
     }
