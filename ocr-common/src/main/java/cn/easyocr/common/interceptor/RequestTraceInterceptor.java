@@ -54,7 +54,7 @@ public class RequestTraceInterceptor implements HandlerInterceptor {
 
     private String getClassName(Object handler) {
         if (!(handler instanceof HandlerMethod handlerMethod)) {
-            return "";
+            return handler.getClass().getName();
         }
         return handlerMethod.getBean().getClass().getName();
     }

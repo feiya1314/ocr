@@ -1,6 +1,6 @@
 use ocr;
 
-DROP TABLE IF EXISTS `user_base`;
+--DROP TABLE IF EXISTS `user_base`;
 CREATE TABLE `user_base` (
     `id` bigint(20) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主表id',
     `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',
@@ -17,7 +17,7 @@ CREATE TABLE `user_base` (
     UNIQUE KEY `user_id_unique_key` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT "用户基础信息表";
 
-DROP TABLE IF EXISTS `user_third_party`;
+-- DROP TABLE IF EXISTS `user_third_party`;
 CREATE TABLE `user_third_party` (
     `id` bigint(20) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主表id',
     `user_id` bigint(20) DEFAULT NULL COMMENT '用户id',

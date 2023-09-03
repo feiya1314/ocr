@@ -107,7 +107,7 @@
         <file>${log.log_dir}/ai-chat-service.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--归档文件名称-->
-            <fileNamePattern>${log.log_dir}/ocr-service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.log_dir}/ai-chat-service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>${log.maxHistory}</maxHistory>
             <MaxFileSize>${log.maxSize}</MaxFileSize>
             <!--所有日志最多占多大容量-->
@@ -122,7 +122,22 @@
         <file>${log.log_dir}/ai-chat-interface.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--归档文件名称-->
-            <fileNamePattern>${log.log_dir}/ocr-interface.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log.log_dir}/ai-chat-interface.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${log.maxHistory}</maxHistory>
+            <MaxFileSize>${log.maxSize}</MaxFileSize>
+            <!--所有日志最多占多大容量-->
+            <totalSizeCap>${log.total_size_cap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%t|%X{request_id}|%msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="ai-chat-auth" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--文件路径-->
+        <file>${log.log_dir}/ai-chat-auth.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--归档文件名称-->
+            <fileNamePattern>${log.log_dir}/ai-chat-auth.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>${log.maxHistory}</maxHistory>
             <MaxFileSize>${log.maxSize}</MaxFileSize>
             <!--所有日志最多占多大容量-->
@@ -151,6 +166,12 @@
     <logger name="cn.easyocr.common.interceptor.RequestTraceInterceptor" additivity="false" level="INFO">
         <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
         <appender-ref ref="ai-chat-interface"/>
+        <!--        <appender-ref ref="INFO"/>-->
+    </logger>
+
+    <logger name="cn.easyocr.uni.auth" additivity="false" level="INFO">
+        <!-- 如果没有设置appender，此loger本身不打印任何信息，-->
+        <appender-ref ref="ai-chat-auth"/>
         <!--        <appender-ref ref="INFO"/>-->
     </logger>
     <logger name="cn.easyocr" additivity="false" level="INFO">

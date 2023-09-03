@@ -1,0 +1,70 @@
+server:
+  forward-headers-strategy: NATIVE
+  port: 3004
+  servlet:
+    # 给所有controller的url增加/data前缀
+    context-path: /chat
+
+spring:
+  mvc:
+    async:
+      # 异步请求超时时间，太短stream请求会超时 设置60s
+      request-timeout: 60000
+  jackson:
+    # 接口返回的json中忽略null属性值
+    default-property-inclusion: non_null
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
+    username: test
+    password: test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      #最小空闲连接数
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      #connection-test-query: SELECT 1
+
+mybatis:
+  #指定xml映射文件位置，多个时逗号分隔
+  mapper-locations: classpath:common-mapper/*Mapper.xml,mapper/*Mapper.xml,uni-auth-mapper/*Mapper.xml
+
+chat:
+  maxTokens: 3000
+  contextMaxMsgs: 10
+  api2D:
+    apiKey: test
+    url: https://test/v1/chat/completions
+  chatGpt:
+    apiKey: dev
+    url: http://127.0.0.1:3002/api/v1/chat-stream
+
+auth:
+  ydSecret: test
+  genTokenSecret: test
+  wxConfig:
+    appid: test
+    secret: test
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  pwd:
+  maxTotal: 10
+  maxIdle: 5
+  testOnBorrow: false
+  maxWaitMills: 1000
+
+okhttp3:
+  maxIdle: 128
+  maxRequests: 128
+  maxRequestsPerHost: 64

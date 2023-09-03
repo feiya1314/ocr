@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS ocr;
 use ocr;
 DROP TABLE IF EXISTS `ocr_request_log`;
 CREATE TABLE `ocr_request_log` (
