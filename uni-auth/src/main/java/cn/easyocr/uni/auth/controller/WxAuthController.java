@@ -13,6 +13,7 @@ import cn.easyocr.uni.auth.mapper.UserThirdPartyMapper;
 import cn.easyocr.uni.auth.po.UserBase;
 import cn.easyocr.uni.auth.po.UserThirdParty;
 import cn.easyocr.uni.auth.query.UserThirdPartyQuery;
+import cn.easyocr.uni.auth.util.ImageUtil;
 import cn.easyocr.uni.auth.util.JwtUtil;
 import cn.easyocr.uni.auth.util.SnowFlakeUidCreator;
 import cn.easyocr.uni.auth.vo.QrLogin;
@@ -38,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,8 +97,8 @@ public class WxAuthController {
         tokenReq.setAppid(wxConfig.getAppid());
         tokenReq.setSecret(wxConfig.getSecret());
 
-        GetTokenResp tokenResp =  wxService.getAccessToken(tokenReq);
-        if (!tokenResp.success()){
+        GetTokenResp tokenResp = wxService.getAccessToken(tokenReq);
+        if (!tokenResp.success()) {
             throw new AuthException(ResultCodeEnum.WX_QR_ERROR);
         }
 
@@ -106,10 +106,8 @@ public class WxAuthController {
         req.setScene("tempKey=" + tempKey);
         req.setAccess_token(tokenResp.getAccess_token());
         req.setPage("pages/auth/auth");
-//        req.setEnv_version("trial");
-        req.setEnv_version("release");
+        req.setEnv_version(wxConfig.getEnvVersion());
 
-        loginStatusHelper.initLoginStatus(tempKey);
         GetQrResp resp = wxService.getUnlimitedQRCode(req);
         if (!resp.success()) {
             throw new AuthException(ResultCodeEnum.WX_QR_ERROR);
@@ -119,7 +117,7 @@ public class WxAuthController {
 
         QrLogin qrLogin = new QrLogin();
         qrLogin.setTempKey(tempKey);
-        qrLogin.setBase64Qr(Base64.getEncoder().encodeToString(resp.getBuffer()));
+        qrLogin.setBase64Qr(ImageUtil.compressImage(resp.getBuffer(), 350, 350));
 
         return ResponseEntity.ok().body(qrLogin);
     }
@@ -133,6 +131,7 @@ public class WxAuthController {
     @GetMapping(value = "/code2Session", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<LoginStatus> code2Session(@RequestParam("code") String code, @RequestParam("tempKey") String tempKey) {
+        log.info("code2Session code:{},tempKey:{}", code, tempKey);
         LoginStatus loginStatus = loginStatusHelper.getLoginStatus(tempKey);
         if (loginStatus == null) {
             throw new AuthException(ResultCodeEnum.AUTH_FAILED);
@@ -150,13 +149,14 @@ public class WxAuthController {
         }
 
         Long userId = getUserId(sessionResp.getUnionid(), sessionResp.getOpenid());
+        loginStatus.setUserId(userId);
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("user_id", userId);
 
         String token = JwtUtil.genToken(claims, tokenConfig.getGenTokenSecret(), tokenConfig.getTokenExpiration());
         loginStatusHelper.updateLoginStatus(tempKey, LoginStatus.Status.LOGIN, token);
-
+        log.info("code2Session finsh code:{},tempKey:{}", code, tempKey);
         return ResponseEntity.ok().body(loginStatus);
     }
 
@@ -196,7 +196,8 @@ public class WxAuthController {
      */
     @PostMapping(value = "/loginCallback", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public void loginCallback(@RequestBody LoginCallBack loginCallBack) {
+    public ResponseEntity<LoginStatus> loginCallback(@RequestBody LoginCallBack loginCallBack) {
+        log.info("loginCallback status:{},tempKey:{}", loginCallBack.getStatus(), loginCallBack.getTempKey());
         // todo 校验签名
         LoginStatus loginStatus = loginStatusHelper.getLoginStatus(loginCallBack.getTempKey());
         if (loginStatus == null) {
@@ -205,6 +206,9 @@ public class WxAuthController {
 
         LoginStatus.Status status = LoginStatus.Status.valueOf(loginCallBack.getStatus());
         loginStatusHelper.updateLoginStatus(loginCallBack.getTempKey(), status);
+        log.info("loginCallback finish status:{},tempKey:{}", loginCallBack.getStatus(), loginCallBack.getTempKey());
+
+        return ResponseEntity.ok().body(loginStatusHelper.getLoginStatus(loginCallBack.getTempKey()));
     }
 
     /**
@@ -213,6 +217,7 @@ public class WxAuthController {
     @GetMapping(value = "/loginStatus", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<LoginStatus> loginStatus(@RequestParam("tempKey") String tempKey) {
+        log.info("loginStatus tempKey:{}", tempKey);
         LoginStatus loginStatus = loginStatusHelper.getLoginStatus(tempKey);
         if (loginStatus == null) {
             throw new AuthException(ResultCodeEnum.AUTH_FAILED);
@@ -221,7 +226,7 @@ public class WxAuthController {
         if (LoginStatus.Status.finish(loginStatus.getStatus())) {
             loginStatusHelper.removeLoginStatus(tempKey);
         }
-
+        log.info("loginStatus  finish tempKey:{}", tempKey);
         return ResponseEntity.ok().body(loginStatus);
     }
 

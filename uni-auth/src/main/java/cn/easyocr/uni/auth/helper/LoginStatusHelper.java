@@ -29,20 +29,23 @@ public class LoginStatusHelper {
         tempKeys.remove(key);
     }
 
-    public void updateLoginStatus(String key, LoginStatus.Status status,String token) {
-        tempKeys.computeIfPresent(key, (k, v) -> {
-            v.setStatus(status);
-            v.setUpdateTime(System.currentTimeMillis());
-            v.setToken(token);
-            return v;
+    public void updateLoginStatus(String key, LoginStatus.Status status, String token) {
+        tempKeys.compute(key, (k, v) -> {
+            LoginStatus tmp = v == null ? new LoginStatus() : v;
+            tmp.setStatus(status);
+            tmp.setUpdateTime(System.currentTimeMillis());
+            tmp.setToken(token);
+
+            return tmp;
         });
     }
 
     public void updateLoginStatus(String key, LoginStatus.Status status) {
-        tempKeys.computeIfPresent(key, (k, v) -> {
-            v.setStatus(status);
-            v.setUpdateTime(System.currentTimeMillis());
-            return v;
+        tempKeys.compute(key, (k, v) -> {
+            LoginStatus tmp = v == null ? new LoginStatus() : v;
+            tmp.setStatus(status);
+            tmp.setUpdateTime(System.currentTimeMillis());
+            return tmp;
         });
     }
 

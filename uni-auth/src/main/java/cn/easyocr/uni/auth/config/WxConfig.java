@@ -13,4 +13,5 @@ import lombok.Setter;
 public class WxConfig {
     private String appid;
     private String secret;
+    private String envVersion;
 }

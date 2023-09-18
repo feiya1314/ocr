@@ -18,6 +18,7 @@
         <easyocr.common.version>1.0.5-SNAPSHOT</easyocr.common.version>
         <easyocr.common.dao.version>1.0.5-SNAPSHOT</easyocr.common.dao.version>
         <wx.java.version>4.5.0</wx.java.version>
+        <thumbnailator.version>0.4.20</thumbnailator.version>
     </properties>
 
     <dependencies>
@@ -44,6 +45,11 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>${thumbnailator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
