@@ -2,6 +2,7 @@ package cn.easyocr.ai.chat.service.dao;
 
 import cn.easyocr.ai.chat.service.BaseTest;
 import cn.easyocr.common.utils.TimeUtil;
+import cn.easyocr.uni.auth.enums.LoginPlatform;
 import cn.easyocr.uni.auth.mapper.UserBaseMapper;
 import cn.easyocr.uni.auth.mapper.UserThirdPartyMapper;
 import cn.easyocr.uni.auth.po.UserThirdParty;
@@ -45,7 +46,7 @@ public class UserThirdPartyMapperTest extends BaseTest {
         userThirdParty.setUnionId(uniId);
         userThirdParty.setOpenId(uniId);
         userThirdParty.setPrivilege("setPrivilege" + curTime);
-        userThirdParty.setPlatform(1);
+        userThirdParty.setPlatform(LoginPlatform.WX_MINI.getPlatform());
         userThirdParty.setAppId(uniId);
         userThirdParty.setCreatedTime(new Date());
         userThirdParty.setUpdateTime(new Date());
@@ -59,7 +60,7 @@ public class UserThirdPartyMapperTest extends BaseTest {
     public void testFind() {
         UserThirdPartyQuery userThirdPartyQuery = UserThirdPartyQuery.builder()
                 .userId(curId)
-                .platform(1)
+                .platform(LoginPlatform.WX_MINI.getPlatform())
                 .build();
 
         List<UserThirdParty> userThirdParties = userThirdPartyMapper.find(userThirdPartyQuery);
