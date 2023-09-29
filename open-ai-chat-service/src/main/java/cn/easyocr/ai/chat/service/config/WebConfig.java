@@ -38,7 +38,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/auth/**");
 
         registry.addInterceptor(new AuthInterceptor(uri -> uri.equals("/") || uri.startsWith("/assets")
-                        || uri.startsWith("/favicon.svg") || uri.startsWith("/chat/auth/v1"),
+                        || uri.startsWith("/favicon.svg") || uri.startsWith("/chat/auth/v1") || uri.startsWith("/chat/error")
+                        || uri.startsWith("/chat/api/v1/chat-stream"),
                         authConfig.getGenTokenSecret()))
                 .addPathPatterns("/**");
     }

@@ -1,6 +1,6 @@
 package cn.easyocr.uni.auth.wx;
 
-import cn.easyocr.uni.auth.vo.UserInfo;
+import cn.easyocr.uni.auth.vo.LoginInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class LoginStatus extends UserInfo {
+public class LoginStatus extends LoginInfo {
     private Status status;
     private String msg;
     private Long updateTime;

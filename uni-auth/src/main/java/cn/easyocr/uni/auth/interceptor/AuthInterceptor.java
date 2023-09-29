@@ -37,37 +37,44 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
+        log.info("auth req uri : {}", requestURI);
         if (whitelistUris.apply(requestURI)) {
+            log.info("auth req uri in white list");
             return true;
         }
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (!StringUtils.hasText(token) || !validateToken(token)) {
+        if (!StringUtils.hasText(token)) {
+            throw new AuthException(ResultCodeEnum.AUTH_FAILED);
+        }
+
+        Map<String, Object> claims = parseToken(token);
+        Object claimUserId = claims.get(JwtUtil.USER_ID);
+        if (claimUserId == null) {
             throw new AuthException(ResultCodeEnum.AUTH_FAILED);
         }
 
         String userId = request.getHeader(Constants.REQ_USER_ID);
-        if (!StringUtils.hasText(userId)) {
+        if(userId == null || userId.length() == 0 || !userId.equals(claimUserId.toString())){
             throw new AuthException(ResultCodeEnum.AUTH_FAILED);
         }
-
         return true;
     }
 
-    private boolean validateToken(String token) {
+    private Map<String, Object> parseToken(String token) {
         try {
             Map<String, Object> claims = JwtUtil.decode(token, secret);
             Long timestamp = (Long) claims.get(JwtUtil.TOKEN_CREATE_TIME);
-            return true;
+            return claims;
         } catch (ExpiredJwtException e) {
             log.error("token expired", e);
-            return false;
+            throw new AuthException(ResultCodeEnum.AUTH_FAILED, "token expired");
         } catch (SignatureException e) {
             log.error("token sign error", e);
-            return false;
+            throw new AuthException(ResultCodeEnum.AUTH_FAILED, "token invalid");
         } catch (Exception e) {
             log.error("token parse error", e);
-            return false;
+            throw new AuthException(ResultCodeEnum.AUTH_FAILED, "token parse error");
         }
     }
 }

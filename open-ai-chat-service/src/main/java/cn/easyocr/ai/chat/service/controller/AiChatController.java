@@ -8,6 +8,7 @@ import cn.easyocr.ai.chat.service.req.Message;
 import cn.easyocr.ai.chat.service.resp.Api2dChaGptResp;
 import cn.easyocr.ai.chat.service.resp.ChatChoice;
 import cn.easyocr.ai.chat.service.service.IAiChatService;
+import cn.easyocr.ai.chat.service.util.HttpUtil;
 import cn.easyocr.common.utils.JsonUtils;
 import cn.easyocr.db.common.dao.annotation.ReqLogAnno;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Random;
@@ -42,9 +44,9 @@ public class AiChatController {
 
     @PostMapping(value = "/chat-process", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ReqLogAnno(origin = "ai-chat", asyncReq = true)
-    public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq) {
+    public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq, HttpServletRequest request) {
         log.info("chatProcess request start");
-        ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder().aiChatReq(aiChatReq);
+        ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder().aiChatReq(aiChatReq).userId(HttpUtil.getUserId(request));
         ChatServiceResult chatServiceResult = aiChatService.chat(chatContextBuilder.build());
 
         StreamingResponseBody streamResponse = chatServiceResult.getStreamingResponseBody();

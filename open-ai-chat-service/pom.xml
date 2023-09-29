@@ -6,18 +6,18 @@
     <parent>
         <groupId>cn.easyocr</groupId>
         <artifactId>ocr-parent</artifactId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.1.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>open-ai-chat-service</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <properties>
-        <easyocr.commondao.version>1.0.5-SNAPSHOT</easyocr.commondao.version>
-        <easyocr.common.version>1.0.5-SNAPSHOT</easyocr.common.version>
-        <easyocr.uniauth.version>1.0.5-SNAPSHOT</easyocr.uniauth.version>
+        <easyocr.commondao.version>1.1.0</easyocr.commondao.version>
+        <easyocr.common.version>1.1.0</easyocr.common.version>
+        <easyocr.uniauth.version>1.1.0</easyocr.uniauth.version>
         <maven.install.skip>true</maven.install.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>

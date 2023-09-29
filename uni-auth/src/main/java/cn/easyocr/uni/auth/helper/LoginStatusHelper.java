@@ -40,6 +40,18 @@ public class LoginStatusHelper {
         });
     }
 
+    public void updateLoginStatus(String key, LoginStatus.Status status, String token, long expiration) {
+        tempKeys.compute(key, (k, v) -> {
+            LoginStatus tmp = v == null ? new LoginStatus() : v;
+            tmp.setStatus(status);
+            tmp.setUpdateTime(System.currentTimeMillis());
+            tmp.setToken(token);
+            tmp.setTokenExpiredTime(expiration);
+
+            return tmp;
+        });
+    }
+
     public void updateLoginStatus(String key, LoginStatus.Status status) {
         tempKeys.compute(key, (k, v) -> {
             LoginStatus tmp = v == null ? new LoginStatus() : v;

@@ -131,11 +131,11 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatContext.setReqMsgId(userReqMsgId);
         chatContext.setRespMsgId(respMsgId);
 
-        recordReqMsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
+        recordReqMsg(chatContext.getUserId(), chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
 
         updateParentMsg(parentMsg.getId(), userReqMsgId);
 
-        recordAiRespBase(chatId, respMsgId);
+        recordAiRespBase(chatContext.getUserId(), chatId, respMsgId);
 
         buildContextMsgs(chatContext, parentMsg);
     }
@@ -155,11 +155,11 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatContext.setReqMsgId(userReqMsgId);
         chatContext.setRespMsgId(respMsgId);
         // 记录系统角色信息
-        recordSysMsg(aiChatReq, chatId, userReqMsgId);
+        recordSysMsg(aiChatReq,chatContext.getUserId(), chatId, userReqMsgId);
 
-        recordReqMsg(chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
+        recordReqMsg(chatContext.getUserId(), chatId, userReqMsgId, aiChatReq.getPrompt(), respMsgId);
 
-        recordAiRespBase(chatId, respMsgId);
+        recordAiRespBase(chatContext.getUserId(), chatId, respMsgId);
 
         List<Message> messages = new ArrayList<>();
         Message sysMsg = new Message();
@@ -216,8 +216,9 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatMsgsMapper.update(msg);
     }
 
-    private void recordReqMsg(String chatId, String msgId, String content, String respMsgId) {
+    private void recordReqMsg(Long userId, String chatId, String msgId, String content, String respMsgId) {
         ChatMsgs msg = new ChatMsgs();
+        msg.setUserId(userId);
         msg.setModel(ChatGptModel.GPT_3_5_TURBO.getModelId());
         msg.setChatId(chatId);
         msg.setMsgId(msgId);
@@ -231,8 +232,9 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatMsgsMapper.insert(msg);
     }
 
-    private void recordAiRespBase(String chatId, String respMsgId) {
+    private void recordAiRespBase(Long userId, String chatId, String respMsgId) {
         ChatMsgs msg = new ChatMsgs();
+        msg.setUserId(userId);
         msg.setChatId(chatId);
         msg.setMsgId(respMsgId);
         msg.setRole(ChatRole.ASSISTANT.getRoleId());
@@ -242,9 +244,9 @@ public class AiChatServiceAdapter implements IAiChatService {
         chatMsgsMapper.insert(msg);
     }
 
-    private void recordSysMsg(AiChatReq aiChatReq, String chatId, String nexMsgId) {
+    private void recordSysMsg(AiChatReq aiChatReq, Long userId, String chatId, String nexMsgId) {
         ChatMsgs msg = new ChatMsgs();
-        //  chatMsgs.setUserId();
+        msg.setUserId(userId);
         msg.setModel(ChatGptModel.GPT_3_5_TURBO.getModelId());
         msg.setChatId(chatId);
         msg.setMsgId(UuidUtil.getUuid());

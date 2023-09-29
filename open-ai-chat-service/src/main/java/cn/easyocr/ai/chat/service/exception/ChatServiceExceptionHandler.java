@@ -29,6 +29,7 @@ public class ChatServiceExceptionHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.error("req param not valid error", ex);
         BindingResult bindingResult = ex.getBindingResult();
         StringBuilder sb = new StringBuilder("校验失败:");
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -41,12 +42,14 @@ public class ChatServiceExceptionHandler {
     @ExceptionHandler({ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException ex) {
+        log.error("req param error", ex);
         return ResponseUtil.fail(ResultCodeEnum.PARAM_ERROR.getCode(), ex.getMessage());
     }
 
     @ExceptionHandler({ParamValidateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handlerParamException(ParamValidateException ex) {
+        log.error("req param error", ex);
         return ResponseUtil.fail(ex.getResultCodeEnum().getCode(),
                 StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : ex.getResultCodeEnum().getDesc());
     }
@@ -54,6 +57,7 @@ public class ChatServiceExceptionHandler {
     @ExceptionHandler({AuthException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handlerAuthException(AuthException ex) {
+        log.error("service auth error", ex);
         return ResponseUtil.fail(ex.getResultCodeEnum().getCode(),
                 StringUtils.hasText(ex.getMessage()) ? ex.getMessage() : ex.getResultCodeEnum().getDesc());
     }

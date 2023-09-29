@@ -6,7 +6,7 @@
 
     <groupId>cn.easyocr</groupId>
     <artifactId>ocr-parent</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -28,10 +28,10 @@
         <module>ocr-common</module>
         <module>ocr-common-dao</module>
         <module>uni-auth</module>
-        <module>task-service</module>
-        <module>risk-check-service</module>
+<!--        <module>task-service</module>-->
+<!--        <module>risk-check-service</module>-->
 
-        <module>ocr-main-service</module>
+<!--        <module>ocr-main-service</module>-->
         <module>open-ai-chat-service</module>
     </modules>
 

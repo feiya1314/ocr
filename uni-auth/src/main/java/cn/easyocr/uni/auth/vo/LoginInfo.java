@@ -10,9 +10,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class UserInfo {
+public class LoginInfo {
     private Long userId;
     private String username;
     private String avatarUrl;
     private String token;
+    private Long tokenExpiredTime;
 }

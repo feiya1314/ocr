@@ -42,4 +42,6 @@ public class ChatContext {
     private List<Message> reqMessages;
 
     private String respWholeText;
+
+    private Long userId;
 }

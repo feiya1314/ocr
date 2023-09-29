@@ -152,10 +152,11 @@ public class WxAuthController {
         loginStatus.setUserId(userId);
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("user_id", userId);
+        claims.put(JwtUtil.USER_ID, userId);
 
-        String token = JwtUtil.genToken(claims, tokenConfig.getGenTokenSecret(), tokenConfig.getTokenExpiration());
-        loginStatusHelper.updateLoginStatus(tempKey, LoginStatus.Status.LOGIN, token);
+        long expiredTime = System.currentTimeMillis() + tokenConfig.getTokenExpiration();
+        String token = JwtUtil.genToken(claims, tokenConfig.getGenTokenSecret(), expiredTime);
+        loginStatusHelper.updateLoginStatus(tempKey, LoginStatus.Status.LOGIN, token, expiredTime);
         log.info("code2Session finsh code:{},tempKey:{}", code, tempKey);
         return ResponseEntity.ok().body(loginStatus);
     }

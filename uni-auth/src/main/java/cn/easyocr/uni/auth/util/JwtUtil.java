@@ -20,6 +20,7 @@ import java.util.Map;
 public class JwtUtil {
     private static final String BEARER = "Bearer";
     public static final String TOKEN_CREATE_TIME = "timestamp";
+    public static final String USER_ID = "userId";
 
     public static Map<String, Object> decode(String token, String secret) {
         String tokenBody = token.split(" ")[1];
@@ -34,7 +35,7 @@ public class JwtUtil {
     }
 
     public static String genToken(Map<String, Object> claims, String secret, long expiration) {
-        Date expiredDate = new Date(System.currentTimeMillis() + expiration);
+        Date expiredDate = new Date(expiration);
 
         Key signingKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
         claims.put(TOKEN_CREATE_TIME, System.currentTimeMillis());
