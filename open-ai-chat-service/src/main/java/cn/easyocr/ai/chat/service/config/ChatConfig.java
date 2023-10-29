@@ -32,6 +32,7 @@ public class ChatConfig {
     public static class ChatGpt {
         private String apiKey;
         private String url;
+        private int priority = 1;
     }
 
     @Getter
@@ -40,5 +41,6 @@ public class ChatConfig {
     public static class Api2D {
         private String apiKey;
         private String url;
+        private int priority = 2;
     }
 }

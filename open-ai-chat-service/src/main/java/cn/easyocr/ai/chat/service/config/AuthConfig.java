@@ -16,7 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthConfig {
     private String genTokenSecret;
-    private long tokenExpiration = 86400000L;
+    /**
+     * token 过期时间，默认15天
+     */
+    private long tokenExpiration = 1296000000L;
 
     private String ydSecret;
 

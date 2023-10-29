@@ -23,9 +23,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {"cn.easyocr.uni.auth.controller"})
 public class BeansConfig {
     @Autowired
-    private ChatConfig config;
-
-    @Autowired
     private AuthConfig authConfig;
 
     @Bean

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author : feiya
  * @date : 2023/5/21
- * @description :
+ * @description : <a href="https://api2d-doc.apifox.cn/">...</a> API2D 返回的stream 数据流格式
  */
 @Getter
 @Setter

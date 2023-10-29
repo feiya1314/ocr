@@ -1,5 +1,6 @@
 package cn.easyocr.ai.chat.service.req;
 
+import cn.easyocr.ai.chat.service.enums.ChatType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +27,6 @@ public class AiChatReq {
     private Integer temperature;
 
     private Integer topP;
+
+    private Integer chatType = ChatType.CHAT_GPT.getType();
 }

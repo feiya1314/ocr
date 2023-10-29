@@ -2,6 +2,7 @@ package cn.easyocr.ai.chat.service.controller;
 
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
+import cn.easyocr.ai.chat.service.enums.ChatType;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
 import cn.easyocr.ai.chat.service.req.ChatGptReq;
 import cn.easyocr.ai.chat.service.req.Message;
@@ -46,7 +47,31 @@ public class AiChatController {
     @ReqLogAnno(origin = "ai-chat", asyncReq = true)
     public ResponseEntity<StreamingResponseBody> chatProcess(@Valid @RequestBody AiChatReq aiChatReq, HttpServletRequest request) {
         log.info("chatProcess request start");
-        ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder().aiChatReq(aiChatReq).userId(HttpUtil.getUserId(request));
+        ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder()
+                .aiChatReq(aiChatReq)
+                .userId(HttpUtil.getUserId(request))
+                .chatType(ChatType.getByType(aiChatReq.getChatType()));
+
+        ChatServiceResult chatServiceResult = aiChatService.chat(chatContextBuilder.build());
+
+        StreamingResponseBody streamResponse = chatServiceResult.getStreamingResponseBody();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=result.txt");
+
+        return ResponseEntity.ok().headers(headers).body(streamResponse);
+    }
+
+    @PostMapping(value = "/chat-process-append", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ReqLogAnno(origin = "ai-chat", asyncReq = true)
+    public ResponseEntity<StreamingResponseBody> chatProcessAppend(@Valid @RequestBody AiChatReq aiChatReq, HttpServletRequest request) {
+        log.info("chatProcess request start");
+        ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder()
+                .aiChatReq(aiChatReq)
+                .userId(HttpUtil.getUserId(request))
+                .chatType(ChatType.getByType(aiChatReq.getChatType()));
+
         ChatServiceResult chatServiceResult = aiChatService.chat(chatContextBuilder.build());
 
         StreamingResponseBody streamResponse = chatServiceResult.getStreamingResponseBody();

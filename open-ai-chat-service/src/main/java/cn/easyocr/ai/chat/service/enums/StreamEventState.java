@@ -5,8 +5,10 @@ package cn.easyocr.ai.chat.service.enums;
  * @date : 2023/5/18
  * @description :
  */
-public enum StreamRespEvent {
+public enum StreamEventState {
     FINISH("finish", "完成"),
+    CLOSE("close", "stream关闭"),
+    EMPTY("empty", "stream空数据"),
 
     ERROR("error", "出错"),
 
@@ -16,7 +18,7 @@ public enum StreamRespEvent {
 
     private final String desc;
 
-    StreamRespEvent(String event, String desc) {
+    StreamEventState(String event, String desc) {
         this.event = event;
 
         this.desc = desc;

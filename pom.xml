@@ -6,7 +6,7 @@
 
     <groupId>cn.easyocr</groupId>
     <artifactId>ocr-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -22,6 +22,7 @@
         <validation.version>2.7.0</validation.version>
         <commons-pool.version>2.11.1</commons-pool.version>
         <guava.version>31.1-jre</guava.version>
+        <easyocr.version>1.1.1-SNAPSHOT</easyocr.version>
     </properties>
 
     <modules>
@@ -57,6 +58,22 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.easyocr</groupId>
+                <artifactId>ocr-common</artifactId>
+                <version>${easyocr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.easyocr</groupId>
+                <artifactId>ocr-common-dao</artifactId>
+                <version>${easyocr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.easyocr</groupId>
+                <artifactId>uni-auth</artifactId>
+                <version>${easyocr.version}</version>
+            </dependency>
+
             <!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
             <dependency>
                 <groupId>org.redisson</groupId>

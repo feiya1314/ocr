@@ -1,10 +1,19 @@
 server:
+  forward-headers-strategy: NATIVE
   port: 3002
   servlet:
     # 给所有controller的url增加/data前缀
-    context-path: /api/v1
+    context-path: /chat
 
 spring:
+  mvc:
+    async:
+      # 异步请求超时时间，太短stream请求会超时 设置60s
+      request-timeout: 60000
+  jackson:
+    # 接口返回的json中忽略null属性值
+    default-property-inclusion: non_null
+
   datasource:
     url: jdbc:mysql://localhost:3306/ocr?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
@@ -27,13 +36,29 @@ spring:
 
 mybatis:
   #指定xml映射文件位置，多个时逗号分隔
-  mapper-locations: classpath:mapper/*Mapper.xml
+  mapper-locations: classpath:common-mapper/*Mapper.xml,mapper/*Mapper.xml,uni-auth-mapper/*Mapper.xml
 
 chat:
+  maxTokens: 4096
+  contextMaxMsgs: 10
   api2D:
-    apiKey: dev
+    apiKey: v
+    url: http://127.0.0.1:3002/chat/api/v1/chat-stream
+    priority: 1
+
   chatGpt:
-    apiKey: dev
+    apiKey: dev1,dev2,dev3
+    url: http://127.0.0.1:3002/chat/api/v1/chat-stream
+    priority: 2
+
+auth:
+  ydSecret: 0147890a
+  genTokenSecret: dev
+  tokenExpiration: 1296000000
+  wxConfig:
+    appid: dev
+    secret: dev
+    envVersion: trial
 
 redis:
   host: 127.0.0.1
@@ -43,3 +68,8 @@ redis:
   maxIdle: 5
   testOnBorrow: false
   maxWaitMills: 1000
+
+okhttp3:
+  maxIdle: 128
+  maxRequests: 64
+  maxRequestsPerHost: 32

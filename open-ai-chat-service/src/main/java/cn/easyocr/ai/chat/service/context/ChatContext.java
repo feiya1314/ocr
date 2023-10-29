@@ -1,5 +1,7 @@
 package cn.easyocr.ai.chat.service.context;
 
+import cn.easyocr.ai.chat.service.enums.ChatType;
+import cn.easyocr.ai.chat.service.keys.KeyInfo;
 import cn.easyocr.ai.chat.service.req.AiChatReq;
 import cn.easyocr.ai.chat.service.req.Message;
 import lombok.Builder;
@@ -44,4 +46,8 @@ public class ChatContext {
     private String respWholeText;
 
     private Long userId;
+
+    private ChatType chatType;
+
+    private KeyInfo keyInfo;
 }

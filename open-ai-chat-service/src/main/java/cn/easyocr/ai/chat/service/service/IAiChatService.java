@@ -2,6 +2,7 @@ package cn.easyocr.ai.chat.service.service;
 
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
+import cn.easyocr.ai.chat.service.enums.ChatSource;
 
 /**
  * @author : feiya
@@ -10,4 +11,6 @@ import cn.easyocr.ai.chat.service.context.ChatServiceResult;
  */
 public interface IAiChatService {
     ChatServiceResult chat(ChatContext chatContext);
+
+    ChatSource getChatSource();
 }
