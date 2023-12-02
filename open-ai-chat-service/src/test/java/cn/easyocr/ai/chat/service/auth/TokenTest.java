@@ -1,9 +1,10 @@
 package cn.easyocr.ai.chat.service.auth;
 
 import cn.easyocr.ai.chat.service.BaseTest;
+import cn.easyocr.common.utils.JsonUtils;
 import cn.easyocr.uni.auth.config.TokenConfig;
 import cn.easyocr.uni.auth.util.JwtUtil;
-import cn.easyocr.uni.auth.util.SnowFlakeUidCreator;
+import cn.easyocr.uni.auth.wx.LoginStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,6 +30,11 @@ public class TokenTest extends BaseTest {
 
         long expiredTime = System.currentTimeMillis() + tokenConfig.getTokenExpiration();
         String token = JwtUtil.genToken(claims, tokenConfig.getGenTokenSecret(), expiredTime);
-        System.out.println(token);
+
+        LoginStatus loginStatus = new LoginStatus();
+        loginStatus.setToken(token);
+        loginStatus.setTokenExpiredTime(expiredTime);
+
+        System.out.println(JsonUtils.toJson(loginStatus));
     }
 }
