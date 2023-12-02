@@ -9,16 +9,15 @@ import java.util.List;
 /**
  * @author : feiya
  * @date : 2023/5/21
- * @description :
+ * @description : <a href="https://platform.openai.com/docs/api-reference/chat/streaming">...</a>
  */
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ChatGptResp {
+public class OpenAiChatResp {
     private String id;
     private String object;
     private long created;
     private String model;
     private List<ChatChoice> choices;
-    private Usage usage;
 }

@@ -1,9 +1,7 @@
 package cn.easyocr.ai.chat.service.service;
 
-import cn.easyocr.ai.chat.service.config.ChatConfig;
 import cn.easyocr.ai.chat.service.context.ChatContext;
 import cn.easyocr.ai.chat.service.context.ChatServiceResult;
-import cn.easyocr.ai.chat.service.dao.mapper.ChatMsgsMapper;
 import cn.easyocr.ai.chat.service.enums.ChatSource;
 import cn.easyocr.ai.chat.service.keys.ApiKeyManager;
 import cn.easyocr.ai.chat.service.keys.KeyInfo;
@@ -20,13 +18,7 @@ import java.util.Map;
 @Component("aiChatServiceAdapter")
 public class AiChatServiceAdapter implements IAiChatService {
     @Autowired
-    private ChatConfig config;
-
-    @Autowired
     private Map<String, IAiChatService> api2DChatServices;
-
-    @Autowired
-    private ChatMsgsMapper chatMsgsMapper;
 
     @Autowired
     private ApiKeyManager apiKeyManager;
