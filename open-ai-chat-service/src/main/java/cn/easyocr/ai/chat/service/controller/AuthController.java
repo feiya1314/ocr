@@ -56,8 +56,6 @@ public class AuthController {
     @Autowired
     private AuthConfig authConfig;
 
-    @Autowired
-    private ChatConfig chatConfig;
     private final String tempUserIdUrl = "https://yd.jylt.cc/api/wxLogin/tempUserId";
 
     private Map<String, CallbackReq> userLoninCallbacks = new HashMap<>();

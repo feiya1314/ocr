@@ -66,7 +66,7 @@ public class AiChatController {
     @PostMapping(value = "/chat-process-append", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ReqLogAnno(origin = "ai-chat", asyncReq = true)
     public ResponseEntity<StreamingResponseBody> chatProcessAppend(@Valid @RequestBody AiChatReq aiChatReq, HttpServletRequest request) {
-        log.info("chatProcess request start");
+        log.info("chatProcessAppend request start");
         ChatContext.ChatContextBuilder chatContextBuilder = ChatContext.builder()
                 .aiChatReq(aiChatReq)
                 .userId(HttpUtil.getUserId(request))

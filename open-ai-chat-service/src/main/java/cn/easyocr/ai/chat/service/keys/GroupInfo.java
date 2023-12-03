@@ -30,7 +30,7 @@ public class GroupInfo {
     private final Random random = new Random();
 
     private final byte[] invalidLock = new byte[0];
-    private final static long invalidWindow = 20 * 1000;
+    private final static long INVALID_WINDOW = 20 * 1000;
     private final static long MAX_COUNT = 3;
 
     public KeyInfo randomKeyInfo() {
@@ -71,9 +71,9 @@ public class GroupInfo {
     }
 
     private void doInvalidKey(KeyInfo keyInfo, InvalidCounter counter) {
-        if (System.currentTimeMillis() - counter.lastUpdateTime > invalidWindow) {
+        if (System.currentTimeMillis() - counter.lastUpdateTime > INVALID_WINDOW) {
             counter.count.set(1);
-            keyInfo.resetKeyAvailabile();
+            keyInfo.resetKeyAvailable();
             counter.lastUpdateTime = System.currentTimeMillis();
             return;
         }

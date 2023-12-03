@@ -20,7 +20,7 @@ public class KeyInfo {
         this.chatSource = chatSource;
     }
 
-    public void resetKeyAvailabile() {
+    public void resetKeyAvailable() {
         status = 0;
         invalidInfo = null;
     }

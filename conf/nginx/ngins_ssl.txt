@@ -1,0 +1,30 @@
+wget -O -  https://get.acme.sh | sh -s email=yfi3@gmail.com
+ or
+
+ # 国内镜像
+curl https://gitcode.net/cert/cn-acme.sh/-/raw/master/install.sh?inline=false | sh -s email=my@example.com
+
+git clone https://gitee.com/neilpang/acme.sh.git
+
+cd acme.sh
+
+./acme.sh --install -m testyfi3@gmail.com
+
+#acme.sh --set-default-ca --server letsencrypt
+
+# 生成证书
+acme.sh --issue -d second.domain.com -d test.domain.com -d www.domain.com -d domain.com --webroot  /web --force --debug
+
+#停掉nginx，使用standalone模式
+acme.sh --issue -d second.domain.com -d test.domain.com -d www.domain.com -d domain.com --standalone
+
+#安装证书
+acme.sh --install-cert -d second.domain.com -d test.domain.com -d www.domain.com -d domain.com --key-file  /nginx/ssl/domain.com.key  --fullchain-file  /nginx/ssl/fullchain.cer  --reloadcmd   "/usr/local/nginx/sbin/nginx -s reload"
+
+#自动更新acme
+acme.sh --upgrade --auto-upgrade
+
+#查看定时任务
+crontab  -l
+
+27 0 * * * "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" > /dev/null

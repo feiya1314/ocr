@@ -66,10 +66,10 @@ public abstract class AbsAiChatService<R> implements IAiChatService {
     /**
      * 将stream 流返回的数据，根据steam的格式处理，不同的chat 服务返回的数据格式可能不同，处理后生成ChatStreamingEvent
      *
-     * @param StreamingRespData stream 流返回的一次数据
+     * @param streamingRespData stream 流返回的一次数据
      * @return ChatStreamingEvent
      */
-    protected abstract ChatStreamingEvent<R> streamRespToEvent(ChatContext chatContext, String StreamingRespData);
+    protected abstract ChatStreamingEvent<R> streamRespToEvent(ChatContext chatContext, String streamingRespData);
 
     protected EventSourceListener buildEventListener(ChatContext chatContext, EventStreamRespBody<R> streamResponse) {
         ISseEventHandler<SseEvent> eventHandler = new ISseEventHandler<>() {
